@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,shrink-to-fit=no,viewport-fit=cover">
+    <meta name="theme-color" content="#175AEA">
+    <title>Friendly Pay</title>
+    <link rel="preconnect" href="<%= VITE_CDN_URL %>" />
+    <link crossorigin="anonymous" rel="preconnect" href="<%= VITE_CDN_URL %>">
+
+    <style>
+        html,
+        body {
+            -webkit-user-select: none;
+            user-select: none;
+        }
+    </style>
+
+    <script defer="defer" src="/scripts/telegram-web-app.js" onload="_initTelegramWebApp()"
+        type="text/javascript"></script>
+    <script>
+        function _initTelegramWebApp() {
+            window.Telegram.WebApp.expand();
+            window.Telegram.WebApp.headerColor = "#FFFFFF";
+            window.Telegram.WebApp.setHeaderColor("#FFFFFF");
+            if (window.Telegram.WebApp.isVersionAtLeast("7.7")) {
+                window.Telegram.WebApp.disableVerticalSwipes();
+            }
+            if (window.Telegram.WebApp.isVersionAtLeast("8.0")) {
+                window.Telegram.WebApp.lockOrientation?.()
+                try {
+                    if (window.Telegram.WebApp.platform === 'ios' || window.Telegram.WebApp.platform === 'android') {
+                        window.Telegram.WebApp.requestFullscreen?.();
+                    }
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+        }
+    </script>
+
+    <script type="module" src="/src/main.tsx"></script>
+</head>
+
+<body>
+    <noscript>You need to enable JavaScript to run this app</noscript>
+
+    <div id="root"></div>
+    <div id="modals"></div>
+
+</body>
+
+</html>

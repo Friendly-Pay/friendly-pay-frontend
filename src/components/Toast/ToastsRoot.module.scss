@@ -1,0 +1,92 @@
+.toast {
+    box-sizing: border-box;
+    display: flex;
+    align-items: flex-start;
+    outline: 1px solid transparent;
+    overflow: hidden;
+    padding: 12px 50px 12px 12px;
+    border-radius: 10px;
+    box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0.11);
+}
+
+.icon {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    margin-right: 8px;
+
+    svg {
+        width: 22px;
+        height: 22px;
+    }
+
+}
+
+.content {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    align-self: stretch;
+    flex-basis: 100%;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.title {
+    max-width: 100%;
+    white-space: pre-wrap;
+    word-break: break-word;
+    font-family: inherit;
+    font-size: 14px;
+    font-family: var(--font-family);
+}
+
+.closeButton {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    margin: 0;
+    outline: none;
+    padding: 0;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-typo-primary-60);
+
+    svg {
+        width: 10px;
+        height: 10px;
+    }
+}
+
+.success {
+    background-color: #DDF3DA;
+
+    .icon {
+        color: var(--color-green);
+    }
+
+    .closeButton {
+        color: rgba(0, 0, 0, 0.4)
+    }
+}
+
+.error {
+    background-color: #F4D3D3;
+
+    .icon {
+        color: #D44141;
+    }
+
+    .closeButton {
+        color: rgba(0, 0, 0, 0.4)
+    }
+}

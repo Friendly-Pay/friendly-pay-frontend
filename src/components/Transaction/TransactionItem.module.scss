@@ -1,0 +1,55 @@
+.root {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    user-select: none;
+    column-gap: 20px;
+}
+
+.icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    border-radius: 50%;
+}
+
+.root.deposit {
+    .icon {
+        background-color: #4EC269;
+    }
+
+    .amount {
+        color: #4EC269;
+    }
+}
+
+.root.payment {
+    .icon {
+        background-color: #202022;
+    }
+}
+
+.content {
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.type {
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+.title {
+    white-space: nowrap;
+    margin-bottom: 4px;
+}
+
+.date {
+    color: var(--color-typo-primary-60);
+    white-space: nowrap;
+}

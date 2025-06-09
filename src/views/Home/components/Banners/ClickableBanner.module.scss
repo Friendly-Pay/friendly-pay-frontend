@@ -1,0 +1,24 @@
+.banner {
+    display: flex;
+    align-items: center;
+    padding: 17px 20px 18px 26px;
+    border-radius: 18px;
+    background: var(--color-fill-5);
+    cursor: pointer;
+    user-select: none;
+}
+
+.image {
+    width: 46px;
+    height: 46px;
+    flex-shrink: 0;
+    margin-right: 24px;
+}
+
+.title {
+    margin-bottom: 5px;
+}
+
+.text {
+    color: var(--color-typo-primary-60)
+}

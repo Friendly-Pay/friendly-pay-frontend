@@ -1,0 +1,52 @@
+.root {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    user-select: none;
+    padding: 8px 7px 8px 0;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.content {
+    display: flex;
+    align-items: center;
+    margin-right: 16px;
+}
+
+.image {
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+    margin-right: 20px;
+}
+
+.data {
+    display: flex;
+    flex-flow: column;
+}
+
+.name {
+    margin-bottom: 4px;
+}
+
+.text {
+    color: var(--color-typo-primary-60);
+
+    span {
+        font-weight: 600;
+    }
+}
+
+
+.arrow {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+
+    svg {
+        width: 100%;
+        height: 100%;
+    }
+}

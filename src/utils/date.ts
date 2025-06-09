@@ -1,0 +1,78 @@
+const getDayLabel = (dateInput: Date | string | number): string => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const yesterday = new Date(today);
+    yesterday.setDate(today.getDate() - 1);
+    const targetDate = new Date(dateInput);
+    targetDate.setHours(0, 0, 0, 0);
+    if (targetDate.getTime() === today.getTime()) {
+        return 'today';
+    } else if (targetDate.getTime() === yesterday.getTime()) {
+        return 'yesterday';
+    }
+    return 'once';
+};
+
+export const formatDateWithLabel = (dateInput: Date): string => {
+    const hours = String(dateInput.getHours()).padStart(2, '0');
+    const minutes = String(dateInput.getMinutes()).padStart(2, '0');
+    return `${getDayLabel(dateInput)} at ${hours}:${minutes}`;
+};
+
+export const formatCardExpiration = (unixTimestamp: number): string => {
+    const date = new Date(unixTimestamp * 1_000);
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = String(date.getFullYear()).slice(-2);
+    return `${month} / ${year}`;
+};
+
+export const formatApproximateSeconds = (approximateSeconds: number, t: any) => {
+    if (approximateSeconds >= 60) {
+        const minutes = Math.floor(approximateSeconds / 60);
+        return `${minutes} ${t('min')}`;
+    } else {
+        return `${approximateSeconds} ${t('sec')}`;
+    }
+};
+
+const DATE_PART_TOKENS = {
+    day: 'dd',
+    month: 'mm',
+    year: 'yyyy'
+};
+
+export const getDateFormatData = (locale: string = 'en') => {
+    let resolvedLocale = 'en-gb';
+    if (locale !== 'en') {
+        resolvedLocale = Intl.DateTimeFormat.supportedLocalesOf([locale]).length > 0 ? locale : resolvedLocale;
+    }
+    if (locale === 'ar') {
+        resolvedLocale = 'en-gb';
+    }
+    const dateFormatParts = new Intl.DateTimeFormat(resolvedLocale, {
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+    }).formatToParts();
+    const separator =
+        dateFormatParts.find((part) => part.type === 'literal')?.value.trim() || '/';
+    const format = dateFormatParts.reduce((accumulator, part) => {
+        if (part.type in DATE_PART_TOKENS) {
+            const token = DATE_PART_TOKENS[part.type as keyof typeof DATE_PART_TOKENS];
+            return accumulator ? `${accumulator}/${token}` : token;
+        }
+        return accumulator;
+    }, '');
+
+    return { separator, format };
+};
+
+export const parseDateFromFormattedString = (dateString: string, formatTemplate: string) => {
+    const formatParts = formatTemplate.split('/');
+    const dateNumbers = dateString.split('/').map(part => Number(part));
+    const monthIndex = formatParts.indexOf(DATE_PART_TOKENS.month);
+    const dayIndex = formatParts.indexOf(DATE_PART_TOKENS.day);
+    const yearIndex = formatParts.indexOf(DATE_PART_TOKENS.year);
+    const fullYear = dateNumbers[yearIndex] < 100 ? dateNumbers[yearIndex] + 100 : dateNumbers[yearIndex];
+    return new Date(fullYear, dateNumbers[monthIndex] - 1, dateNumbers[dayIndex]);
+};

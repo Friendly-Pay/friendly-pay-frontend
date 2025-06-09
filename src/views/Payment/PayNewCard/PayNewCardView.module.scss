@@ -1,0 +1,67 @@
+.head {
+    padding: 24px 0;
+}
+
+.payment {
+    margin-bottom: 58px;
+}
+
+.title {
+    line-height: 34px;
+    margin-bottom: 16px;
+
+    span {
+        font-weight: 600;
+    }
+}
+
+.payAmount {
+    position: relative;
+    padding-left: 34px;
+    margin-top: 2px;
+
+    span {
+        font-weight: 700;
+    }
+
+    img {
+        position: absolute;
+        top: 4px;
+        left: 0;
+        width: 26px;
+        height: 26px;
+    }
+}
+
+.amountSkeleton {
+    width: 190px;
+    height: 26px;
+    margin-top: 6px;
+    margin-bottom: 4px;
+}
+
+.addressPlaceholder {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: 1fr 52px;
+}
+
+.addressSkeleton,
+.qrCodeSkeleton {
+    height: 55px;
+}
+
+.caption {
+    color: var(--color-typo-primary-60);
+    padding-top: 12px;
+
+    span {
+        font-weight: 600;
+    }
+}
+
+@media screen and (max-height: 700px) {
+    .payment {
+        margin-bottom: 42px;
+    }
+}

@@ -1,0 +1,86 @@
+.page {
+    display: flex;
+    flex-direction: column;
+}
+
+.balance {
+    margin: 42px 0 16px;
+}
+
+.content {
+    padding: 30px var(--safe-area-right) 20px var(--safe-area-left);
+}
+
+.main {
+    display: grid;
+    gap: 10px;
+    // grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-bottom: 16px;
+}
+
+.main,
+.stack {
+    transition: opacity 0.3s ease-in-out;
+}
+
+.banners {
+    display: flex;
+    flex-flow: column nowrap;
+    margin-bottom: 32px;
+}
+
+.banner+.banner {
+    margin-top: 16px;
+}
+
+.transactions {
+    margin-bottom: 32px;
+}
+
+.content.needActivation {
+    .main {
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+
+    .stack {
+        opacity: 0.3;
+        pointer-events: none;
+    }
+}
+
+.content.activation {
+    .main {
+        opacity: 0.3;
+        pointer-events: none;
+    }
+
+    .stack {
+        opacity: 0.3;
+        pointer-events: none;
+    }
+}
+
+@media screen and (max-height: 700px) {
+    .balance {
+        margin-top: 46px;
+        margin-bottom: 20px;
+    }
+
+    .content {
+        padding-top: 30px;
+    }
+
+    .main {
+        margin-bottom: 20px;
+    }
+
+    .banners,
+    .transactions {
+        margin-bottom: 30px;
+    }
+
+    .banner+.banner {
+        margin-bottom: 16px;
+    }
+}

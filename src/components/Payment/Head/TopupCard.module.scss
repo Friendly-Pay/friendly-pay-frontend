@@ -1,0 +1,27 @@
+.root {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 20px 0;
+    user-select: none;
+}
+
+.card {
+    flex-shrink: 0;
+    margin-right: 20px;
+}
+
+.title {
+    line-height: 19px;
+    margin-bottom: 4px;
+}
+
+.text {
+    line-height: 17px;
+}
+
+@media screen and (max-height: 700px) {
+    .root {
+        padding: 16px 0;
+    }
+}

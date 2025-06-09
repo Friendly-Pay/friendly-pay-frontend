@@ -1,0 +1,44 @@
+.root {
+    flex: 1 1 auto;
+    padding-top: 32px;
+    padding-bottom: 16px;
+}
+
+.content {
+    display: flex;
+    flex-flow: column;
+}
+
+.title {
+    margin-bottom: 12px;
+}
+
+.text {
+    color: var(--color-typo-primary-60);
+    margin-bottom: 32px;
+}
+
+.caption {
+    color: var(--color-typo-primary-60);
+    padding-top: 10px;
+}
+
+.error {
+    color: var(--color-red);
+}
+
+.field {
+    display: flex;
+    flex-flow: column nowrap;
+
+    &+.field {
+        margin-top: 20px;
+    }
+}
+
+.button {
+    position: fixed;
+    left: var(--safe-area-left);
+    right: var(--safe-area-right);
+    bottom: calc(var(--safe-area-bottom) + 16px);
+}

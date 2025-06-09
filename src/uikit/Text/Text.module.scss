@@ -1,0 +1,88 @@
+.text {
+    min-width: 0;
+    max-width: 100%;
+    width: 100%;
+    color: var(--color-typo-primary);
+    text-align: left;
+    word-wrap: break-word;
+}
+
+.headlineExtraLarge {
+    font-size: 38px;
+    font-weight: 700;
+    line-height: 46px;
+}
+
+.headlineLarge {
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 34px;
+}
+
+.headline {
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 32px;
+}
+
+.title {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 28px;
+}
+
+.bodyLarge {
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 24px;
+}
+
+.body {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 22px;
+}
+
+.caption {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+}
+
+.captionSmall {
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 17px;
+}
+
+.left {
+    text-align: left;
+}
+
+.center {
+    text-align: center;
+}
+
+.right {
+    text-align: right;
+}
+
+.noWrap {
+    white-space: nowrap;
+}
+
+.uppercase {
+    text-transform: uppercase;
+}
+
+.medium {
+    font-weight: 500;
+}
+
+.semibold {
+    font-weight: 600;
+}
+
+.bold {
+    font-weight: 700;
+}

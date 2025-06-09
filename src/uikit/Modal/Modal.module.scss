@@ -1,0 +1,34 @@
+.backdrop {
+    -webkit-user-select: none;
+    user-select: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--color-modal-overlay);
+    will-change: opacity;
+    z-index: 999;
+
+    &.opened {
+        opacity: 1;
+    }
+}
+
+.box {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    flex-flow: column;
+    max-height: calc(100% - 120px);
+    bottom: 0;
+    width: 100%;
+    padding: 20px var(--safe-area-right) 0 var(--safe-area-left);
+    will-change: transform, opacity;
+    background-color: var(--color-modal-background);
+    border-radius: 20px 20px 0px 0px;
+    z-index: 999;
+}

@@ -1,0 +1,38 @@
+import { ClickableBanner } from './ClickableBanner';
+import { WalletModal } from './WalletModal';
+import { useDeviceStore } from '@/states/device/state';
+import appleBanner from 'assets/apple_banner.png?inline';
+import googleBanner from 'assets/google_banner.png?inline';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
+type WalletBannerProps = {
+    className?: string
+}
+
+export function WalletBanner({ className }: WalletBannerProps) {
+    const [t] = useTranslation();
+    const [opened, setOpened] = useState(false);
+    const platform = useDeviceStore(state => state.platform);
+    const isIos = platform === 'ios' || platform === 'macos';
+    const title = isIos ? 'Apple Pay' : 'Google Pay';
+
+    return (
+        <>
+            <ClickableBanner
+                image={isIos ? appleBanner : googleBanner}
+                title={title}
+                text={t('Add card to wallet')}
+                className={className}
+                onClick={() => setOpened(true)}
+            />
+
+            <WalletModal
+                isOpen={opened}
+                title={title}
+                platform={isIos ? 'ios' : 'android'}
+                onClose={() => setOpened(false)}
+            />
+        </>
+    );
+}

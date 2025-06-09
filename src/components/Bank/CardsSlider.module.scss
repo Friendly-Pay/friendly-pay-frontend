@@ -1,0 +1,34 @@
+.root {
+    position: relative;
+    padding-bottom: 6px;
+}
+
+.root.hasPagination {
+    padding-bottom: 40px;
+}
+
+.swiper {
+    --swiper-wrapper-transition-timing-function: cubic-bezier(0, 0, 0.4, 1);
+}
+
+.slide {
+    width: 251px;
+}
+
+.card {
+    transform: scale(0.8);
+    opacity: 0.5;
+    transition: opacity 0.25s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.activeCard {
+    transform: scale(1);
+    opacity: 1;
+}
+
+.pagination {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+}

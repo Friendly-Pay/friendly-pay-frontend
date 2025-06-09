@@ -1,0 +1,47 @@
+.card {
+    width: 48px;
+    height: 32px;
+    overflow: hidden;
+    position: relative;
+    user-select: none;
+}
+
+.background {
+    display: block;
+    border: 0;
+    height: 100%;
+    width: 100%;
+    background-size: cover;
+    border-radius: 5px;
+}
+
+.cloud {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    width: 8px;
+    height: 7px;
+
+    svg {
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.lastFourDigits {
+    position: absolute;
+    left: 6px;
+    bottom: 4px;
+    font-size: 9px;
+    font-weight: 500;
+}
+
+.paymentSystem {
+    position: absolute;
+    right: 6px;
+    bottom: 4px;
+    display: flex;
+    align-items: center;
+    min-height: 11px;
+}

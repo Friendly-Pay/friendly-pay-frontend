@@ -1,0 +1,50 @@
+.head {
+    padding: 24px 0;
+}
+
+.payment {
+    margin-bottom: 67px;
+}
+
+.info {
+    color: var(--color-typo-primary-60);
+    padding-top: 16px;
+
+    span {
+        font-weight: 600;
+    }
+}
+
+.title {
+    margin-bottom: 18px;
+
+    span {
+        font-weight: 600;
+    }
+}
+
+.addressPlaceholder {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: 1fr 52px;
+}
+
+.addressSkeleton,
+.qrCodeSkeleton {
+    height: 55px;
+}
+
+.caption {
+    color: var(--color-typo-primary-60);
+    padding-top: 12px;
+
+    span {
+        font-weight: 600;
+    }
+}
+
+@media screen and (max-height: 700px) {
+    .payment {
+        margin-bottom: 50px;
+    }
+}

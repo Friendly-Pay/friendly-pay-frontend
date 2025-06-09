@@ -1,0 +1,24 @@
+.root {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 14px;
+    border-radius: 18px;
+    background: var(--color-fill-5);
+    margin: 0 -14px;
+}
+
+
+.title {
+    margin-bottom: 12px;
+}
+
+.text {
+    color: var(--color-typo-primary-60);
+    line-height: 26px;
+
+    span {
+        color: var(--color-typo-primary);
+        font-weight: 600;
+        white-space: nowrap;
+    }
+}
