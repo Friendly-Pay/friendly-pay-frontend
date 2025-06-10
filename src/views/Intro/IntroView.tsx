@@ -37,9 +37,11 @@ export function IntroView() {
         if (platform === 'ios' || platform === 'android') {
             window.Telegram.WebApp.setHeaderColor(backgroundPrimaryColor);
             window.Telegram.WebApp.setBackgroundColor(backgroundPrimaryColor);
+            document.body.style.backgroundColor = backgroundPrimaryColor;
             return () => {
                 window.Telegram.WebApp.setHeaderColor(backgroundColor);
                 window.Telegram.WebApp.setBackgroundColor(backgroundColor);
+                document.body.style.backgroundColor = '';
             };
         } else {
             document.body.style.backgroundColor = backgroundPrimaryColor;
