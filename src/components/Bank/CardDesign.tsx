@@ -29,8 +29,8 @@ export const cardDesign = {
     [100010]: {
         inverse: true,
         design: premiumVirtual,
-        border: '2px solid #175AEA',
-        previewBorder: '1px solid #175AEA'
+        border: '2px solid #574199',
+        previewBorder: '1px solid #574199'
     }
 } as const;
 

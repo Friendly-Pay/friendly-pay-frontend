@@ -5,9 +5,9 @@ export const translations = {
     ru: {
         translates: {
             'Choose your crypto card': 'Выберите свою крипто-карту',
-            'Get your Friendly Pay card in just a few steps': 'Оформите карту Friendly Pay всего за пару шагов',
+            'Get your Flexi Card in just a few steps': 'Оформите Flexi карту всего за пару шагов',
             'Get your card': 'Оформить карту',
-            'Welcome to Friendly Pay!': 'Добро пожаловать в Friendly Pay!',
+            'Welcome to Flexi Cards!': 'Добро пожаловать в Flexi Cards!',
             'Crypto cards for payment and cash withdrawal worldwide': 'Криптокарты для оплаты и снятия наличных по всему миру',
             'Next': 'Далее',
             'Activate': 'Активировать',

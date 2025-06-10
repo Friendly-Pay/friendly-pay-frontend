@@ -13,13 +13,18 @@ export function WelcomeStory({ onClick }: WelcomeStoryProps) {
     return (
         <>
             <div className={styles.content}>
+                <div
+                    className={styles.image}
+                    style={{ backgroundImage: `url(${welcomeImage})` }}
+                ></div>
+
                 <Text
                     type='headlineExtraLarge'
                     align='left'
                     weight='bold'
                     className={styles.title}
                 >
-                    {t('Welcome to Friendly Pay!')}
+                    {t('Welcome to Flexi Cards!')}
                 </Text>
 
                 <Text
@@ -31,13 +36,8 @@ export function WelcomeStory({ onClick }: WelcomeStoryProps) {
                 </Text>
             </div>
 
-            <div
-                className={styles.image}
-                style={{ backgroundImage: `url(${welcomeImage})` }}
-            ></div>
-
             <Button
-                view='white'
+                view='primarySecond'
                 className={styles.button}
                 onClick={onClick}
             >

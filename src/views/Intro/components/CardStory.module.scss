@@ -4,12 +4,15 @@
 }
 
 .title {
+    position: relative;
     color: var(--color-white);
     margin-bottom: 18px;
 }
 
 .text {
-    color: var(--color-white-80);
+    position: relative;
+    color: #D7D4EF;
+    opacity: 0.7;
     line-height: 24px;
 }
 

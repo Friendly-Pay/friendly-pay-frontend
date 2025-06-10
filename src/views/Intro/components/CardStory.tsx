@@ -13,6 +13,11 @@ export function CardStory({ onClick }: CardStoryProps) {
     return (
         <>
             <div className={styles.content}>
+                <div
+                    className={styles.image}
+                    style={{ backgroundImage: `url(${cardImage})` }}
+                ></div>
+
                 <Text
                     type='headlineExtraLarge'
                     align='left'
@@ -27,17 +32,12 @@ export function CardStory({ onClick }: CardStoryProps) {
                     align='left'
                     className={styles.text}
                 >
-                    {t('Get your Friendly Pay card in just a few steps')}
+                    {t('Get your Flexi Card in just a few steps')}
                 </Text>
             </div>
 
-            <div
-                className={styles.image}
-                style={{ backgroundImage: `url(${cardImage})` }}
-            ></div>
-
             <Button
-                view='white'
+                view='primarySecond'
                 className={styles.button}
                 onClick={onClick}
             >

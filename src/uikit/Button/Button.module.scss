@@ -38,6 +38,11 @@
     background-color: var(--color-white);
 }
 
+.primarySecond {
+    color: var(--color-typo-primary);
+    background-color: var(--color-primary-second);
+}
+
 .disabled {
     opacity: 0.5;
     pointer-events: none;
