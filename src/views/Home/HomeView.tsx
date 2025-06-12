@@ -1,5 +1,5 @@
 import { OrderCardBanner } from './components/Banners/OrderCardBanner';
-import { WalletBanner } from './components/Banners/WalletBanner';
+// import { WalletBanner } from './components/Banners/WalletBanner';
 import { CardBalance } from './components/CardBalance';
 import { CardBalanceFixed } from './components/CardBalanceFixed';
 import { CardLimits } from './components/CardLimits';
@@ -179,7 +179,7 @@ export function HomeView() {
 
                         <div className={styles.stack}>
                             <div className={styles.banners}>
-                                <WalletBanner className={styles.banner} />
+                                {/* <WalletBanner className={styles.banner} /> */}
                                 <OrderCardBanner className={styles.banner} />
                             </div>
 
