@@ -1,11 +1,10 @@
 import { CheckmarkCircle } from '../Icons/Checkmark';
 import { Close } from '../Icons/Close';
-import { useDeviceStore } from '@/states/device/state';
 import { Toaster } from 'sonner';
 import styles from './ToastsRoot.module.scss';
 
 const options = {
-    duration: 60_000,
+    duration: 3_000,
     unstyled: true,
     classNames: {
         toast: styles.toast,
@@ -18,9 +17,19 @@ const options = {
     },
 };
 
+const offset = {
+    top: 'var(--safe-area-top)',
+    right: 'var(--safe-area-left)',
+    left: 'var(--safe-area-right)',
+};
+
+const mobileOffset = {
+    top: 'var(--safe-area-top)',
+    right: 'var(--safe-area-left)',
+    left: 'var(--safe-area-right)',
+};
+
 export const ToastsRoot = () => {
-    const safeAreaInset = useDeviceStore(state => state.safeAreaInset);
-    const contentSafeAreaInset = useDeviceStore(state => state.contentSafeAreaInset);
     return (
         <Toaster
             position="top-center"
@@ -29,11 +38,8 @@ export const ToastsRoot = () => {
                 success: <CheckmarkCircle />,
                 close: <Close />
             }}
-            offset={{
-                top: `${safeAreaInset.top + contentSafeAreaInset.top}px`,
-                right: `${contentSafeAreaInset.right}px`,
-                left: `${contentSafeAreaInset.left}px`
-            }}
+            offset={offset}
+            mobileOffset={mobileOffset}
             gap={12}
             expand
             visibleToasts={3}

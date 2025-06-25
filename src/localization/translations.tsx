@@ -103,7 +103,8 @@ export const translations = {
             'The card is applicable to most online merchants and it supports ApplePay and GooglePay.': 'Эта карта работает в большинстве онлайн-магазинов и поддерживает ApplePay и GooglePay',
             'Open Apple Wallet. Tap "+". Follow the instructions to add your card.': 'Откройте Apple Wallet. Нажмите «+». Следуйте инструкциям для добавления карты.',
             'Open Google Pay. Tap "Add card". Follow the on-screen instructions.': 'Откройте Google Pay. Нажмите «Добавить карту». Следуйте инструкциям на экране.',
-            'Supports Apple Pay, Google Pay, WeChat, and Alipay scenarios, and supports super large purchases.': 'Поддерживает Apple Pay, Google Pay, WeChat Pay и Alipay, а также крупные покупки'
+            'Supports Apple Pay, Google Pay, WeChat, and Alipay scenarios, and supports super large purchases.': 'Поддерживает Apple Pay, Google Pay, WeChat Pay и Alipay, а также крупные покупки',
+            'Suitable for payment on Steam, Google Play, App Store, Roblox, Discord, YouTube and other platforms': 'Подходит для оплаты в Steam, Google Play, AppStore, Roblox, Discord, YouTube и на других платформах.'
         }
     }
 } as const;
