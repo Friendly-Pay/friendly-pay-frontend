@@ -68,13 +68,6 @@ export function HomeView() {
     const isActivation = currentBankCard && currentBankCard.status === CardStatus.Activation;
     const isNeedActivation = currentBankCard && currentBankCard.status === CardStatus.NeedActivation;
 
-    // if (!myCards || !Object.keys(myCards).length) {
-    //     return <Navigate
-    //         to='/new-product'
-    //         replace
-    //     />;
-    // }
-
     const skipIntro = useUserStore(state => state.skipIntro);
     const myCardsCount = useCardsStore(state => state.myCardsCount);
     const myCardsFetchStatus = useCardsStore(state => state.myCardsFetchStatus);

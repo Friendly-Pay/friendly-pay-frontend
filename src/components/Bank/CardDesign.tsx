@@ -21,10 +21,10 @@ export const cardDesign = {
         design: eliteVirtual,
     },
     [100005]: {
-        design: platinumVirtual
+        design: gamingVirtual
     },
     [100004]: {
-        design: gamingVirtual
+        design: platinumVirtual
     },
     [100010]: {
         inverse: true,
