@@ -63,6 +63,7 @@ export function HomeView() {
         setActivationLoading(true);
         await useCardsStore.getState().activateCard(currentCardId!);
         await useCardsStore.getState().loadMyCards();
+        setActivationLoading(false);
     };
 
     const isActivation = currentBankCard && currentBankCard.status === CardStatus.Activation;

@@ -1,3 +1,4 @@
+import { useUserStore } from '../user/store';
 import { completeVerificationLevel1 } from './fetch';
 import { AxiosError } from 'axios';
 import { create } from 'zustand';
@@ -69,6 +70,7 @@ export const useVerificationStore = create<VerificationState & VerificationActio
                 email: data.email!,
                 birthday: data.birthday!
             });
+            await useUserStore.getState().refetchUser();
             set({ stage: VerificationStage.Success });
         } catch (error: any) {
             console.error('[completeVerification]', error);
