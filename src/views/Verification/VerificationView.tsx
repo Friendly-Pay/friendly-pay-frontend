@@ -6,20 +6,10 @@ import { PersonalDataStage } from './components/PersonalDataStage';
 import { PhoneStage } from './components/PhoneStage';
 import { SuccessStage } from './components/SuccessStage';
 import { MainLayout } from '@/components/common/MainLayout';
-import { useUserStore } from '@/states/user/store';
 import { useVerificationStore, VerificationStage } from '@/states/verification/store';
-import { Navigate } from 'react-router-dom';
 
 export function VerificationView() {
     const stage = useVerificationStore(state => state.stage);
-    const userVerificationLevel = useUserStore(state => state.user!.verificationLevel);
-
-    if (userVerificationLevel !== 'None') {
-        return <Navigate
-            to='/'
-            replace
-        />;
-    }
 
     return (
         <MainLayout>
