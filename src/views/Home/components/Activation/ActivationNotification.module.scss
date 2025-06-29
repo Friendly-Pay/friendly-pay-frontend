@@ -1,0 +1,20 @@
+.root {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--color-white);
+    padding: 18px 26px 18px 20px;
+    border-radius: 18px;
+}
+
+.title {
+    margin-bottom: 4px;
+}
+
+.text {
+    color: var(--color-typo-primary-60);
+}
+
+.icon {
+    color: var(--color-primary);
+}

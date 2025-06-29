@@ -11,7 +11,7 @@ export function CardController({ children }: PropsWithChildren) {
     const loadMyCards = useCardsStore(state => state.loadMyCards);
     const location = useLocation();
 
-    const refetchInterval = 30_000;
+    const refetchInterval = 15_000;
     useQuery({
         enabled: location.pathname === '/' || location.pathname.startsWith('/payments'),
         queryKey: ['state.cards'],
@@ -22,9 +22,9 @@ export function CardController({ children }: PropsWithChildren) {
             }
             return loadMyCards();
         },
-        staleTime: 60_000,
+        staleTime: 10_000,
         refetchOnMount: false,
-        refetchInterval: 30_000,
+        refetchInterval: refetchInterval,
         refetchOnWindowFocus: 'always',
         refetchIntervalInBackground: false
     });

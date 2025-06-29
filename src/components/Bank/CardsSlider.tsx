@@ -48,9 +48,6 @@ export function CardsSlider({ myCards, currentCardId }: CardsSliderProps) {
     const showPagination = myCardsCount > 1;
     useLayoutEffect(() => {
         computeLayout();
-        if (sliderRef.current?.swiper) {
-            sliderRef.current.swiper.slideTo(activeIndex, 0);
-        }
     }, []);
 
     const setSelectedCardId = useCardsStore(state => state.setSelectedCardId);

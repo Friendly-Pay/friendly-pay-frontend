@@ -6,6 +6,8 @@ import { PayNewCardResultView } from './Payment/PayNewCard/PayNewCardResultView'
 import { PayNewCardView } from './Payment/PayNewCard/PayNewCardView';
 import { TopupResultView } from './Payment/Topup/TopupResultView';
 import { TopupView } from './Payment/Topup/TopupView';
+import { QRPlaceholderView } from './Placeholder/QrPlaceholderView';
+import { TransferPlaceholderView } from './Placeholder/TransferPlaceholderView';
 import { VerificationView } from './Verification/VerificationView';
 import { TelegramBackButton } from '@/components/common/TelegramBackButton';
 import { ToastsRoot } from '@/components/Toast/ToastsRoot';
@@ -57,6 +59,14 @@ export function AppViews() {
                             <Route
                                 path='/verification/level/1'
                                 element={<VerificationView />}
+                            />
+                            <Route
+                                path='/payment/transfer'
+                                element={<TransferPlaceholderView />}
+                            />
+                            <Route
+                                path='/payment/qr'
+                                element={<QRPlaceholderView />}
                             />
                         </Routes>
                     </CardController>

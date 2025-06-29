@@ -28,6 +28,7 @@ export function CardLimits({ cardLastFourDigits, cardCurrency, oneTimePaymentLim
 
             <Text
                 type='body'
+                weight='medium'
                 align='left'
                 className={styles.text}
                 dangerouslySetInnerHTML={{

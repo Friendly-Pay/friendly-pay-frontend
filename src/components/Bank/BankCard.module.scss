@@ -39,7 +39,7 @@
 .top {
     position: absolute;
     top: 14px;
-    left: 12px;
+    left: 16px;
     right: 12px;
     display: flex;
     align-items: center;
@@ -69,6 +69,7 @@
     cursor: pointer;
     user-select: none;
     padding: 6px;
+    font-family: SF UI Text, system-ui, Helvetica Neue, Helvetica, Arial, sans-serif;
 }
 
 .eye {

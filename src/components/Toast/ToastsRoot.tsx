@@ -18,13 +18,13 @@ const options = {
 };
 
 const offset = {
-    top: 'var(--safe-area-top)',
+    top: 'calc(var(--safe-area-top) + 16px)',
     right: 'var(--safe-area-left)',
     left: 'var(--safe-area-right)',
 };
 
 const mobileOffset = {
-    top: 'var(--safe-area-top)',
+    top: 'calc(var(--safe-area-top) + 16px)',
     right: 'var(--safe-area-left)',
     left: 'var(--safe-area-right)',
 };

@@ -93,26 +93,10 @@ export const fetchMyCards = async () => {
     //         typeId: 100005,
     //         number: '1111',
     //         canDeposit: true,
-    //         // status: 'Active',
-    //         status: 'Active',
+    //         status: 'Activation',
     //         balance: 277.0,
     //         currency: 'usd',
-    //         transactions: [
-    //             {
-    //                 type: 'payment',
-    //                 status: 'success',
-    //                 createdAt: '1744333204',
-    //                 amount: 50,
-    //                 currency: 'USD'
-    //             },
-    //             {
-    //                 type: 'deposit',
-    //                 status: 'success',
-    //                 createdAt: '1744331204',
-    //                 amount: 100,
-    //                 currency: 'USD'
-    //             }
-    //         ]
+    //         transactions: []
     //     }
     // ] as UserCardResponse[];
 };

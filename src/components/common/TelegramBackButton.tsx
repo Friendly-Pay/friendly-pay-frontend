@@ -16,7 +16,7 @@ export function TelegramBackButton({ children }: PropsWithChildren) {
         window.Telegram.WebApp.onEvent('backButtonClicked', handleBackButtonClick);
 
         if (location.pathname !== previousRoute) {
-            const onHomePage = location.pathname === '/';
+            const onHomePage = location.pathname === '/' || location.pathname === '/payment/transfer' || location.pathname === '/payment/qr';
             const onResultPage = location.pathname === '/payments/topup/result' || location.pathname === '/payments/pay-new-card/result';
 
             // Когда нет карт

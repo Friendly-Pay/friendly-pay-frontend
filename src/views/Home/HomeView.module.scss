@@ -1,6 +1,7 @@
 .page {
     display: flex;
     flex-direction: column;
+    padding-bottom: calc(var(--safe-area-bottom) + 76px);
 }
 
 .balance {
@@ -11,12 +12,18 @@
     padding: 30px var(--safe-area-right) 20px var(--safe-area-left);
 }
 
+.notification {
+    margin-bottom: 16px;
+}
+
 .main {
     display: grid;
     gap: 10px;
+    background-color: var(--color-white);
     // grid-template-columns: repeat(3, minmax(0, 1fr));
     grid-template-columns: repeat(2, minmax(0, 1fr));
     margin-bottom: 16px;
+    border-radius: 18px;
 }
 
 .main,
@@ -34,9 +41,17 @@
     margin-top: 16px;
 }
 
-.transactions {
-    margin-bottom: 32px;
+.walletBanner {
+    background-color: rgba(39, 187, 188, 0.11);
 }
+
+.orderCardBanner {
+    background-color: rgba(114, 128, 253, 0.11);
+}
+
+// .transactions {
+//     margin-bottom: 32px;
+// }
 
 .content.needActivation {
     .main {

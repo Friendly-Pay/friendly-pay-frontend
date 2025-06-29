@@ -1,8 +1,5 @@
-import eliteVirtual from 'assets/cards/elite_virtual.png?inline';
-// import seamlessVirtual from 'assets/cards/seamless_virtual.png?inline';
-import gamingVirtual from 'assets/cards/gaming_virtual.png';
-import platinumVirtual from 'assets/cards/platinum_virtual.png?inline';
-import premiumVirtual from 'assets/cards/premium_virtual.png?inline';
+import seamlessVirtual from 'assets/cards/seamless_virtual.png?inline';
+import secondVirtual from 'assets/cards/second_virtual.png?inline';
 import { CSSProperties, PropsWithChildren } from 'react';
 import classNames from 'classnames';
 import styles from './CardDesign.module.scss';
@@ -18,23 +15,23 @@ type CardDesignProps = {
 
 export const cardDesign = {
     [100008]: {
-        design: eliteVirtual,
+        design: secondVirtual,
     },
     [100005]: {
-        design: gamingVirtual
+        design: seamlessVirtual
     },
     [100004]: {
-        design: platinumVirtual
+        design: secondVirtual
     },
     [100010]: {
-        inverse: true,
-        design: premiumVirtual,
-        border: '2px solid #175AEA',
-        previewBorder: '1px solid #175AEA'
+        // inverse: true,
+        design: secondVirtual,
+        // border: '2px solid #175AEA',
+        // previewBorder: '1px solid #175AEA'
     }
 } as const;
 
-export function CardDesign({ typeId, preview, style, className, backgroundClassName, children }: PropsWithChildren<CardDesignProps>) {
+export function CardDesign({ typeId, preview, style, className, backgroundClassName, children, onClick }: PropsWithChildren<CardDesignProps>) {
     const data = cardDesign[typeId as keyof typeof cardDesign];
     if (!data) {
         console.warn(`[cardDesign] typeId ${typeId} unknown`);
@@ -57,6 +54,7 @@ export function CardDesign({ typeId, preview, style, className, backgroundClassN
         <div
             className={classNames(styles.card, inverse && styles.inverse, className)}
             style={style}
+            onClick={onClick}
         >
             <div
                 className={backgroundClassName}

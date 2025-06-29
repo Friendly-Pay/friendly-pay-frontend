@@ -1,22 +1,26 @@
-import { zh } from './translates/zh';
-
 export const translations = {
-    zh,
     ru: {
         translates: {
-            'Choose your crypto card': 'Выберите свою крипто-карту',
-            'Get your Friendly Pay card in just a few steps': 'Оформите карту Friendly Pay всего за пару шагов',
-            'Get your card': 'Оформить карту',
-            'Welcome to Friendly Pay!': 'Добро пожаловать в Friendly Pay!',
-            'Crypto cards for payment and cash withdrawal worldwide': 'Криптокарты для оплаты и снятия наличных по всему миру',
-            'Next': 'Далее',
+            'Welcome to ARBI Wallet': 'Добро пожаловать в ARBI Wallet',
+            'Create your virtual card and pay for anything worldwide': 'Создай свою виртуальную карту и оплачивай что угодно по всему миру',
+            'Top up your card balance online right in the app': 'Пополняй баланс карты онлайн прямо в приложении',
+            'Via crypto wallet or by exchanging from other currencies': 'Через криптокошелек или обменом с других валют',
+            'Add your card to Apple Pay or Google Wallet': 'Добавляй карту в Apple Pay или Google Wallet',
+            'For contactless payments worldwide': 'для бесконтактной оплаты по всему миру',
+            'Pay for online services or make transactions up to <span>$1,000,000</span>': 'Оплачивай онлайн сервисы или совершай транзакции до <span>$1 000 000<span/>',
+            'Get started': 'Начать использование',
             'Activate': 'Активировать',
             'Top up': 'Пополнить',
             'Details': 'Реквизиты',
             'Balance': 'Баланс',
             'Card balance': 'Баланс карты',
+            'Card is being activated...': 'Карта активируется...',
+            'This will take approximately 15 minutes.': 'Это займет примерно 15 мин.',
             'Add card to wallet': 'Добавить карту в кошелек',
             'Order new card': 'Оформить новую карту',
+            'Cards': 'Карты',
+            'Transfers': 'Переводы',
+            'QR Payment': 'Оплата по QR',
             'Plastic or virtual': 'Пластик или виртуальная',
             'Card details': 'Реквизиты',
             'Card number copied': 'Номер карты скопирован',
@@ -103,8 +107,9 @@ export const translations = {
             'The card is applicable to most online merchants and it supports ApplePay and GooglePay.': 'Эта карта работает в большинстве онлайн-магазинов и поддерживает ApplePay и GooglePay',
             'Open Apple Wallet. Tap "+". Follow the instructions to add your card.': 'Откройте Apple Wallet. Нажмите «+». Следуйте инструкциям для добавления карты.',
             'Open Google Pay. Tap "Add card". Follow the on-screen instructions.': 'Откройте Google Pay. Нажмите «Добавить карту». Следуйте инструкциям на экране.',
-            'Supports Apple Pay, Google Pay, WeChat, and Alipay scenarios, and supports super large purchases.': 'Поддерживает Apple Pay, Google Pay, WeChat Pay и Alipay, а также крупные покупки',
-            'Suitable for payment on Steam, Google Play, App Store, Roblox, Discord, YouTube and other platforms': 'Подходит для оплаты в Steam, Google Play, AppStore, Roblox, Discord, YouTube и на других платформах.'
+            'Supports Apple Pay, Google Pay, WeChat, and Alipay scenarios, and supports super large purchases.': 'Поддерживает Apple Pay, Google Pay, WeChat Pay и Alipay, а также крупные покупки.',
+            'Suitable for payment on Steam, Google Play, App Store, Roblox, Discord, YouTube and other platforms': 'Подходит для оплаты в Steam, Google Play, AppStore, Roblox, Discord, YouTube и на других платформах.',
+            'Suitable for hotel reservations, taxi payments and online purchases. Please note that Apple Pay and Google Wallet are not supported.': 'Подходит для бронирования гостиниц, оплаты такси и онлайн покупок. Не поддерживает Apple Pay / Google Wallet.'
         }
     }
 } as const;

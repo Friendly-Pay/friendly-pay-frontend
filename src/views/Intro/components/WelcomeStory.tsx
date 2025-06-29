@@ -1,6 +1,7 @@
+import { ArrowRight } from '@/components/Icons/Arrow';
 import { Text } from '@/uikit';
 import { Button } from '@/uikit/Button';
-import welcomeImage from 'assets/stories/welcome.png?inline';
+import welcomeImage from 'assets/stories/story_1.png?inline';
 import { useTranslation } from 'react-i18next';
 import styles from './WelcomeStory.module.scss';
 
@@ -19,29 +20,32 @@ export function WelcomeStory({ onClick }: WelcomeStoryProps) {
                     weight='bold'
                     className={styles.title}
                 >
-                    {t('Welcome to Friendly Pay!')}
+                    {t('Welcome to ARBI Wallet')}
                 </Text>
 
                 <Text
-                    type='body'
+                    type='bodyLarge'
+                    weight='medium'
                     align='left'
                     className={styles.text}
                 >
-                    {t('Crypto cards for payment and cash withdrawal worldwide')}
+                    {t('Create your virtual card and pay for anything worldwide')}
                 </Text>
-            </div>
 
-            <div
-                className={styles.image}
-                style={{ backgroundImage: `url(${welcomeImage})` }}
-            ></div>
+                <div className={styles.imageWrap}>
+                    <div
+                        className={styles.image}
+                        style={{ backgroundImage: `url(${welcomeImage})` }}
+                    ></div>
+                </div>
+            </div>
 
             <Button
                 view='white'
                 className={styles.button}
                 onClick={onClick}
             >
-                {t('Next')}
+                <ArrowRight />
             </Button>
         </>
     );

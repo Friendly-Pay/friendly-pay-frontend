@@ -1,4 +1,6 @@
-import { CardStory } from './components/CardStory';
+import { DepositStory } from './components/DepositStory';
+import { DigitalWalletStory } from './components/DigitalWalletStory';
+import { PayOnlineStory } from './components/PayOnlineStory';
 import { StoriesProgress } from './components/Progress/StoriesProgress';
 import { WelcomeStory } from './components/WelcomeStory';
 import { MainLayout } from '@/components/common/MainLayout';
@@ -11,19 +13,9 @@ import { useNavigate } from 'react-router-dom';
 import styles from './IntroView.module.scss';
 
 const storyAppearance = {
-    initial: { x: '100%', opacity: 0 },
-    animate: { x: '0%', opacity: 1 },
-    exit: { x: '-100%', opacity: 0 },
-    transition: {
-        duration: 0.3,
-        ease: [0, 0.7, 0.2, 1],
-        x: {
-            type: 'spring',
-            damping: 22,
-            stiffness: 170,
-            restDelta: 0.001,
-        },
-    }
+    initial: { opacity: 0 },
+    animate: { opacity: 1 },
+    exit: { opacity: 0 },
 };
 
 export function IntroView() {
@@ -47,11 +39,12 @@ export function IntroView() {
         }
     }, []);
 
-    const count = 2;
+    const count = 4;
     const lastIndex = count - 1;
     const [currentStoryIndex, setCurrentStoryIndex] = useState(0);
 
     const handleNextStory = () => {
+        window.Telegram.WebApp.HapticFeedback.impactOccurred('soft');
         if (currentStoryIndex === lastIndex) {
             if (isCloudStorageAvailable()) {
                 CloudStorage.save('skipIntro', String(true));
@@ -66,7 +59,7 @@ export function IntroView() {
     };
 
     return (
-        <MainLayout>
+        <MainLayout className={styles.layout}>
             <StoriesProgress
                 count={count}
                 currentStoryIndex={currentStoryIndex}
@@ -90,7 +83,23 @@ export function IntroView() {
                         {...storyAppearance}
                         className={styles.story}
                     >
-                        <CardStory onClick={handleNextStory} />
+                        <DepositStory onClick={handleNextStory} />
+                    </motion.div>}
+
+                    {currentStoryIndex === 2 && <motion.div
+                        key='3'
+                        {...storyAppearance}
+                        className={styles.story}
+                    >
+                        <DigitalWalletStory onClick={handleNextStory} />
+                    </motion.div>}
+
+                    {currentStoryIndex === 3 && <motion.div
+                        key='4'
+                        {...storyAppearance}
+                        className={styles.story}
+                    >
+                        <PayOnlineStory onClick={handleNextStory} />
                     </motion.div>}
                 </AnimatePresence>
             </div>

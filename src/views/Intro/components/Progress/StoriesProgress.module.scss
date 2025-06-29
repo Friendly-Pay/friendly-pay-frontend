@@ -9,11 +9,11 @@
 
 .line {
     height: 3px;
-    background-color: #fff6;
+    background-color: rgba(47, 169, 211, 0.30);
     border-radius: 40px;
     transition: background-color 0.15s ease-in-out;
 }
 
 .active {
-    background-color: var(--color-white);
+    background-color: #2FA9D3;
 }

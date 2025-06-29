@@ -1,3 +1,4 @@
+import { ActivationNotification } from './components/Activation/ActivationNotification';
 import { OrderCardBanner } from './components/Banners/OrderCardBanner';
 import { WalletBanner } from './components/Banners/WalletBanner';
 import { CardBalance } from './components/CardBalance';
@@ -10,7 +11,7 @@ import { MainLayout } from '@/components/common/MainLayout';
 import { Activate } from '@/components/Icons/Activate';
 import { CardDetails } from '@/components/Icons/CardDetailts';
 import { Topup } from '@/components/Icons/Topup';
-import { FixedBottomLoading } from '@/components/Loading/FixedBottomLoading';
+import { Navbar } from '@/components/Navbar/Navbar';
 import { UserHead } from '@/components/User/UserHead';
 import { CardStatus, useCardsStore } from '@/states/cards/store';
 import { useUserStore } from '@/states/user/store';
@@ -63,6 +64,7 @@ export function HomeView() {
         setActivationLoading(true);
         await useCardsStore.getState().activateCard(currentCardId!);
         await useCardsStore.getState().loadMyCards();
+        setActivationLoading(false);
     };
 
     const isActivation = currentBankCard && currentBankCard.status === CardStatus.Activation;
@@ -138,6 +140,8 @@ export function HomeView() {
                             isNeedActivation && styles.needActivation
                         )}
                     >
+                        {isActivation && <ActivationNotification className={styles.notification} />}
+
                         <div className={styles.main}>
                             {isNeedActivation
                                 ? <MainButton
@@ -172,8 +176,8 @@ export function HomeView() {
 
                         <div className={styles.stack}>
                             <div className={styles.banners}>
-                                <WalletBanner className={styles.banner} />
-                                <OrderCardBanner className={styles.banner} />
+                                <WalletBanner className={classNames(styles.banner, styles.walletBanner)} />
+                                <OrderCardBanner className={classNames(styles.banner, styles.orderCardBanner)} />
                             </div>
 
                             {currentBankCard.number && <>
@@ -192,9 +196,7 @@ export function HomeView() {
                     </motion.div>
                 </AnimatePresence>
 
-                <AnimatePresence>
-                    {isActivation && <FixedBottomLoading text={t('Activation...')} />}
-                </AnimatePresence>
+                <Navbar />
             </div>}
         </MainLayout>
     );

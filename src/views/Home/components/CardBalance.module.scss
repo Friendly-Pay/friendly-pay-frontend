@@ -5,7 +5,7 @@
 }
 
 .text {
-    margin-bottom: 6px;
+    margin-bottom: 2px;
 }
 
 .balance {
@@ -16,9 +16,13 @@
 
 .decimal,
 .literal,
-.fraction,
+.fraction {
+    font-size: 32px;
+    font-weight: 400;
+}
+
 .currency {
-    font-size: 34px;
+    font-size: 28px;
     font-weight: 400;
 }
 
