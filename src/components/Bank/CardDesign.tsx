@@ -1,8 +1,4 @@
-import eliteVirtual from 'assets/cards/elite_virtual.png?inline';
-// import seamlessVirtual from 'assets/cards/seamless_virtual.png?inline';
-import gamingVirtual from 'assets/cards/gaming_virtual.png';
-import platinumVirtual from 'assets/cards/platinum_virtual.png?inline';
-import premiumVirtual from 'assets/cards/premium_virtual.png?inline';
+import axtCard from 'assets/cards/axt_card.png?inline';
 import { CSSProperties, PropsWithChildren } from 'react';
 import classNames from 'classnames';
 import styles from './CardDesign.module.scss';
@@ -18,23 +14,20 @@ type CardDesignProps = {
 
 export const cardDesign = {
     [100008]: {
-        design: eliteVirtual,
+        design: axtCard,
     },
     [100005]: {
-        design: platinumVirtual
+        design: axtCard
     },
     [100004]: {
-        design: gamingVirtual
+        design: axtCard
     },
     [100010]: {
-        inverse: true,
-        design: premiumVirtual,
-        border: '2px solid #574199',
-        previewBorder: '1px solid #574199'
+        design: axtCard
     }
 } as const;
 
-export function CardDesign({ typeId, preview, style, className, backgroundClassName, children }: PropsWithChildren<CardDesignProps>) {
+export function CardDesign({ typeId, preview, style, className, backgroundClassName, children, onClick }: PropsWithChildren<CardDesignProps>) {
     const data = cardDesign[typeId as keyof typeof cardDesign];
     if (!data) {
         console.warn(`[cardDesign] typeId ${typeId} unknown`);
@@ -57,6 +50,7 @@ export function CardDesign({ typeId, preview, style, className, backgroundClassN
         <div
             className={classNames(styles.card, inverse && styles.inverse, className)}
             style={style}
+            onClick={onClick}
         >
             <div
                 className={backgroundClassName}

@@ -1,3 +1,4 @@
+import { AxtSign } from '../Icons/AxtSign';
 import { Cloud } from '../Icons/Cloud';
 import { Eye } from '../Icons/Eye';
 // import { FriendlyPaySign } from '../Icons/FriendlyPay';
@@ -41,7 +42,7 @@ export function BankCard({ typeId, lastFourDigits, hideDigits, paymentSystem, st
             onClick={onClick}
         >
             <div className={styles.top}>
-                {/* <FriendlyPaySign /> */}
+                <AxtSign />
 
                 {virtual && <div className={styles.cloud}><Cloud /></div>}
             </div>
