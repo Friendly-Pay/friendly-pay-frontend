@@ -1,4 +1,4 @@
-import { fetchUser, UserRes } from './fetch';
+import { fetchUser } from './fetch';
 import { initLocalization } from '@/localization';
 import { safeLanguageCode } from '@/localization/utils';
 import { FetchStatus } from '@/utils/api';
@@ -27,7 +27,7 @@ interface Actions {
     setSkipIntro: (skip: boolean) => void;
     setUserFetchStatus: (status: FetchStatus) => void;
     setLanguageCode: (lang: string) => void;
-    refetchUser: () => Promise<UserRes>;
+    refetchUser: () => Promise<void>;
 }
 
 const initIntro = () => {
@@ -52,19 +52,13 @@ export const useUserStore = create<State & Actions>((set) => ({
     setUserFetchStatus: (userFetchStatus) => set({ userFetchStatus }),
 
     refetchUser: async () => {
-        const userData = await fetchUser();
-        set((state) => {
-            if (!state.user) {
-                console.warn('[refetchUser] user undefined');
-                return {};
+        const { userId, ...userData } = await fetchUser();
+        set({
+            user: {
+                id: String(userId),
+                ...userData
             }
-            return {
-                user: {
-                    ...state.user
-                }
-            };
         });
-        return userData;
     },
 }));
 
