@@ -32,7 +32,7 @@ export function CardStory({ onClick }: CardStoryProps) {
                     align='left'
                     className={styles.text}
                 >
-                    {t('Get your Flexi Card in just a few steps')}
+                    {t('Get your AXT Community in just a few steps')}
                 </Text>
             </div>
 

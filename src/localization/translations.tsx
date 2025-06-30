@@ -5,9 +5,9 @@ export const translations = {
     ru: {
         translates: {
             'Choose your crypto card': 'Выберите свою крипто-карту',
-            'Get your Flexi Card in just a few steps': 'Оформите Flexi карту всего за пару шагов',
+            'Get your AXT Community in just a few steps': 'Оформите AXT Community карту всего за пару шагов',
             'Get your card': 'Оформить карту',
-            'Welcome to Flexi Cards!': 'Добро пожаловать в Flexi Cards!',
+            'Welcome to AXT Community!': 'Добро пожаловать в AXT Community!',
             'Crypto cards for payment and cash withdrawal worldwide': 'Криптокарты для оплаты и снятия наличных по всему миру',
             'Next': 'Далее',
             'Activate': 'Активировать',

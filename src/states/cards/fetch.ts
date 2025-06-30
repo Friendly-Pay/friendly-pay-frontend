@@ -73,46 +73,30 @@ export interface UserCardResponse {
 }
 
 export const fetchMyCards = async () => {
-    // const res = await apiClient.get<UserCardResponse[]>('/card/user/list');
-    // return res.data;
-    return [
-        {
-            'id': 3,
-            'typeId': 100008,
-            'number': '2781',
-            'canDeposit': true,
-            'status': 'NeedActivation',
-            'balance': 0,
-            'currency': 'USD',
-            'transactions': []
-        }
-    ];
+    const res = await apiClient.get<UserCardResponse[]>('/card/user/list');
+    return res.data;
+    // return [
+    //     {
+    //         'id': 3,
+    //         'typeId': 100008,
+    //         'number': '2781',
+    //         'canDeposit': true,
+    //         'status': 'NeedActivation',
+    //         'balance': 0,
+    //         'currency': 'USD',
+    //         'transactions': []
+    //     }
+    // ];
     // return [
     //     {
     //         id: 101,
     //         typeId: 100005,
     //         number: '1111',
     //         canDeposit: true,
-    //         // status: 'Active',
-    //         status: 'Active',
+    //         status: 'Activation',
     //         balance: 277.0,
     //         currency: 'usd',
-    //         transactions: [
-    //             {
-    //                 type: 'payment',
-    //                 status: 'success',
-    //                 createdAt: '1744333204',
-    //                 amount: 50,
-    //                 currency: 'USD'
-    //             },
-    //             {
-    //                 type: 'deposit',
-    //                 status: 'success',
-    //                 createdAt: '1744331204',
-    //                 amount: 100,
-    //                 currency: 'USD'
-    //             }
-    //         ]
+    //         transactions: []
     //     }
     // ] as UserCardResponse[];
 };

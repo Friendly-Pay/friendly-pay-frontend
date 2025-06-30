@@ -18,18 +18,18 @@ export const authUser = async ({ webAppData }: { webAppData: string }) => {
 };
 
 export const fetchUser = async () => {
-    // const res = await apiClient.get<UserRes>('/user');
-    // return res.data;
-    return {
-        'userId': 434418227,
-        'status': 'Active',
-        'phoneNumber': null,
-        'username': 'gordilovvv',
-        'firstName': null,
-        'lastName': null,
-        'avatar': 'https://t.me/i/userpic/320/SpFYO8SxRt8IPE5DprbjxB3ye6OjY-fXt6VMfkM5dc4.svg',
-        'country': null,
-        'birthday': null,
-        'verificationLevel': 'None'
-    } as UserRes;
+    const res = await apiClient.get<UserRes>('/user');
+    return res.data;
+    // return {
+    //     'userId': 434418227,
+    //     'status': 'Active',
+    //     'phoneNumber': null,
+    //     'username': 'gordilovvv',
+    //     'firstName': null,
+    //     'lastName': null,
+    //     'avatar': 'https://t.me/i/userpic/320/SpFYO8SxRt8IPE5DprbjxB3ye6OjY-fXt6VMfkM5dc4.svg',
+    //     'country': null,
+    //     'birthday': null,
+    //     'verificationLevel': 'None'
+    // } as UserRes;
 };

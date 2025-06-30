@@ -24,7 +24,7 @@ export function WelcomeStory({ onClick }: WelcomeStoryProps) {
                     weight='bold'
                     className={styles.title}
                 >
-                    {t('Welcome to Flexi Cards!')}
+                    {t('Welcome to AXT Community!')}
                 </Text>
 
                 <Text
