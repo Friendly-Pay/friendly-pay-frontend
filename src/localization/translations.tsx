@@ -2,6 +2,7 @@ import { citiesRu } from './geo/cities';
 import { countriesRu } from './geo/countries';
 import { citiesEn } from './geo/en/cities';
 import { countriesEn } from './geo/en/countries';
+import { it } from './translates/it';
 import { zh } from './translates/zh';
 
 export const translations = {
@@ -12,6 +13,7 @@ export const translations = {
         }
     },
     zh,
+    it,
     ru: {
         translates: {
             ...citiesRu,
