@@ -2,7 +2,7 @@
     position: relative;
     display: flex;
     flex-flow: column;
-    height: 56px;
+    height: 52px;
     font-size: 16px;
     font-weight: 400;
     line-height: 24px;
@@ -51,9 +51,20 @@
     }
 }
 
+.startIcon {
+    position: absolute;
+    top: 15px;
+    left: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+}
+
 .addonIcon {
     position: absolute;
-    top: 19px;
+    top: 18px;
     right: 18px;
     display: flex;
     align-items: center;
@@ -73,8 +84,32 @@
     user-select: none;
 }
 
-@media screen and (max-height: 700px) {
-    .root {
-        height: 52px;
+.asSelect {
+    input {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        cursor: pointer;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+        padding-right: 40px;
+    }
+
+    .addonIcon {
+        color: var(--color-typo-primary-25);
+    }
+}
+
+.asSelect.hasValue {
+    input {
+        color: var(--color-typo-primary);
+    }
+}
+
+.hasStartIcon {
+    padding-left: 18px + 24px;
+
+    input {
+        padding-left: 10px;
     }
 }

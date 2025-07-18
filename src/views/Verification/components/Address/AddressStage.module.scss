@@ -1,0 +1,26 @@
+.content {
+    display: flex;
+    flex-direction: column;
+}
+
+.title {
+    margin-bottom: 24px;
+}
+
+.field {
+    display: flex;
+    flex-flow: column nowrap;
+
+    &+.field {
+        margin-top: 20px;
+    }
+}
+
+.caption {
+    color: var(--color-typo-primary-60);
+    padding-top: 10px;
+}
+
+.error {
+    color: var(--color-red);
+}

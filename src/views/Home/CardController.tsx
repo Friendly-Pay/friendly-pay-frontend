@@ -1,4 +1,4 @@
-import { TopupModal } from '../components/Modals/TopupModal';
+import { TopupModal } from '../../components/Modals/TopupModal';
 import { CardDetailsModal } from '@/components/Modals/CardDetailsModal';
 // import { TransactionDetailsModal } from '@/components/Modals/TransactionDetailsModal';
 import { useCardsStore } from '@/states/cards/store';

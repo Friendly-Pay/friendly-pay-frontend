@@ -1,5 +1,6 @@
 import { languageCodeToLocale } from '@/localization/utils';
 import { useUserStore } from '@/states/user/store';
+import { TextBlur } from '@/uikit';
 import { supportsNarrowCurrencyDisplay } from '@/utils';
 import { useLayoutEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -14,6 +15,7 @@ type CardBalanceFixedProps = {
 
 export function CardBalanceFixed({ value, currency }: CardBalanceFixedProps) {
     const [t] = useTranslation();
+    const blurBalance = useUserStore(state => state.blurBalance);
     const languageCode = useUserStore(state => state.languageCode);
     const formattedCurrencyParts = Intl.NumberFormat(languageCodeToLocale(languageCode), {
         style: 'currency',
@@ -51,17 +53,23 @@ export function CardBalanceFixed({ value, currency }: CardBalanceFixedProps) {
     }, []);
 
     return (
-        <div className={classNames(styles.root, visible && styles.visible)}>
+        <div className={classNames(styles.root, visible && styles.visible, blurBalance && styles.blur)}>
             <div className={styles.text}>{t('Balance')}</div>
             <div className={styles.balance}>
-                {formattedCurrencyParts.map((part, index) => (
-                    <span
-                        key={index}
-                        className={styles[part.type]}
-                    >
-                        {part.value}
-                    </span>
-                ))}
+                {blurBalance
+                    ? <TextBlur
+                        cell={6}
+                        rows={2}
+                        className={styles.blurSvg}
+                    />
+                    : formattedCurrencyParts.map((part, index) => (
+                        <span
+                            key={index}
+                            className={styles[part.type]}
+                        >
+                            {part.value}
+                        </span>
+                    ))}
             </div>
         </div>
     );

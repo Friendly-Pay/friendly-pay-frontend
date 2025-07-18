@@ -1,0 +1,28 @@
+.progress {
+    position: relative;
+}
+
+.track,
+.trackFill {
+    position: absolute;
+    top: 28px;
+    height: 2px;
+}
+
+.track {
+    background-color: var(--color-white);
+}
+
+.trackFill {
+    background-color: var(--color-primary);
+    transform-origin: left center;
+    transition: transform 0.8s ease-out;
+    will-change: transform;
+}
+
+.steps {
+    position: relative;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+}

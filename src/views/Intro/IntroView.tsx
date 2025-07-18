@@ -4,7 +4,6 @@ import { WelcomeStory } from './components/WelcomeStory';
 import { MainLayout } from '@/components/common/MainLayout';
 import { useDeviceStore } from '@/states/device/state';
 import { useUserStore } from '@/states/user/store';
-import { CloudStorage, isCloudStorageAvailable } from '@/utils/storage';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useLayoutEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -53,11 +52,6 @@ export function IntroView() {
 
     const handleNextStory = () => {
         if (currentStoryIndex === lastIndex) {
-            if (isCloudStorageAvailable()) {
-                CloudStorage.save('skipIntro', String(true));
-            } else {
-                localStorage.setItem('skipIntro', String(true));
-            }
             useUserStore.getState().setSkipIntro(true);
             navigate('/');
             return;
