@@ -1,54 +1,63 @@
-import { completeVerificationLevel1 } from './fetch';
-import { AxiosError } from 'axios';
+import { fetchUserCountry } from './fetch';
+import { FetchStatus } from '@/utils/api';
 import { create } from 'zustand';
 
 export enum VerificationStage {
-    Intro = 'intro',
-    PhoneNumber = 'phoneNumber',
+    Preloading = 'preloading',
     PersonalData = 'personalData',
-    Country = 'country',
-    NeedConfirm = 'needConfirm',
-    Success = 'success',
-    Failed = 'failed'
+    Address = 'address',
+    Email = 'email',
+    PhoneNumber = 'phoneNumber'
 }
 
 interface VerificationState {
     stage: VerificationStage;
     data: {
+        cardId: number | null,
         phoneNumber: string | null;
         firstName: string | null;
         lastName: string | null;
+        birthday: string | null;
         email: string | null;
         country: string | null;
-        birthday: string | null;
-    }
-    completeError: string | null;
+        town: string | null;
+        address: string | null;
+        postCode: string | null;
+    };
+    initialCountryCode: string | null
+    initialCountryCodeStatus: FetchStatus | null
 }
 
 interface VerificationActions {
     setStage: (stage: VerificationStage) => void;
+    setCardId: (cardId: number) => void;
     setUserDataProperty: <K extends keyof VerificationState['data']>(
         key: K,
         value: VerificationState['data'][K]
     ) => void;
-    completeVerification: () => Promise<void>;
+    loadInitialCountryCode: () => Promise<void>;
     resetVerification: () => void;
 }
 
-
-export const useVerificationStore = create<VerificationState & VerificationActions>((set, get) => ({
-    stage: VerificationStage.Intro,
+export const useVerificationStore = create<VerificationState & VerificationActions>((set) => ({
+    stage: VerificationStage.Preloading,
     data: {
+        cardId: null,
         phoneNumber: null,
         firstName: null,
         lastName: null,
+        birthday: null,
         email: null,
         country: null,
-        birthday: null,
+        town: null,
+        address: null,
+        postCode: null
     },
-    completeError: null,
+    initialCountryCode: null,
+    initialCountryCodeStatus: FetchStatus.Idle,
 
     setStage: (stage) => set({ stage }),
+    setCardId: (cardId) => set(state => ({ data: { ...state.data, cardId } })),
 
     setUserDataProperty: (key, value) =>
         set((state) => ({
@@ -58,43 +67,34 @@ export const useVerificationStore = create<VerificationState & VerificationActio
             },
         })),
 
-    completeVerification: async () => {
-        const { data } = get();
-        set({ completeError: null });
+    loadInitialCountryCode: async () => {
+        set({ initialCountryCodeStatus: FetchStatus.Pending });
         try {
-            await completeVerificationLevel1({
-                phoneNumber: data.phoneNumber!,
-                firstName: data.firstName!,
-                lastName: data.lastName!,
-                email: data.email!,
-                birthday: data.birthday!
+            const code = await fetchUserCountry();
+            set({
+                initialCountryCode: code,
+                initialCountryCodeStatus: FetchStatus.Fulfilled
             });
-            set({ stage: VerificationStage.Success });
-        } catch (error: any) {
-            console.error('[completeVerification]', error);
-            let completeError: any;
-            if (error instanceof AxiosError) {
-                completeError = String(error.response?.data);
-            }
-            if (!completeError) {
-                completeError = error.message;
-            }
-            set({ stage: VerificationStage.Failed, completeError });
+        } catch {
+            set({ initialCountryCodeStatus: FetchStatus.Rejected });
         }
     },
 
     resetVerification: () => {
         set({
-            stage: VerificationStage.Intro,
+            stage: VerificationStage.Preloading,
             data: {
+                cardId: null,
                 phoneNumber: null,
                 firstName: null,
                 lastName: null,
+                birthday: null,
                 email: null,
                 country: null,
-                birthday: null,
-            },
-            completeError: null
+                town: null,
+                address: null,
+                postCode: null
+            }
         });
     }
 }));

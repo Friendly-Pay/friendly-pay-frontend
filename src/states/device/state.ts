@@ -43,5 +43,5 @@ export const useDeviceStore = create<State & Actions>((set) => ({
         set({ deviceType, os, platform }),
 
     setFullscreen: (fullscreen) =>
-        set({ fullscreen }),
+        set({ fullscreen })
 }));

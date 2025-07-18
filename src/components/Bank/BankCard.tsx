@@ -26,6 +26,8 @@ type BankCardProps = {
 }
 
 export function BankCard({ typeId, lastFourDigits, hideDigits, paymentSystem, status, active, virtual, style, className, onClick, onClickDigits }: BankCardProps) {
+    const isDisabled = status === CardStatus.NeedActivation || status === CardStatus.ActivationFailed || status === CardStatus.VerificationFailed;
+    const isActivation = status === CardStatus.ActivationProcessing || status === CardStatus.VerificationProcessing;
     const lastFourDigitsPlaceholder = '••••';
 
     const handleClickDigits = (event: any) => {
@@ -61,8 +63,8 @@ export function BankCard({ typeId, lastFourDigits, hideDigits, paymentSystem, st
                 </div>
             </div>
 
-            {status === CardStatus.Activation && <div className={styles.activationBackground}>
-                <Spinner />
+            {(isActivation || isDisabled) && <div className={styles.overlay}>
+                {isActivation && <Spinner />}
             </div>}
         </CardDesign>
     );

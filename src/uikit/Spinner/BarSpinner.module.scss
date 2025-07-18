@@ -1,0 +1,23 @@
+@keyframes clashSpin {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+.spinnerWrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.bar {
+    position: absolute;
+    top: 15px;
+    left: 30px;
+    background-color: currentColor;
+    border-radius: 12px;
+    animation: clashSpin 0.9s linear infinite;
+}

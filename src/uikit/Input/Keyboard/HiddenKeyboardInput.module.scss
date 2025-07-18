@@ -1,0 +1,7 @@
+.hidden {
+    position: fixed;
+    opacity: 0;
+    width: 10px;
+    height: 10px;
+    z-index: -1000
+}

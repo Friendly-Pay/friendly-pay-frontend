@@ -13,18 +13,31 @@ type CardDesignProps = {
 }
 
 export const cardDesign = {
+    /** @deprecated */
     [100008]: {
         design: axtCard,
     },
+    /** @deprecated */
     [100005]: {
         design: axtCard
     },
+    /** @deprecated */
     [100004]: {
         design: axtCard
     },
+    /** @deprecated */
     [100010]: {
         design: axtCard
-    }
+    },
+    [111018]: {
+        design: axtCard
+    },
+    [111021]: {
+        design: axtCard
+    },
+    [111028]: {
+        design: axtCard
+    },
 } as const;
 
 export function CardDesign({ typeId, preview, style, className, backgroundClassName, children, onClick }: PropsWithChildren<CardDesignProps>) {

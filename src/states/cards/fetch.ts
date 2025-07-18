@@ -56,17 +56,18 @@ export interface UserCardResponse {
     typeId: number;
     number: string | null;
     canDeposit: boolean;
-    status: 'Active' | 'NeedActivation' | 'Activation' | 'Frozen';
+    status: 'Active' | 'NeedActivation' | 'VerificationProcessing' | 'ActivationProcessing' | 'VerificationFailed' | 'ActivationFailed' | 'Frozen';
     balance: number;
     currency: string;
     transactions: {
         id: number;
         type: 'deposit' | 'payment';
-        status: 'success' | 'fail' | 'in-progress';
+        status: 'success' | 'failed' | 'in-progress';
         amount: number;
         currency: string;
         originalAmount: number;
         originalCurrency: string;
+        fee: number;
         remark: string;
         createdAt: number; // unix timestamp
     }[];
@@ -78,10 +79,15 @@ export const fetchMyCards = async () => {
     // return [
     //     {
     //         'id': 3,
-    //         'typeId': 100008,
+    //         'typeId': 100010,
     //         'number': '2781',
+    //         // 'number': null,
     //         'canDeposit': true,
     //         'status': 'NeedActivation',
+    //         // 'status': 'VerificationProcessing',
+    //         // 'status': 'ActivationProcessing',
+    //         // 'status': 'VerificationFailed',
+    //         // 'status': 'Active',
     //         'balance': 0,
     //         'currency': 'USD',
     //         'transactions': []
@@ -118,6 +124,19 @@ export const fetchCardDetails = async (cardId: number) => {
     // };
 };
 
-export const activateCard = async (cardId: number) => {
-    await apiClient.post('/card/activate', { cardId });
+export interface ActivateCardData {
+    cardId: number;
+    email: string;
+    phoneNumber: string;
+    firstName: string;
+    lastName: string;
+    birthday: string;
+    country: string; // iso-2
+    town: string;
+    address: string;
+    postCode: string;
+}
+
+export const activateCard = async (data: ActivateCardData) => {
+    await apiClient.post('/card/activate', data);
 };

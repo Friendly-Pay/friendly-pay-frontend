@@ -32,6 +32,28 @@
     }
 }
 
+.root.failed {
+    .icon {
+        background-color: var(--color-red);
+    }
+
+    .amount {
+        color: var(--color-red);
+    }
+}
+
+.root.pending {
+    .amount {
+        color: var(--color-typo-primary-40);
+    }
+}
+
+.amount {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
 .content {
     flex: 1 1 auto;
     display: flex;
@@ -52,4 +74,31 @@
 .date {
     color: var(--color-typo-primary-60);
     white-space: nowrap;
+}
+
+.warning {
+    color: var(--color-red);
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    margin-right: 6px;
+
+    svg {
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.clock {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    margin-right: 6px;
+
+    svg {
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
 }

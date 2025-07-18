@@ -10,7 +10,7 @@ import { VerificationView } from './Verification/VerificationView';
 import { TelegramBackButton } from '@/components/common/TelegramBackButton';
 import { ToastsRoot } from '@/components/Toast/ToastsRoot';
 import { useAuthStore } from '@/states/auth/store';
-import { CardController } from '@/views/CardController';
+import { CardController } from '@/views/Home/CardController';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 // @TODO blocked
@@ -36,6 +36,11 @@ export function AppViews() {
                                 element={<NewProductView />}
                             />
 
+                            <Route
+                                path='/profile'
+                                element={<IntroView />}
+                            />
+
                             <Route element={<PaymentController />}>
                                 <Route
                                     path='/payments/pay-new-card'
@@ -55,7 +60,7 @@ export function AppViews() {
                                 />
                             </Route>
                             <Route
-                                path='/verification/level/1'
+                                path='/verification/user'
                                 element={<VerificationView />}
                             />
                         </Routes>

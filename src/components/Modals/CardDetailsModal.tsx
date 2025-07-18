@@ -66,10 +66,10 @@ export function CardDetailsModal() {
                             </div>
                         </motion.div>
                         : <div className={styles.content}>
-                            <Skeleton style={{ height: 56 }} />
+                            <Skeleton style={{ height: 52 }} />
                             <div className={styles.fields}>
-                                <Skeleton style={{ height: 56 }} />
-                                <Skeleton style={{ height: 56 }} />
+                                <Skeleton style={{ height: 52 }} />
+                                <Skeleton style={{ height: 52 }} />
                             </div>
                         </div>
                     }

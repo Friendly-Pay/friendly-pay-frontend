@@ -2,10 +2,17 @@ import { apiClient } from '@/utils/api';
 
 export interface UserRes {
     userId: number;
+    email: string | null;
+    phoneNumber: string | null;
     firstName: string | null;
     lastName: string | null;
     username: string | null;
     avatar: string | null;
+    birthday: string | null;
+    country: string | null;
+    town: string | null;
+    address: string | null;
+    postCode: string | null;
     verificationLevel: 'None' | 'Base';
     status: 'Active' | 'Blocked';
 }

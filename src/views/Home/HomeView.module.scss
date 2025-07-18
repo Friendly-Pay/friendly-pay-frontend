@@ -4,7 +4,7 @@
 }
 
 .balance {
-    margin: 42px 0 16px;
+    margin: 52px 0 16px;
 }
 
 .content {
@@ -38,25 +38,24 @@
     margin-bottom: 32px;
 }
 
-.content.needActivation {
-    .main {
-        grid-template-columns: repeat(1, minmax(0, 1fr));
-    }
+.content.needActivation,
+.content.activationFailed {
 
+    .main,
     .stack {
-        opacity: 0.3;
+        opacity: 0.5;
         pointer-events: none;
     }
 }
 
 .content.activation {
     .main {
-        opacity: 0.3;
+        opacity: 0.5;
         pointer-events: none;
     }
 
     .stack {
-        opacity: 0.3;
+        opacity: 0.5;
         pointer-events: none;
     }
 }
