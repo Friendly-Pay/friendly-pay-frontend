@@ -1,5 +1,10 @@
+import { citiesEn } from '../geo/en/cities';
+import { countriesEn } from '../geo/en/countries';
+
 export const it = {
     translates: {
+        ...citiesEn,
+        ...countriesEn,
         'Choose your crypto card': 'Scegli la tua carta crypto',
         'Get your AXT Community in just a few steps': 'Richiedi la tua carta AXT Community in pochi passaggi',
         'Get your card': 'Richiedi la carta',
