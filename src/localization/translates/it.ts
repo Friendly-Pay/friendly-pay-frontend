@@ -107,6 +107,7 @@ export const it = {
         'Date must not be earlier than 1900': 'La data non deve essere anteriore al 1900',
         'Date cannot be in the future': 'La data non può essere nel futuro',
         'Enter only letters and the following symbols: \' (apostrophe), - (hyphen)': 'Inserisci solo lettere e i seguenti simboli: \' (apostrofo), - (trattino)',
+        'Enter only Latin letters, digits, hyphens, spaces, dots and slashes': 'Inserisci solo lettere latine, cifre, trattini, spazi, punti e slash',
         'Enter a valid postal code (2–20 letters, digits, spaces or -)': 'Inserisci un CAP valido (2–20 lettere, cifre, spazi o -)',
         'Data correct?': 'Dati corretti?',
         'Incorrect name and date of birth may restrict account functionality.': 'Nome o data di nascita errati possono limitare la funzionalità dell\'account.',
