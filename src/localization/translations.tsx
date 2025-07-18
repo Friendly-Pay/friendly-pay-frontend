@@ -1,7 +1,17 @@
 import { citiesRu } from './geo/cities';
 import { countriesRu } from './geo/countries';
+import { citiesEn } from './geo/en/cities';
+import { countriesEn } from './geo/en/countries';
+import { zh } from './translates/zh';
 
 export const translations = {
+    zh,
+    en: {
+        translates: {
+            ...citiesEn,
+            ...countriesEn
+        }
+    },
     ru: {
         translates: {
             ...citiesRu,
