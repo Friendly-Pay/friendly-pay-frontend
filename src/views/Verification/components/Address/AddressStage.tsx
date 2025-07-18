@@ -13,6 +13,7 @@ import styles from './AddressStage.module.scss';
 
 const VALID_POST_CODE_REGEX = /^[A-Za-z0-9\s-]{1,20}$/;
 const RUSSIAN_LETTERS_REGEX = /^[А-ЯЁа-яё]+$/;
+const ADDRESS_ALLOWED_CHARS_REGEX = /^[A-Za-z0-9\s.,\-\/]+$/;
 
 export function AddressStage() {
     const [t] = useTranslation();
@@ -64,12 +65,13 @@ export function AddressStage() {
         const newValue = evt.target.value;
         if (newValue.length > 120) return;
         setAddress(newValue);
-
         if (newValue.length) {
-            if (!RUSSIAN_LETTERS_REGEX.test(newValue)) {
-                setAddressError(undefined);
-            } else {
+            if (RUSSIAN_LETTERS_REGEX.test(newValue)) {
                 setAddressError(t('Enter only Latin letters, digits and symbols'));
+            } else if (!ADDRESS_ALLOWED_CHARS_REGEX.test(newValue)) {
+                setAddressError(t('Enter only Latin letters, digits, hyphens, spaces, dots and slashes'));
+            } else {
+                setAddressError(undefined);
             }
         } else {
             setAddressError(undefined);
@@ -99,10 +101,11 @@ export function AddressStage() {
 
     const handleSubmit = useCallback(() => {
         if (isSubmitDisabled) return;
+        const sanitizedAddress = address.replace(/[.,\/]/g, ' ');
         blurFocusedInput();
         setUserDataProperty('country', country.iso2);
         setUserDataProperty('town', cityCode);
-        setUserDataProperty('address', address);
+        setUserDataProperty('address', sanitizedAddress);
         setUserDataProperty('postCode', postCode);
         setStage(VerificationStage.Email);
     }, [isSubmitDisabled, country, cityCode, address, postCode, setStage, setUserDataProperty]);
