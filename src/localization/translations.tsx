@@ -121,6 +121,7 @@ export const translations = {
             'Invalid email format': 'Неверный формат email',
             'This email is not supported': 'Email не поддерживается',
             'Enter only Latin letters, digits and symbols': 'Вводите только латинские буквы, цифры и символы',
+            'Enter only Latin letters, digits, hyphens, spaces, dots and slashes': 'Вводите только латинские буквы, цифры, дефисы, пробелы, точки и дроби',
             'Enter date in the format {{dateFormat}}': 'Введите дату в формате {{dateFormat}}',
             'Date must not be earlier than 1900': 'Дата должна быть не ранее 1900 года',
             'Date cannot be in the future': 'Дата не может быть в будущем',
