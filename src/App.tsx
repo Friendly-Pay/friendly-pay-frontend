@@ -9,6 +9,8 @@ const queryClient = new QueryClient();
 // if (import.meta.env.VITE_DEV_LOAD_ERUDA || import.meta.env.VITE_API_BASE_URL === 'https://test2.friendlypay.app') {
 //     loadEruda();
 // }
+// 
+// loadEruda();
 
 // @TODO общая ошибка при загрузке данных не только auth error
 export function App() {
@@ -16,6 +18,16 @@ export function App() {
     // const authData = useAuthStore(state => state.authData);
     return (
         <QueryClientProvider client={queryClient}>
+            {/* <button
+                style={{
+                    position: 'absolute',
+                    left: '0',
+                    top: 'var(--safe-area-top)',
+                    right: '0',
+                    zIndex: 99999,
+                }}
+                onClick={() => { const a = useUserStore.getState().blurBalance; useUserStore.getState().setBlurBalance(!a); }}
+            >test</button> */}
             {/* {user && user.id === '5142291674' && <div
                 style={{
                     position: 'absolute',

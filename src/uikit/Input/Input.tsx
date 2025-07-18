@@ -1,4 +1,5 @@
 import { Copy } from './Copy';
+import { ArrowDown } from '@/components/Icons/Arrow';
 import { copyToClipboard } from '@/utils';
 import { FormEvent, FormEventHandler, forwardRef, InputHTMLAttributes } from 'react';
 import { toast } from 'sonner';
@@ -9,8 +10,11 @@ export type InputProps = {
     danger?: boolean
     canCopy?: boolean
     readOnly?: boolean
+    asSelect?: boolean
+    startIcon?: React.ReactNode;
     copiedToastText?: string
     onInput?: (value: string, event: FormEvent<HTMLInputElement>) => void
+    onClick?: () => void
     onCopied?: () => void
 };
 
@@ -19,7 +23,7 @@ export const Input = forwardRef<
     InputProps & Omit<InputHTMLAttributes<HTMLInputElement>, 'onInput'>
 >(
     (
-        { value, className, danger, readOnly, canCopy, copiedToastText, onInput, onCopied, ...props },
+        { value, className, danger, readOnly, asSelect, startIcon, canCopy, copiedToastText, onInput, onClick, onCopied, ...props },
         ref
     ) => {
         const handleInput: FormEventHandler<HTMLInputElement> = (event) => {
@@ -40,12 +44,19 @@ export const Input = forwardRef<
             <div
                 className={classNames(
                     styles.root,
+                    !!value && styles.hasValue,
+                    !!startIcon && styles.hasStartIcon,
                     readOnly && styles.readonly,
+                    asSelect && styles.asSelect,
                     canCopy && styles.canCopy,
                     danger && styles.danger,
                     className
                 )}
+                onClick={onClick}
             >
+                {startIcon && <div className={styles.startIcon}>
+                    {startIcon}
+                </div>}
                 <span>
                     <input
                         ref={ref}
@@ -59,13 +70,17 @@ export const Input = forwardRef<
 
                 {canCopy && <>
                     <div className={styles.addonIcon}>
-                        {<Copy />}
+                        <Copy />
                     </div>
                     <div
                         className={styles.clickableArea}
                         onClick={handleCopyValue}
                     ></div>
                 </>}
+
+                {asSelect && <div className={styles.addonIcon}>
+                    <ArrowDown />
+                </div>}
             </div>
         );
     }

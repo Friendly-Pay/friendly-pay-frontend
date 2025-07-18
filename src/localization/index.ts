@@ -3,6 +3,7 @@ import { safeLanguageCode } from './utils';
 import i18next from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
+// @TODO сделать переводы каждый язык отдельным файлом - подгружаем просто нужный
 export const lsLanguageKey = 'preferredLanguage';
 export const getPreferredLanguage = (): string => {
     const defaultLanguage = 'en';

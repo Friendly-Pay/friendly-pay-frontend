@@ -1,19 +1,14 @@
 import { languageCodeToLocale } from '@/localization/utils';
+import { CardTransaction, CardTransactionStatus } from '@/states/cards/store';
 import { useUserStore } from '@/states/user/store';
 import { Text } from '@/uikit';
 import { formatCurrency } from '@/utils';
 import { useTranslation } from 'react-i18next';
-// import { formatDateWithLabel } from '@/utils/date';
-// import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
 import styles from './TransactionItem.module.scss';
 
 type TransactionItemProps = {
-    type: 'deposit' | 'payment';
-    status: 'success' | 'fail' | 'in-progress';
-    createdAt: number; // timestamp unix
-    amount: number;
-    currency: string;
+    transaction: CardTransaction
     onClick?: () => void
 }
 
@@ -33,18 +28,25 @@ const formatDateWithTime = (dateInput: Date | string, locale: string, t: any) =>
     return `${formattedDate} ${t('at')} ${formattedTime}`;
 };
 
-export function TransactionItem({ type, amount, currency, createdAt, onClick }: TransactionItemProps) {
+// @TODO норм вид, компонент и модалка
+export function TransactionItem({ transaction, onClick }: TransactionItemProps) {
     const [t] = useTranslation();
     const languageCode = useUserStore(state => state.languageCode);
     const languageLocale = languageCodeToLocale(languageCode);
 
+    const isDeposit = transaction.type === 'deposit';
+    const totalAmount = isDeposit ? transaction.amount : transaction.amount + transaction.fee;
     return (
         <div
-            className={classNames(styles.root, styles[type])}
+            className={classNames(styles.root, styles[transaction.type], {
+                [styles.success]: transaction.status === CardTransactionStatus.SUCCESS,
+                [styles.pending]: transaction.status === CardTransactionStatus.IN_PROGRESS,
+                [styles.failed]: transaction.status === CardTransactionStatus.FAILED,
+            })}
             onClick={onClick}
         >
             <div className={styles.icon}>
-                {type === 'deposit' ? <Deposit /> : <Payment />}
+                {isDeposit ? <Deposit /> : <Payment />}
             </div>
 
             <div className={styles.content}>
@@ -54,14 +56,14 @@ export function TransactionItem({ type, amount, currency, createdAt, onClick }: 
                         align='left'
                         weight='medium'
                         className={styles.title}
-                    >{type === 'deposit' ? t('Deposit') : t('Payment')}</Text>
+                    >{isDeposit ? t('Deposit') : t('Payment')}</Text>
                     <Text
                         type='caption'
                         align='left'
                         weight='regular'
                         className={styles.date}
                     >
-                        {formatDateWithTime(new Date(Number(createdAt) * 1_000), languageLocale, t)}
+                        {formatDateWithTime(new Date(Number(transaction.createdAt) * 1_000), languageLocale, t)}
                         {/* {formatDateWithLabel(new Date(Number(createdAt) * 1_000))} */}
                     </Text>
                 </div>
@@ -72,7 +74,9 @@ export function TransactionItem({ type, amount, currency, createdAt, onClick }: 
                     weight='semibold'
                     className={styles.amount}
                 >
-                    {type === 'deposit' && '+'}{formatCurrency(amount, currency, languageCodeToLocale(languageCode), 2)}
+                    {transaction.status === CardTransactionStatus.IN_PROGRESS && <div className={styles.clock}><Clock /></div>}
+                    {transaction.status === CardTransactionStatus.FAILED && <div className={styles.warning}><Warning /></div>}
+                    {isDeposit && '+'}{formatCurrency(totalAmount, transaction.currency, languageCodeToLocale(languageCode), 2)}
                 </Text>
             </div>
         </div>
@@ -108,6 +112,38 @@ const Payment = () => {
             <path
                 d="M13.9656 6.69727C13.9656 6.92628 13.8829 7.12136 13.7175 7.2825L9.53813 11.4492C9.37273 11.6146 9.18826 11.6973 8.9847 11.6973C8.75145 11.6973 8.56273 11.6252 8.41854 11.481C8.27435 11.3368 8.20226 11.1587 8.20226 10.9466C8.20226 10.8279 8.22346 10.7219 8.26587 10.6285C8.31252 10.5353 8.37189 10.4526 8.44398 10.3805L9.86889 8.94281L12.1272 6.88175L12.4198 7.35884L10.1043 7.49243H2.59793C2.3562 7.49243 2.16111 7.42034 2.01268 7.27615C1.86425 7.12771 1.79004 6.93475 1.79004 6.69727C1.79004 6.46402 1.86425 6.2753 2.01268 6.13111C2.16111 5.98268 2.3562 5.90846 2.59793 5.90846H10.1043L12.4198 6.03569L12.1272 6.52551L9.86889 4.45172L8.44398 3.01406C8.37189 2.94197 8.31252 2.85927 8.26587 2.76597C8.22346 2.66842 8.20226 2.5624 8.20226 2.4479C8.20226 2.23586 8.27435 2.05774 8.41854 1.91355C8.56273 1.76936 8.75145 1.69727 8.9847 1.69727C9.08224 1.69727 9.17766 1.71847 9.27096 1.76088C9.36849 1.79905 9.46179 1.86266 9.55085 1.95172L13.7175 6.11203C13.8829 6.27317 13.9656 6.46826 13.9656 6.69727Z"
                 fill="white"
+            />
+        </svg>
+    );
+};
+
+const Warning = () => {
+    return (
+        <svg
+            width="19"
+            height="18"
+            viewBox="0 0 19 18"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+            <path
+                d="M9.12888 18.0059C7.88631 18.0059 6.72141 17.77 5.63417 17.2982C4.54692 16.8322 3.5891 16.188 2.76073 15.3653C1.93811 14.5428 1.29382 13.5878 0.827846 12.5006C0.361887 11.4134 0.128906 10.2483 0.128906 9.00584C0.128906 7.76326 0.361887 6.59836 0.827846 5.51112C1.29382 4.42387 1.93811 3.46894 2.76073 2.64631C3.5891 1.81794 4.54692 1.17077 5.63417 0.704798C6.72141 0.23884 7.88631 0.00585938 9.12888 0.00585938C10.3715 0.00585938 11.5364 0.23884 12.6236 0.704798C13.7109 1.17077 14.6658 1.81794 15.4884 2.64631C16.3111 3.46894 16.9554 4.42387 17.4213 5.51112C17.893 6.59836 18.1289 7.76326 18.1289 9.00584C18.1289 10.2483 17.893 11.4134 17.4213 12.5006C16.9554 13.5878 16.3111 14.5428 15.4884 15.3653C14.6658 16.188 13.7109 16.8322 12.6236 17.2982C11.5364 17.77 10.3715 18.0059 9.12888 18.0059ZM9.12888 16.0298C10.1011 16.0298 11.01 15.8486 11.8556 15.4861C12.707 15.1238 13.4519 14.6204 14.0905 13.9761C14.7348 13.3261 15.2382 12.5783 15.6005 11.7326C15.9687 10.8812 16.1528 9.97227 16.1528 9.00584C16.1528 8.03364 15.9687 7.12473 15.6005 6.27909C15.2382 5.42771 14.7348 4.67987 14.0905 4.03557C13.4519 3.39127 12.707 2.88792 11.8556 2.52551C11.01 2.1631 10.1011 1.98188 9.12888 1.98188C8.15668 1.98188 7.2449 2.1631 6.39351 2.52551C5.54787 2.88792 4.80291 3.39127 4.15861 4.03557C3.51432 4.67987 3.01097 5.42771 2.64856 6.27909C2.28614 7.12473 2.10493 8.03364 2.10493 9.00584C2.10493 9.97227 2.28614 10.8812 2.64856 11.7326C3.01097 12.5783 3.51432 13.3261 4.15861 13.9761C4.80291 14.6204 5.54787 15.1238 6.39351 15.4861C7.2449 15.8486 8.15668 16.0298 9.12888 16.0298ZM9.12888 10.352C8.58813 10.352 8.30625 10.0816 8.28325 9.54082L8.16244 5.60604C8.15094 5.33567 8.23435 5.11418 8.41268 4.94161C8.59101 4.76328 8.82687 4.67411 9.12025 4.67411C9.40789 4.67411 9.64087 4.76328 9.8192 4.94161C10.0033 5.11418 10.0896 5.33853 10.078 5.61467L9.94863 9.53219C9.92561 10.0787 9.65237 10.352 9.12888 10.352ZM9.12888 13.2512C8.82974 13.2512 8.57375 13.1592 8.36091 12.9751C8.15382 12.791 8.05027 12.5581 8.05027 12.2762C8.05027 11.9885 8.15382 11.7528 8.36091 11.5687C8.57375 11.3788 8.82974 11.2838 9.12888 11.2838C9.42802 11.2838 9.67826 11.3759 9.87959 11.56C10.0866 11.7441 10.1903 11.9828 10.1903 12.2762C10.1903 12.5638 10.0866 12.7997 9.87959 12.9838C9.6725 13.1621 9.42226 13.2512 9.12888 13.2512Z"
+                fill="currentColor"
+            />
+        </svg>
+    );
+};
+
+const Clock = () => {
+    return (
+        <svg
+            width="18"
+            height="18"
+            viewBox="0 0 18 18"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+            <path
+                d="M4.75455 10.1735C4.54169 10.1735 4.36049 10.1016 4.21093 9.95783C4.06711 9.81398 3.9952 9.63565 3.9952 9.4228C3.9952 9.21571 4.06711 9.04025 4.21093 8.89643C4.36049 8.75261 4.54169 8.68071 4.75455 8.68071H8.24926V3.90028C8.24926 3.68744 8.32118 3.50911 8.46499 3.36529C8.60881 3.22147 8.78426 3.14956 8.99135 3.14956C9.2042 3.14956 9.38253 3.22147 9.52635 3.36529C9.67016 3.50911 9.74207 3.68744 9.74207 3.90028V9.4228C9.74207 9.63565 9.67016 9.81398 9.52635 9.95783C9.38253 10.1016 9.2042 10.1735 8.99135 10.1735H4.75455ZM8.99998 18C7.75742 18 6.59251 17.7641 5.50526 17.2924C4.41802 16.8264 3.46021 16.1821 2.63182 15.3596C1.8092 14.5369 1.16491 13.582 0.698944 12.4947C0.232981 11.4075 0 10.2426 0 8.99998C0 7.75742 0.232981 6.59251 0.698944 5.50526C1.16491 4.41801 1.8092 3.46309 2.63182 2.64045C3.46021 1.81208 4.41802 1.16491 5.50526 0.698946C6.59251 0.232981 7.75742 0 8.99998 0C10.2426 0 11.4075 0.232981 12.4947 0.698946C13.582 1.16491 14.5369 1.81208 15.3595 2.64045C16.1822 3.46309 16.8265 4.41801 17.2924 5.50526C17.7641 6.59251 18 7.75742 18 8.99998C18 10.2426 17.7641 11.4075 17.2924 12.4947C16.8265 13.582 16.1822 14.5369 15.3595 15.3596C14.5369 16.1821 13.582 16.8264 12.4947 17.2924C11.4075 17.7641 10.2426 18 8.99998 18ZM8.99998 16.0239C9.97217 16.0239 10.8811 15.8427 11.7267 15.4803C12.5781 15.1179 13.323 14.6145 13.9616 13.9702C14.6059 13.3202 15.1093 12.5724 15.4716 11.7267C15.8399 10.8753 16.024 9.96646 16.024 8.99998C16.024 8.02779 15.8399 7.11887 15.4716 6.27323C15.1093 5.42185 14.6059 4.67401 13.9616 4.02971C13.323 3.38542 12.5781 2.88207 11.7267 2.51965C10.8811 2.15723 9.97217 1.97602 8.99998 1.97602C8.02779 1.97602 7.11599 2.15723 6.26461 2.51965C5.41898 2.88207 4.67401 3.38542 4.02971 4.02971C3.38542 4.67401 2.88207 5.42185 2.51965 6.27323C2.15723 7.11887 1.97602 8.02779 1.97602 8.99998C1.97602 9.96646 2.15723 10.8753 2.51965 11.7267C2.88207 12.5724 3.38542 13.3202 4.02971 13.9702C4.67401 14.6145 5.41898 15.1179 6.26461 15.4803C7.11599 15.8427 8.02779 16.0239 8.99998 16.0239Z"
+                fill="currentColor"
             />
         </svg>
     );
