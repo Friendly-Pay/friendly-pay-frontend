@@ -1,7 +1,10 @@
 import { motion } from 'framer-motion';
 import { PropsWithChildren } from 'react';
+import classNames from 'classnames';
+import styles from './StageRoot.module.scss';
 
 type StageRootProps = {
+    initial?: boolean
     className?: string
 }
 
@@ -11,11 +14,18 @@ const stageAppearance = {
     transition: { duration: 0.3 }
 };
 
-export function StageRoot({ className, children }: PropsWithChildren<StageRootProps>) {
+const stageInitial = {
+    initial: false
+};
+
+export function StageRoot({ initial = true, className, children }: PropsWithChildren<StageRootProps>) {
     return (
         <motion.div
-            {...stageAppearance}
-            className={className}
+            {...(initial
+                ? stageAppearance
+                : stageInitial
+            )}
+            className={classNames(styles.stage, className)}
         >
             {children}
         </motion.div>

@@ -1,7 +1,10 @@
+import { Eye, EyeSlash } from '@/components/Icons/Eye';
 import { languageCodeToLocale } from '@/localization/utils';
+import { CardStatus } from '@/states/cards/store';
 import { useUserStore } from '@/states/user/store';
-import { Text } from '@/uikit';
+import { Text, TextBlur } from '@/uikit';
 import { supportsNarrowCurrencyDisplay } from '@/utils';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
 import styles from './CardBalance.module.scss';
@@ -9,6 +12,7 @@ import styles from './CardBalance.module.scss';
 type CardBalanceProps = {
     value: string | number
     currency: string
+    cardStatus: CardStatus,
     className?: string
 }
 
@@ -16,14 +20,38 @@ type CardBalanceProps = {
 //     return current + (target - current) * factor;
 // }
 
-export function CardBalance({ value, currency, className }: CardBalanceProps) {
+const eyeAnim = {
+    initial: { opacity: 0, scale: 0.5 },
+    animate: { opacity: 1, scale: 1 },
+    exit: { opacity: 0, scale: 0 },
+};
+
+export function CardBalance({ value, currency, cardStatus, className }: CardBalanceProps) {
     const [t] = useTranslation();
+    const blurBalance = useUserStore(state => state.blurBalance);
     const languageCode = useUserStore(state => state.languageCode);
     const formattedCurrencyParts = Intl.NumberFormat(languageCodeToLocale(languageCode), {
         style: 'currency',
         currencyDisplay: supportsNarrowCurrencyDisplay() ? 'narrowSymbol' : 'symbol',
         currency: currency,
     }).formatToParts(typeof value === 'string' ? parseFloat(value) : value);
+
+    const isNeedActivation = cardStatus === CardStatus.NeedActivation;
+    const isActivationFailed = cardStatus === CardStatus.ActivationFailed || cardStatus === CardStatus.VerificationFailed;
+    const isActivationProcessing = cardStatus === CardStatus.VerificationProcessing || cardStatus === CardStatus.ActivationProcessing;
+
+    let balanceLabel = t('Card balance');
+    if (isNeedActivation || isActivationProcessing) {
+        balanceLabel = t('Not active');
+    } else if (isActivationFailed) {
+        balanceLabel = t('Activation error');
+    }
+
+    const setBlurBalance = useUserStore(state => state.setBlurBalance);
+    const toggleBlurBalance = () => {
+        setBlurBalance(!blurBalance);
+        window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+    };
 
     // const targetOpacityRef = useRef(1);
     // const targetScaleRef = useRef(1);
@@ -95,28 +123,61 @@ export function CardBalance({ value, currency, className }: CardBalanceProps) {
     // }, []);
 
     return (
-        <div className={classNames(styles.root, className)}>
+        <div
+            className={classNames(styles.root, blurBalance && styles.blur, className)}
+            onClick={toggleBlurBalance}
+        >
             <Text
                 type='caption'
                 weight='regular'
                 align='center'
-                className={styles.text}
+                className={classNames(styles.text, isActivationFailed && styles.danger)}
             >
-                {t('Card balance')}
+                {balanceLabel}
             </Text>
 
-            <div
-                id='balance'
-                className={styles.balance}
-            >
-                {formattedCurrencyParts.map((part, index) => (
-                    <span
-                        key={index}
-                        className={styles[part.type]}
-                    >
-                        {part.value}
-                    </span>
-                ))}
+            <div className={styles.balanceWrap}>
+                <div
+                    id='balance'
+                    className={styles.balance}
+                >
+                    {blurBalance
+                        ? <TextBlur
+                            rows={3}
+                            cell={38 / 3}
+                            className={styles.balanceBlur}
+                        />
+                        : formattedCurrencyParts.map((part, index) => (
+                            <span
+                                key={index}
+                                className={styles[part.type]}
+                            >
+                                {part.value}
+                            </span>
+                        ))}
+                </div>
+                <AnimatePresence
+                    mode='sync'
+                    initial={false}
+                >
+                    {blurBalance ? (
+                        <motion.div
+                            key="eye-slash"
+                            {...eyeAnim}
+                            className={styles.icon}
+                        >
+                            <Eye />
+                        </motion.div>
+                    ) : (
+                        <motion.div
+                            key="eye"
+                            {...eyeAnim}
+                            className={styles.icon}
+                        >
+                            <EyeSlash />
+                        </motion.div>
+                    )}
+                </AnimatePresence>
             </div>
         </div>
     );

@@ -1,0 +1,82 @@
+.root {
+    position: relative;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+}
+
+.text {
+    margin-bottom: 2px;
+}
+
+.balanceWrap {
+    position: relative;
+    padding-left: 16px;
+    padding-right: 36px;
+}
+
+.icon {
+    position: absolute;
+    top: 15px;
+    right: 0;
+    width: 24px;
+    height: 24px;
+    color: var(--color-typo-primary-25);
+
+    svg {
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.balance {
+    font-size: 38px;
+    font-weight: 600;
+    text-align: center;
+    line-height: 1;
+    padding: 4px 0;
+}
+
+.decimal,
+.literal,
+.fraction {
+    font-size: 32px;
+    font-weight: 400;
+}
+
+.currency {
+    font-size: 28px;
+    font-weight: 400;
+}
+
+.balanceBlur {
+    width: 160px;
+    margin: 0 auto;
+    border-radius: 10px;
+}
+
+.danger {
+    color: var(--color-red);
+}
+
+@media screen and (max-height: 700px) {
+    .balance {
+        font-size: 32px;
+    }
+
+    .decimal,
+    .literal,
+    .fraction,
+    .currency {
+        font-size: 32px;
+    }
+
+    .blur .balance {
+        padding: 2px 0 0 0;
+
+        svg {
+            transform: scale(0.95);
+        }
+    }
+}

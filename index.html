@@ -23,8 +23,10 @@
     <script>
         function _initTelegramWebApp() {
             window.Telegram.WebApp.expand();
-            window.Telegram.WebApp.headerColor = "#FFFFFF";
-            window.Telegram.WebApp.setHeaderColor("#FFFFFF");
+            window.Telegram.WebApp.headerColor = "#F5F5F7";
+            window.Telegram.WebApp.setHeaderColor("#F5F5F7");
+            window.Telegram.WebApp.setBackgroundColor("#F5F5F7");
+            window.Telegram.WebApp.setBottomBarColor('#F5F5F7');
             if (window.Telegram.WebApp.isVersionAtLeast("7.7")) {
                 window.Telegram.WebApp.disableVerticalSwipes();
             }

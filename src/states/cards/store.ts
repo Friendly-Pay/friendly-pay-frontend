@@ -1,4 +1,4 @@
-import { activateCard, CardDetailsResponse, fetchCardDetails, fetchCardTypes, fetchMyCards } from './fetch';
+import { activateCard, ActivateCardData, CardDetailsResponse, fetchCardDetails, fetchCardTypes, fetchMyCards } from './fetch';
 import { FetchStatus } from '@/utils/api';
 import { toast } from 'sonner';
 import { create } from 'zustand';
@@ -31,18 +31,28 @@ interface CardType {
 export enum CardStatus {
     Active = 'Active',
     NeedActivation = 'NeedActivation',
-    Activation = 'Activation',
+    ActivationProcessing = 'ActivationProcessing',
+    VerificationProcessing = 'VerificationProcessing',
+    VerificationFailed = 'VerificationFailed',
+    ActivationFailed = 'ActivationFailed',
     Frozen = 'Frozen'
+}
+
+export enum CardTransactionStatus {
+    SUCCESS = 'success',
+    FAILED = 'failed',
+    IN_PROGRESS = 'in-progress'
 }
 
 export interface CardTransaction {
     id: number;
     type: 'deposit' | 'payment';
-    status: 'success' | 'fail' | 'in-progress';
+    status: CardTransactionStatus;
     amount: number;
     currency: string;
     originalAmount: number;
     originalCurrency: string;
+    fee: number;
     remark: string;
     createdAt: number; // unix timestamp
 }
@@ -91,7 +101,7 @@ interface Actions {
     fetchCardDetails: () => Promise<CardDetailsResponse | void>;
     openTransactionDetails: (data: CardTransaction) => void;
     closeTransactionDetails: () => void;
-    activateCard: (cardId: number) => Promise<void>;
+    activateCard: (data: ActivateCardData) => Promise<void>;
 }
 
 export const useCardsStore = create<State & Actions>((set, get) => ({
@@ -167,7 +177,7 @@ export const useCardsStore = create<State & Actions>((set, get) => ({
                     status: card.status as CardStatus,
                     balance: card.balance,
                     currency: card.currency,
-                    transactions: card.transactions,
+                    transactions: card.transactions as CardTransaction[],
                 };
             }
 
@@ -203,12 +213,12 @@ export const useCardsStore = create<State & Actions>((set, get) => ({
             if (!detailsModal.opened) return;
             if (!selectedCardId) throw new Error('Card not selected');
             const detail = await fetchCardDetails(selectedCardId);
-            set({
+            set(state => ({
                 detailsModal: {
                     data: detail,
-                    opened: true,
+                    opened: state.detailsModal.opened
                 },
-            });
+            }));
             return detail;
         } catch (error: any) {
             console.error('[loadCardDetails]', error);
@@ -233,21 +243,19 @@ export const useCardsStore = create<State & Actions>((set, get) => ({
         });
     },
 
-    activateCard: async (cardId: number) => {
+    activateCard: async (activateData) => {
         const myCards = get().myCards;
         if (!myCards) {
             console.warn('[activateCard] myCards is null');
             return;
         }
         try {
-            const cardData = myCards[cardId];
-            if (!cardData) throw new Error(`[activateCard] card ${cardId} undefined`);
+            const cardData = myCards[activateData.cardId];
+            if (!cardData) throw new Error(`[activateCard] card ${activateData.cardId} undefined`);
             if (cardData.status !== CardStatus.NeedActivation) {
                 return;
             }
-
-            await activateCard(cardId);
-            window.Telegram.WebApp.HapticFeedback.notificationOccurred('success');
+            await activateCard(activateData);
         } catch (error: any) {
             toast.error(error.message);
             console.error('[error] failed to activate card', error);

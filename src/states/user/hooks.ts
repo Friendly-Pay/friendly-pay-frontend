@@ -40,12 +40,19 @@ export function useUserAuth() {
             const userData = await fetchUser();
             setUser({
                 id: String(userData.userId),
+                email: userData.email,
+                phoneNumber: userData.phoneNumber,
                 firstName: userData.firstName,
                 lastName: userData.lastName,
                 username: userData.username,
                 avatar: userData.avatar,
+                birthday: userData.birthday,
+                country: userData.country,
+                town: userData.town,
+                address: userData.address,
+                postCode: userData.postCode,
                 status: userData.status,
-                verificationLevel: userData.verificationLevel
+                verificationLevel: userData.verificationLevel,
             });
             setUserFetchStatus(FetchStatus.Fulfilled);
             return userData;

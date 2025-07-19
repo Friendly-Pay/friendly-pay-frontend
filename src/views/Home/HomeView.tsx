@@ -1,26 +1,24 @@
-import { ActivationNotification } from './components/Activation/ActivationNotification';
+import { CardBalance } from './components/Balance/CardBalance';
+import { CardBalanceFixed } from './components/Balance/CardBalanceFixed';
 import { OrderCardBanner } from './components/Banners/OrderCardBanner';
 import { WalletBanner } from './components/Banners/WalletBanner';
-import { CardBalance } from './components/CardBalance';
-import { CardBalanceFixed } from './components/CardBalanceFixed';
+import { CardActivation } from './components/CardActivation';
 import { CardLimits } from './components/CardLimits';
 import { LastTransactions } from './components/LastTransactions';
 import { MainButton } from './components/MainButton';
+import { RefetchLoader } from './components/RefetchLoader';
 import { CardsSlider } from '@/components/Bank/CardsSlider';
 import { MainLayout } from '@/components/common/MainLayout';
-import { Activate } from '@/components/Icons/Activate';
 import { CardDetails } from '@/components/Icons/CardDetailts';
 import { Topup } from '@/components/Icons/Topup';
 import { Navbar } from '@/components/Navbar/Navbar';
 import { UserHead } from '@/components/User/UserHead';
 import { CardStatus, useCardsStore } from '@/states/cards/store';
 import { useUserStore } from '@/states/user/store';
-import { useVerificationStore } from '@/states/verification/store';
 import { FetchStatus } from '@/utils/api';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import classNames from 'classnames';
 import styles from './HomeView.module.scss';
 
@@ -49,26 +47,9 @@ export function HomeView() {
     const openTopup = useCardsStore(state => state.openTopupModal);
     const openCardDetails = useCardsStore(state => state.openCardDetails);
 
-    // @TODO все действия с картами вынести в одно место типо CardActions
-    const navigate = useNavigate();
-    const [activationLoading, setActivationLoading] = useState(false);
-    const startActivation = async () => {
-        const verificationLevel = useUserStore.getState().user!.verificationLevel;
-        if (verificationLevel === 'None') {
-            useVerificationStore.getState().resetVerification();
-            navigate('/verification/level/1');
-            return;
-        }
-
-        if (activationLoading) return;
-        setActivationLoading(true);
-        await useCardsStore.getState().activateCard(currentCardId!);
-        await useCardsStore.getState().loadMyCards();
-        setActivationLoading(false);
-    };
-
-    const isActivation = currentBankCard && currentBankCard.status === CardStatus.Activation;
+    const isActivation = currentBankCard && (currentBankCard.status === CardStatus.ActivationProcessing || currentBankCard.status === CardStatus.VerificationProcessing);
     const isNeedActivation = currentBankCard && currentBankCard.status === CardStatus.NeedActivation;
+    const isActivationFailed = currentBankCard && (currentBankCard.status === CardStatus.ActivationFailed || currentBankCard.status === CardStatus.VerificationFailed);
 
     const skipIntro = useUserStore(state => state.skipIntro);
     const myCardsCount = useCardsStore(state => state.myCardsCount);
@@ -88,6 +69,8 @@ export function HomeView() {
 
     return (
         <MainLayout fullSpace>
+            <RefetchLoader />
+
             <UserHead>
                 <AnimatePresence
                     mode='wait'
@@ -117,6 +100,7 @@ export function HomeView() {
                         <CardBalance
                             value={currentBankCard.balance}
                             currency={currentBankCard.currency}
+                            cardStatus={currentBankCard.status}
                             className={styles.balance}
                         />
                     </motion.div>
@@ -137,41 +121,30 @@ export function HomeView() {
                         className={classNames(
                             styles.content,
                             isActivation && styles.activation,
-                            isNeedActivation && styles.needActivation
+                            isNeedActivation && styles.needActivation,
+                            isActivationFailed && styles.activationFailed
                         )}
                     >
-                        {isActivation && <ActivationNotification className={styles.notification} />}
+                        {(isActivation || isNeedActivation || isActivationFailed) && <CardActivation
+                            cardId={currentBankCard.id}
+                            status={currentBankCard.status}
+                        />}
 
                         <div className={styles.main}>
-                            {isNeedActivation
-                                ? <MainButton
-                                    icon={<Activate />}
-                                    loading={activationLoading}
-                                    onClick={startActivation}
-                                >
-                                    {t('Activate')}
-                                </MainButton>
-                                : <>
-                                    {/* TODO disabled !card.canDeposit */}
-                                    <MainButton
-                                        icon={<Topup />}
-                                        disabled={!currentBankCard.canDeposit}
-                                        onClick={openTopup}
-                                    >
-                                        {t('Top up')}
-                                    </MainButton>
+                            <MainButton
+                                icon={<Topup />}
+                                disabled={!currentBankCard.canDeposit && !(isActivation || isNeedActivation || isActivationFailed)}
+                                onClick={openTopup}
+                            >
+                                {t('Top up')}
+                            </MainButton>
 
-                                    <MainButton
-                                        icon={<CardDetails />}
-                                        onClick={openCardDetails}
-                                    >
-                                        {t('Details')}
-                                    </MainButton>
-                                </>}
-
-                            {/* <MainButton icon={<More />}>
-                                Еще
-                            </MainButton> */}
+                            <MainButton
+                                icon={<CardDetails />}
+                                onClick={openCardDetails}
+                            >
+                                {t('Details')}
+                            </MainButton>
                         </div>
 
                         <div className={styles.stack}>

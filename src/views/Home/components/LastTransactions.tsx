@@ -22,11 +22,7 @@ export function LastTransactions({ list, lastFourDigits, className }: LastTransa
         content = <div className={classNames(styles.list, className)}>
             {list.map((transaction) => <TransactionItem
                 key={transaction.id}
-                type={transaction.type}
-                amount={transaction.amount}
-                currency={transaction.currency}
-                createdAt={transaction.createdAt}
-                status={transaction.status}
+                transaction={transaction}
                 onClick={() => openTransactionDetails(transaction)}
             />)}
         </div>;

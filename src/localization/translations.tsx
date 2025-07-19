@@ -1,6 +1,11 @@
+import { citiesRu } from './geo/cities';
+import { countriesRu } from './geo/countries';
+
 export const translations = {
     ru: {
         translates: {
+            ...citiesRu,
+            ...countriesRu,
             'Welcome to ARBI Wallet': 'Добро пожаловать в ARBI Wallet',
             'Create your virtual card and pay for anything worldwide': 'Создай свою виртуальную карту и оплачивай что угодно по всему миру',
             'Top up your card balance online right in the app': 'Пополняй баланс карты онлайн прямо в приложении',
@@ -14,6 +19,18 @@ export const translations = {
             'Details': 'Реквизиты',
             'Balance': 'Баланс',
             'Card balance': 'Баланс карты',
+            'Not active': 'Карта не активна',
+            'Activate card': 'Активировать карту',
+            'Activation error': 'Ошибка активации',
+            'Card activation': 'Активация карты',
+            'Verifying': 'Проверяем',
+            'Activating': 'Активируем',
+            'Card is ready': 'Карта готова',
+            '≈ {{minutes}} min': '≈ {{minutes}} мин',
+            'Almost ready, waiting for<br/> confirmation from the bank...': 'Почти готово, ждем<br/> подтверждения от банка...',
+            'Reviewing your documents,<br/> and moving on...': 'Смотрим ваши документы,<br/> и идем далее...',
+            'We encountered an error while verifying your data. Please contact support': 'Мы обнаружили ошибку при проверке ваших данных. Пожалуйста, свяжитесь с поддержкой',
+            'Contact support': 'Обратиться в поддержку',
             'Card is being activated...': 'Карта активируется...',
             'This will take approximately 15 minutes.': 'Это займет примерно 15 мин.',
             'Add card to wallet': 'Добавить карту в кошелек',
@@ -80,15 +97,30 @@ export const translations = {
             'Email': 'Email',
             'Name': 'Имя',
             'LastName': 'Фамилия',
+            'Birthday': 'День рождения',
+            'Country': 'Страна',
+            'City': 'Город',
+            'Search': 'Поиск',
+            'Address': 'Адрес',
+            'Postcode': 'Почтовый индекс',
+            'Choose country': 'Выберите страну',
+            'Choose city': 'Выберите город',
             'DD/MM/YYYY': 'ДД/ММ/ГГГГ',
             'DD.MM.YYYY': 'ДД.ММ.ГГГГ',
+            'Loading data, one moment... 😁': 'Загружаем данные, один момент... 😁',
+            'Please introduce yourself, write as in your passport ✍️': 'Представьтесь пожалуйста, пишите как в паспорте ✍️',
+            'Specify your country and home address 🏠': 'Укажите вашу страну и домашний адрес 🏠',
+            'Please provide your email, we will send the codes 💌': 'Скажите ваш email,  будем слать коды 💌',
+            'Only your phone number is left and we get started 📞': 'Остался только ваш номер телефона и начинаем 📞',
             'Enter your email': 'Введите ваш email',
             'Invalid email format': 'Неверный формат email',
             'This email is not supported': 'Email не поддерживается',
+            'Enter only Latin letters, digits and symbols': 'Вводите только латинские буквы, цифры и символы',
             'Enter date in the format {{dateFormat}}': 'Введите дату в формате {{dateFormat}}',
             'Date must not be earlier than 1900': 'Дата должна быть не ранее 1900 года',
             'Date cannot be in the future': 'Дата не может быть в будущем',
-            'Enter only letters and the following symbols: \' (apostrophe), - (hyphen)': 'Вводите только буквы и следующие символы: \' (апостроф), - (дефис)',
+            'Enter only letters and the following symbols: \' (apostrophe), - (hyphen)': 'Вводите только латинские буквы (русские буквы недопустимы) и символы: \' (апостроф), - (дефис)',
+            'Enter a valid postal code (2–20 letters, digits, spaces or -)': 'Введите корректный почтовый индекс (2–20 букв, цифр, пробелов или -)',
             'Data correct?': 'Данные совпадают?',
             'Incorrect name and date of birth may restrict account functionality.': 'Неправильное имя и дата рождения могут привести к ограничению работы аккаунта.',
             'Confirm': 'Подтвердить',
@@ -107,9 +139,11 @@ export const translations = {
             'The card is applicable to most online merchants and it supports ApplePay and GooglePay.': 'Эта карта работает в большинстве онлайн-магазинов и поддерживает ApplePay и GooglePay',
             'Open Apple Wallet. Tap "+". Follow the instructions to add your card.': 'Откройте Apple Wallet. Нажмите «+». Следуйте инструкциям для добавления карты.',
             'Open Google Pay. Tap "Add card". Follow the on-screen instructions.': 'Откройте Google Pay. Нажмите «Добавить карту». Следуйте инструкциям на экране.',
-            'Supports Apple Pay, Google Pay, WeChat, and Alipay scenarios, and supports super large purchases.': 'Поддерживает Apple Pay, Google Pay, WeChat Pay и Alipay, а также крупные покупки.',
-            'Suitable for payment on Steam, Google Play, App Store, Roblox, Discord, YouTube and other platforms': 'Подходит для оплаты в Steam, Google Play, AppStore, Roblox, Discord, YouTube и на других платформах.',
-            'Suitable for hotel reservations, taxi payments and online purchases. Please note that Apple Pay and Google Wallet are not supported.': 'Подходит для бронирования гостиниц, оплаты такси и онлайн покупок. Не поддерживает Apple Pay / Google Wallet.'
+            'For online purchases in Google Ads, Facebook Ads, Chat GPT subscription and other services': 'Для онлайн покупок в Google Ads, Facebook Ads, подписки Chat GPT и других сервисов',
+            'Supports Apple Pay, WeChat, and Alipay scenarios, and supports super large purchases.': 'Поддерживает Apple Pay, WeChat Pay и Alipay, а также крупные покупки',
+            'Suitable for payment on Steam, Google Play, App Store, Roblox, Discord, YouTube and other platforms': 'Подходит для оплаты в Steam, Google Play, AppStore, Roblox, Discord, YouTube и на других платформах',
+            'Suitable for hotel reservations, taxi payments and online purchases. Please note that Apple Pay and Google Wallet are not supported.': 'Подходит для бронирования гостиниц, оплаты такси и онлайн покупок. Не поддерживает Apple Pay / Google Wallet.',
+            'Coming soon': 'Скоро доступно'
         }
     }
 } as const;

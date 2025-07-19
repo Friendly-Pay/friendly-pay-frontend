@@ -10,6 +10,27 @@ export function TelegramBackButton({ children }: PropsWithChildren) {
 
     useEffect(() => {
         const handleBackButtonClick = () => {
+            // Верификация сменяем сцены
+            // @TODO доделать (нужно сохранять значения в форме)
+            // if (location.pathname === '/verification/user') {
+            //     const { stage, setStage, resetVerification } = useVerificationStore.getState();
+            //     if (stage !== VerificationStage.PersonalData) {
+            //         const stagesOrder: VerificationStage[] = [
+            //             VerificationStage.Preloading,
+            //             VerificationStage.PersonalData,
+            //             VerificationStage.Address,
+            //             VerificationStage.Email,
+            //             VerificationStage.PhoneNumber,
+            //         ];
+            //         const currentIdx = stagesOrder.indexOf(stage);
+            //         if (currentIdx > 0) {
+            //             setStage(stagesOrder[currentIdx - 1]);
+            //             return;
+            //         }
+            //     }
+            //     resetVerification();
+            // }
+            // Обычная навигация
             navigate(-1);
         };
 

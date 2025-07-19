@@ -3,5 +3,8 @@
 }
 
 .body {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
     padding-bottom: calc(var(--safe-area-bottom) + 30px);
 }

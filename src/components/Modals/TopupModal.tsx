@@ -1,9 +1,11 @@
 import { TopupCurrency } from './TopupCurrency';
+import { TopupCurrencySoon } from './TopupCurrencySoon';
 import { useCardsStore } from '@/states/cards/store';
 import { usePaymentStore } from '@/states/payment/store';
 import { Modal, ModalBody } from '@/uikit';
 import { ModalClose } from '@/uikit/Modal/Close/ModalClose';
 import { ModalTitle } from '@/uikit/Modal/Title/ModalTitle';
+import rub from 'assets/rub.png?inline';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -41,6 +43,11 @@ export function TopupModal() {
                         onClick={() => handleSelectCurrency(item.id)}
                     />
                 ))}
+                <TopupCurrencySoon
+                    name='RUB'
+                    image={rub}
+                    text={t('Coming soon')}
+                />
             </ModalBody>
         </Modal>
     );

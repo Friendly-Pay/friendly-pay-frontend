@@ -32,4 +32,4 @@ export const CloudStorage = window.Telegram.WebApp.isVersionAtLeast('6.9')
     ? SupportedCloudStorage
     : UnsupportedCloudStorage;
 
-export const isCloudStorageAvailable = () => window.Telegram.WebApp.isVersionAtLeast('6.9');
+export const isCloudStorageAvailable = () => window.Telegram.WebApp.isVersionAtLeast('6.9') && !import.meta.env.DEV;

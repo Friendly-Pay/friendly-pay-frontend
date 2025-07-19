@@ -5,7 +5,7 @@
     bottom: 0;
     padding-bottom: var(--safe-area-bottom);
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     background-color: var(--color-white);
     border-top-left-radius: 18px;
     border-top-right-radius: 18px;

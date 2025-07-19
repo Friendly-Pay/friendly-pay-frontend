@@ -13,51 +13,47 @@ import { ConfigEnv, Plugin, ResolvedConfig, UserConfig } from 'vite';
 const PATH_SEP = path.sep;
 const UPLOAD_IGNORES: string[] = ['.DS_Store', 'index.html'];
 
-const translatePathFromFiles = (dir: string, files: string[]) => {
-    return files.map((file: string) => ({
+const translatePathFromFiles = (dir: string, files: string[]) =>
+    files.map((file: string) => ({
         path: file,
         name: file.replace(dir, '').split(PATH_SEP).join('/'),
     }));
-};
 
 const getDirectoryFilesRecursive = async (
     dir: string,
     ignores: ReadonlyArray<string> = []
-): Promise<{ path: string; name: string }[]> => {
-    return new Promise((resolve, reject) => {
-        readDir(dir, ignores, (error: Error, files: string[]) => {
-            if (error) {
-                reject(error);
-            } else {
-                resolve(translatePathFromFiles(dir, files));
-            }
+): Promise<{ path: string; name: string }[]> =>
+    new Promise((resolve, reject) => {
+        readDir(dir, ignores, (err, files) => {
+            if (err) reject(err);
+            else resolve(translatePathFromFiles(dir, files));
         });
     });
-};
 
-const clearReactFilesInRoot = async (s3Client: S3Client, bucket: string) => {
-    const listObjectsCommand = new ListObjectsCommand({
+const clearDirectory = async (
+    s3: S3Client,
+    bucket: string,
+    prefix = '',
+) => {
+    const listResp = await s3.send(new ListObjectsCommand({
         Bucket: bucket,
-    });
+        Prefix: prefix || undefined,
+    }));
 
-    const { Contents } = await s3Client.send(listObjectsCommand);
-    if (!Contents || Contents.length === 0) {
-        return;
-    }
-
-    const objectsToDelete = Contents.filter(({ Key }) => {
+    const objectsToDelete = listResp.Contents?.filter(({ Key }) => {
         if (!Key) return false;
+        if (Key.startsWith('guide/')) return false;
         if (Key.startsWith('guide/')) return false;
         if (Key.startsWith('assets/')) return true;
         return false;
-    });
+    }) || [];
 
     if (objectsToDelete.length > 0) {
         await Promise.all(
             objectsToDelete.map(({ Key }) => {
                 if (!Key) return;
                 const command = new DeleteObjectCommand({ Bucket: bucket, Key });
-                return s3Client.send(command);
+                return s3.send(command);
             })
         );
     }
@@ -71,7 +67,7 @@ export default function s3Upload(options: {
     accessKey: string;
     secretKey: string;
 }): Plugin {
-    let vite: ResolvedConfig;
+    let viteConfig: ResolvedConfig;
 
     return {
         name: 'vite-plugin-s3',
@@ -79,48 +75,52 @@ export default function s3Upload(options: {
         apply(_: UserConfig, { command }: ConfigEnv) {
             return command === 'build' && options.enabled;
         },
-        configResolved(config: ResolvedConfig) {
-            vite = config;
+        configResolved(config) {
+            viteConfig = config;
         },
         closeBundle: {
             async handler() {
-                if (!vite.build.ssr && options.enabled) {
-                    const allFiles = await getDirectoryFilesRecursive('dist', UPLOAD_IGNORES);
+                if (viteConfig.build.ssr || !options.enabled) return;
 
-                    const s3Client = new S3Client({
-                        credentials: {
-                            accessKeyId: options.accessKey,
-                            secretAccessKey: options.secretKey,
-                        },
-                        region: options.region,
-                        endpoint: options.endpoint,
-                        forcePathStyle: true,
-                    });
+                const files = await getDirectoryFilesRecursive('dist', UPLOAD_IGNORES);
+                const subDir = process.env.VITE_S3_SUBDIRECTORY
+                    ?.replace(/^\/|\/$/g, '') || '';
+                const prefix = subDir ? `${subDir}/` : '';
 
-                    await clearReactFilesInRoot(s3Client, options.bucket);
-                    for (const file of allFiles) {
-                        const fileContent = fs.readFileSync(file.path);
-                        const contentType = mimeTypes.lookup(file.name) || 'application/octet-stream';
-                        const contentDisposition = `inline; filename="${path.basename(file.name)}"`;
-                        const key = file.name.startsWith('/') ? file.name.slice(1) : file.name;
-                        const command = new PutObjectCommand({
-                            Bucket: options.bucket,
-                            Key: key,
-                            Body: fileContent,
-                            ContentType: contentType,
-                            ContentDisposition: contentDisposition,
-                            CacheControl: 'public, max-age=31536000, immutable'
-                        });
+                const s3 = new S3Client({
+                    credentials: {
+                        accessKeyId: options.accessKey,
+                        secretAccessKey: options.secretKey,
+                    },
+                    region: options.region,
+                    endpoint: options.endpoint,
+                    forcePathStyle: true,
+                });
 
-                        await s3Client.send(command);
-                        console.log('\x1b[90m%s\x1b[0m', `${file.name} uploaded`);
-                    }
+                await clearDirectory(s3, options.bucket, prefix);
 
-                    console.log(
-                        '\x1b[32m%s\x1b[0m',
-                        `✓ dist folder был загружен в корень бакета "${options.bucket}"`
-                    );
+                for (const file of files) {
+                    const body = fs.readFileSync(file.path);
+                    const contentType = mimeTypes.lookup(file.name) || 'application/octet-stream';
+                    const disposition = `inline; filename="${path.basename(file.name)}"`;
+                    const key = `${prefix}${file.name.replace(/^\//, '')}`;
+
+                    await s3.send(new PutObjectCommand({
+                        Bucket: options.bucket,
+                        Key: key,
+                        Body: body,
+                        ContentType: contentType,
+                        ContentDisposition: disposition,
+                        CacheControl: 'public, max-age=31536000, immutable',
+                    }));
+
+                    console.log('\x1b[90m%s\x1b[0m', `${key} uploaded`);
                 }
+
+                console.log(
+                    '\x1b[32m%s\x1b[0m',
+                    `✓ dist uploaded to ${prefix || 'root'} of bucket "${options.bucket}"`
+                );
             },
         },
     };
