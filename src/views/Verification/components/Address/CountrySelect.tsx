@@ -3,19 +3,20 @@ import { SelectModal } from '@/components/Modals/SelectModal';
 import { countries, Country, CountryOption } from '@/states/verification/config';
 import { useSupportedCountriesStore } from '@/states/verification/country';
 import { Input } from '@/uikit';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
 import styles from './CountrySelect.module.scss';
 
 type CountrySelectProps = {
     country: Country | null
+    initialCountryCode: string | null,
     tabIndex?: number
     className?: string
     onSelect: (country: Country) => void
 }
 
-export function CountrySelect({ country, tabIndex, className, onSelect }: CountrySelectProps) {
+export function CountrySelect({ country, initialCountryCode, tabIndex, className, onSelect }: CountrySelectProps) {
     const [t, i18n] = useTranslation();
     const [opened, setOpened] = useState(false);
     const supportedCountries = useSupportedCountriesStore(state => state.codes);
@@ -30,6 +31,19 @@ export function CountrySelect({ country, tabIndex, className, onSelect }: Countr
 
     const [searchTerm, setSearchTerm] = useState('');
     const [filteredCountries, setFilteredCountries] = useState<CountryOption[]>(countriesList);
+
+    useEffect(() => {
+        if (initialCountryCode) {
+            let country: Country | undefined;
+            const countryAvailable = supportedCountries.includes(initialCountryCode);
+            if (countryAvailable) {
+                country = countries.find(c => c.iso2 === initialCountryCode);
+            }
+            if (country) {
+                onSelect(country);
+            }
+        }
+    }, []);
 
     const filterCountries = (value: string) => {
         let m = countriesList;
