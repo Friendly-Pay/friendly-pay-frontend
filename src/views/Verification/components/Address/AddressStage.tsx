@@ -2,7 +2,7 @@ import { StageRoot } from '../Common/StageRoot';
 import { CitySelect } from './CitySelect';
 import { CountrySelect } from './CountrySelect';
 import { TelegramMainButton } from '@/components/common/TelegramMainButton';
-import { countries, Country } from '@/states/verification/config';
+import { Country } from '@/states/verification/config';
 import { useVerificationStore, VerificationStage } from '@/states/verification/store';
 import { Input, Text } from '@/uikit';
 import { blurFocusedInput } from '@/utils';
@@ -20,7 +20,7 @@ export function AddressStage() {
     const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
     const initialCountryCode = useVerificationStore(state => state.initialCountryCode);
 
-    const [country, setCountry] = useState<Country | null>(() => countries.find(c => c.iso2 === initialCountryCode) || null);
+    const [country, setCountry] = useState<Country | null>(null);
     const [cityCode, setCityCode] = useState<string | null>(null);
     const [address, setAddress] = useState('');
     const [addressError, setAddressError] = useState<string | undefined>();
@@ -121,6 +121,7 @@ export function AddressStage() {
 
             <CountrySelect
                 country={country}
+                initialCountryCode={initialCountryCode}
                 onSelect={handleCountryChange}
                 className={styles.field}
                 tabIndex={1}
