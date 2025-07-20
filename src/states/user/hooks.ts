@@ -8,6 +8,7 @@ import { FetchStatus } from '@/utils/api';
 import { useEffect } from 'react';
 
 export function useUserAuth() {
+    const urlParams = new URLSearchParams(window.location.search);
     const authData = useAuthStore(state => state.authData);
     const [setIsAuth, setAccessToken, setAuthFetchStatus] = useAuthStore(state => [
         state.setIsAuth,
@@ -18,7 +19,8 @@ export function useUserAuth() {
     const authSession = async () => {
         setAuthFetchStatus(FetchStatus.Pending);
         try {
-            const res = await authUser({ webAppData: authData! });
+            const referralId = urlParams.get('referral_id');
+            const res = await authUser({ webAppData: authData!, referralId });
             setAuthFetchStatus(FetchStatus.Fulfilled);
             setAccessToken(res.accessToken);
             return res.accessToken;
