@@ -17,7 +17,7 @@ export const createSocketConnection = (accessToken: string) => {
             withCredentials: true,
             skipNegotiation: true
         })
-        // .withAutomaticReconnect([0, 1_000, 3_000, ...Array(8).fill(3_000)])
+        .withAutomaticReconnect([])
         .configureLogging(import.meta.env.DEV ? LogLevel.Debug : LogLevel.None)
         .build();
 
