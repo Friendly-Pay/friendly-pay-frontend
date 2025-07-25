@@ -1,9 +1,12 @@
 import { TopupCurrency } from './TopupCurrency';
+import { TopupCurrencySoon } from './TopupCurrencySoon';
 import { useCardsStore } from '@/states/cards/store';
 import { usePaymentStore } from '@/states/payment/store';
 import { Modal, ModalBody } from '@/uikit';
 import { ModalClose } from '@/uikit/Modal/Close/ModalClose';
 import { ModalTitle } from '@/uikit/Modal/Title/ModalTitle';
+import axtBsc from 'assets/coins/axt_bsc.png?inline';
+import iban from 'assets/coins/iban.png?inline';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -43,6 +46,16 @@ export function TopupModal() {
                         onClick={() => handleSelectCurrency(item.id)}
                     />
                 ))}
+                <TopupCurrencySoon
+                    image={axtBsc}
+                    name='Axiom Token'
+                    text={t('Cooming soon')}
+                />
+                <TopupCurrencySoon
+                    image={iban}
+                    name='IBAN'
+                    text={t('Cooming soon')}
+                />
             </ModalBody>
         </Modal>
     );
