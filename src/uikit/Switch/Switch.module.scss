@@ -1,0 +1,87 @@
+.root {
+    display: inline-block;
+    width: 51px;
+    height: 31px;
+    isolation: isolate;
+    line-height: 31px;
+    position: relative;
+    -webkit-user-select: none;
+    user-select: none;
+    border-radius: 16px;
+
+
+    &::before {
+        content: "\200B";
+    }
+
+    &.disabled {
+        cursor: default;
+        opacity: .6;
+    }
+}
+
+.input {
+    -webkit-appearance: none;
+    appearance: none;
+    background-color: var(--color-fill-5);
+    border: none;
+    border-radius: inherit;
+    height: 100%;
+    left: 0;
+    margin: 0;
+    outline: none;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    transition: background-color .15s ease-in-out
+}
+
+.input+.thumb {
+    background-clip: padding-box;
+    background-color: #fff;
+    border: none;
+    border-radius: 50px;
+    box-shadow: 0 3px 1px 0 #0000000f, 0 3px 8px 0 #00000026;
+    box-sizing: border-box;
+    display: inline-flex;
+    height: 27px;
+    left: 0;
+    margin: 2px 0;
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    transform: translate(2px);
+    width: 27px;
+    z-index: 1;
+    transition: transform .15s ease-in-out, width .15s ease-in-out
+}
+
+.input:checked {
+    background-color: var(--color-primary);
+}
+
+.input:disabled {
+    opacity: 0.7;
+    pointer-events: none
+}
+
+.input:disabled:checked {
+    opacity: 0.85;
+}
+
+.input:checked+.thumb {
+    transform: translate(22px)
+}
+
+.input:not(.input:disabled) {
+    cursor: pointer
+}
+
+.input:active+.thumb {
+    transition-duration: 0;
+    width: 32px
+}
+
+.input:checked:active+.thumb {
+    transform: translate(17px)
+}

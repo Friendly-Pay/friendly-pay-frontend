@@ -25,6 +25,7 @@ const loadingAppearance = {
     transition: { ease: [0.27, 0, 0, 0.9], duration: 0.3 }
 };
 
+/** @deprecated */
 export function FixedBottomLoading({ text, className, children }: PropsWithChildren<FixedBottomLoadingProps>) {
     return (
         <motion.div

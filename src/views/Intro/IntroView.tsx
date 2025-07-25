@@ -2,7 +2,6 @@ import { CardStory } from './components/CardStory';
 import { StoriesProgress } from './components/Progress/StoriesProgress';
 import { WelcomeStory } from './components/WelcomeStory';
 import { MainLayout } from '@/components/common/MainLayout';
-import { useDeviceStore } from '@/states/device/state';
 import { useUserStore } from '@/states/user/store';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useLayoutEffect, useState } from 'react';
@@ -27,25 +26,22 @@ const storyAppearance = {
 
 export function IntroView() {
     const navigate = useNavigate();
-    const platform = useDeviceStore(state => state.platform);
 
     useLayoutEffect(() => {
+        const root = document.getElementById('root');
         const rootStyles = getComputedStyle(document.documentElement);
         const backgroundColor = rootStyles.getPropertyValue('--color-background').trim();
-        const backgroundPrimaryColor = rootStyles.getPropertyValue('--color-background-primary').trim();
-        if (platform === 'ios' || platform === 'android') {
-            window.Telegram.WebApp.setHeaderColor(backgroundPrimaryColor);
-            window.Telegram.WebApp.setBackgroundColor(backgroundPrimaryColor);
-            document.body.style.backgroundColor = backgroundPrimaryColor;
-            return () => {
-                window.Telegram.WebApp.setHeaderColor(backgroundColor);
-                window.Telegram.WebApp.setBackgroundColor(backgroundColor);
-                document.body.style.backgroundColor = '';
-            };
-        } else {
-            document.body.style.backgroundColor = backgroundPrimaryColor;
-            return () => document.body.style.backgroundColor = '';
-        }
+        const backgroundPrimaryColor = rootStyles.getPropertyValue('--color-background-primary').trim()
+        root!.style.backgroundColor = backgroundPrimaryColor;
+        document.body.style.backgroundColor = backgroundPrimaryColor;
+        window.Telegram.WebApp.setHeaderColor(backgroundPrimaryColor);
+        window.Telegram.WebApp.setBackgroundColor(backgroundPrimaryColor);
+        return () => {
+            root!.style.backgroundColor = '';
+            document.body.style.backgroundColor = '';
+            window.Telegram.WebApp.setHeaderColor(backgroundColor);
+            window.Telegram.WebApp.setBackgroundColor(backgroundColor);
+        };
     }, []);
 
     const count = 2;

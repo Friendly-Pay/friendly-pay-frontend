@@ -1,6 +1,5 @@
-import { languageCodeToLocale } from '@/localization/utils';
+import { useFormattedCurrencyParts } from '@/hooks/useFormattedCurrencyParts';
 import { useUserStore } from '@/states/user/store';
-import { supportsNarrowCurrencyDisplay } from '@/utils';
 import styles from './CurrencyAmountParts.module.scss';
 
 type CurrencyAmountPartsProps = {
@@ -10,12 +9,7 @@ type CurrencyAmountPartsProps = {
 
 export function CurrencyAmountParts({ value, currency }: CurrencyAmountPartsProps) {
     const languageCode = useUserStore(state => state.languageCode);
-    const formattedCurrencyParts = Intl.NumberFormat(languageCodeToLocale(languageCode), {
-        style: currency ? 'currency' : 'decimal',
-        currencyDisplay: supportsNarrowCurrencyDisplay() ? 'narrowSymbol' : 'symbol',
-        currency: currency,
-    }).formatToParts(typeof value === 'string' ? parseFloat(value) : value);
-
+    const formattedCurrencyParts = useFormattedCurrencyParts(value, currency, languageCode);
     return (
         <>
             {formattedCurrencyParts.map((part, index) => (

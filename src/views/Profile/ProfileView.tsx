@@ -1,69 +1,123 @@
+import { SettingsList } from './components/SettingsList';
 import { MainLayout } from '@/components/common/MainLayout';
 import { Avatar } from '@/components/User/Avatar';
 import { useUserStore } from '@/states/user/store';
 import { Text } from '@/uikit';
+import { formatPhoneNumber, formatUserFirstNameAndLastName, formatUsername, openWebviewLink } from '@/utils';
+import { useTranslation } from 'react-i18next';
 import styles from './ProfileView.module.scss';
 
-type ProfileViewProps = {
-}
-
-export function ProfileView({ }: ProfileViewProps) {
+export function ProfileView() {
+    const [t] = useTranslation();
     const user = useUserStore(state => state.user!);
-    const name = user.firstName || user.lastName || user.username;
+    const hasCompletedKyc = Boolean(user.address || user.country || user.postCode || user.phoneNumber || user.birthday || user.email || user.firstName || user.lastName);
+
+    let name: string | null;
+    if (hasCompletedKyc) {
+        name = formatUserFirstNameAndLastName(user.firstName!, user.lastName!);
+    } else if (user.username) {
+        name = formatUsername(user.username);
+    } else {
+        name = user.firstName || user.lastName;
+    }
+
+    const handleOpenLink = (e: React.MouseEvent<HTMLAnchorElement>) => {
+        e.preventDefault();
+        const url = e.currentTarget.href;
+        openWebviewLink(url);
+    };
+
     return (
-        <MainLayout>
-            <div className={styles.head}>
-                {user.avatar && <Avatar src={user.avatar} />}
-                <Text
-                    type='headline'
-                    align='center'
-                    weight='semibold'
-                    className={styles.name}
-                >{name}</Text>
-            </div>
-
-            <div className={styles.data}>
-                <div className={styles.item}>
+        <MainLayout className={styles.layout}>
+            <div className={styles.content}>
+                <div className={styles.head}>
+                    {user.avatar && <Avatar
+                        src={user.avatar}
+                        className={styles.avatar}
+                    />}
                     <Text
-                        type='bodyLarge'
-                        weight='medium'
-                        align='left'
-                        className={styles.value}
-                    >alex@gmail.com</Text>
-                    <Text
-                        type='caption'
-                        align='left'
-                        className={styles.text}
-                    >Email</Text>
+                        type='headline'
+                        align='center'
+                        weight='semibold'
+                        className={styles.name}
+                    >{name}</Text>
                 </div>
 
-                <div className={styles.item}>
-                    <Text
-                        type='bodyLarge'
-                        weight='medium'
-                        align='left'
-                        className={styles.value}
-                    >+7 920 800 00 08</Text>
-                    <Text
-                        type='caption'
-                        align='left'
-                        className={styles.text}
-                    >Номер телефона</Text>
+                <div className={styles.data}>
+                    <div className={styles.dataItem}>
+                        <Text
+                            type='bodyLarge'
+                            weight='medium'
+                            align='left'
+                            className={styles.value}
+                        >{user.email}</Text>
+                        <Text
+                            type='caption'
+                            align='left'
+                            className={styles.text}
+                        >{t('Email')}</Text>
+                    </div>
+
+                    <div className={styles.dataItem}>
+                        <Text
+                            type='bodyLarge'
+                            weight='medium'
+                            align='left'
+                            className={styles.value}
+                        >{formatPhoneNumber(user.phoneNumber)}</Text>
+                        <Text
+                            type='caption'
+                            align='left'
+                            className={styles.text}
+                        >{t('Phone number')}</Text>
+                    </div>
+
+                    <div className={styles.dataItem}>
+                        <Text
+                            type='bodyLarge'
+                            weight='medium'
+                            align='left'
+                            className={styles.value}
+                        >{hasCompletedKyc ? 'Basic' : t('Not completed')}</Text>
+                        <Text
+                            type='caption'
+                            align='left'
+                            className={styles.text}
+                        >{t('Verification level')}</Text>
+                    </div>
                 </div>
 
-                <a className={styles.item}>
+                <div className={styles.settings}>
                     <Text
-                        type='bodyLarge'
-                        weight='medium'
+                        weight='semibold'
                         align='left'
-                        className={styles.value}
-                    >Basic</Text>
+                        className={styles.title}
+                    >{t('Settings')}</Text>
+
+                    <SettingsList />
+                </div>
+
+                <div className={styles.legal}>
                     <Text
-                        type='caption'
+                        weight='semibold'
                         align='left'
-                        className={styles.text}
-                    >Уровень верификации</Text>
-                </a>
+                        className={styles.title}
+                    >{t('Information')}</Text>
+
+                    <div className={styles.legalList}>
+                        <a
+                            href='/'
+                            className={styles.link}
+                            onClick={handleOpenLink}
+                        >{t('User Agreement')}</a>
+
+                        <a
+                            href='/'
+                            className={styles.link}
+                            onClick={handleOpenLink}
+                        >{t('Privacy Policy')}</a>
+                    </div>
+                </div>
             </div>
         </MainLayout>
     );

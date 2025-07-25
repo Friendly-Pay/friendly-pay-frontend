@@ -1,10 +1,13 @@
 import { connectSocket, disconnectSocket } from '@/socket';
 import { useSocketStore } from '@/socket/store';
+import { OrderStorage } from '@/states/payment/storage';
 import { PaymentStatus, PurchaseOrder, TopupOrder, usePaymentStore } from '@/states/payment/store';
 import { HubConnectionState } from '@microsoft/signalr';
 import { useEffect, useRef } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { toast } from 'sonner';
+
+OrderStorage.cleanupExpired();
 
 const useSocketConnection = (status: PaymentStatus | null) => {
     const socketState = useSocketStore(state => state.socketState);
@@ -87,10 +90,10 @@ export const useTransactionStatusPooling = (
                 clearTimeout(timeout.current);
             }
         };
-    }, [poolingTransactionStatus]);
+    }, [poolingTransactionStatus, order?.transactionId]);
 };
 
-type PaymentType = 'topup' | 'pay-new-card'
+export type PaymentType = 'topup' | 'pay-new-card'
 
 export function PaymentController() {
     const topupOrder = usePaymentStore(state => state.topupOrder);
@@ -115,8 +118,17 @@ export function PaymentController() {
     useTransactionStatusPooling(paymentType, order);
 
     const location = useLocation();
-    if (status === PaymentStatus.Processing || status === PaymentStatus.Success || status === PaymentStatus.Failed) {
+
+    if (status === PaymentStatus.UserCompleteWaiting) {
         if (location.pathname === `/payments/${paymentType}`) {
+            return <Navigate
+                to={`/payments/${paymentType}/waiting`}
+                replace
+            />;
+        }
+    }
+    if (status === PaymentStatus.Processing || status === PaymentStatus.Success || status === PaymentStatus.Failed) {
+        if (location.pathname === `/payments/${paymentType}` || location.pathname === `/payments/${paymentType}/waiting`) {
             return <Navigate
                 to={`/payments/${paymentType}/result`}
                 replace
@@ -135,5 +147,5 @@ export function PaymentController() {
         }
     }
 
-    return <Outlet />;
+    return (<Outlet />);
 }

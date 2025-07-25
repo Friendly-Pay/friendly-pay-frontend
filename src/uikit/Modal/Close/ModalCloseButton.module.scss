@@ -1,0 +1,28 @@
+.close {
+    position: absolute;
+    top: 0px;
+    left: var(--safe-area-left);
+    align-items: center;
+    display: flex;
+    height: 44px;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
+    color: var(--color-primary);
+    // top: 20px;
+    // right: 20px;
+    // min-width: 28px;
+    // min-height: 28px;
+    // border-radius: 50%;
+    // display: flex;
+    // align-items: center;
+    // justify-content: center;
+    // cursor: pointer;
+    // z-index: 9999;
+
+    // svg {
+    //     width: 28px;
+    //     height: 28px;
+    //     color: var(--color-typo-primary-25);
+    // }
+}

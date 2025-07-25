@@ -1,0 +1,9 @@
+.root {
+    position: fixed;
+    left: var(--safe-area-left);
+    right: var(--safe-area-right);
+    bottom: calc(var(--safe-area-bottom) + 16px);
+    display: flex;
+    flex-direction: column;
+    will-change: transform, opacity;
+}

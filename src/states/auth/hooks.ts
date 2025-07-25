@@ -1,5 +1,6 @@
 import { useUserStore } from '../user/store';
 import { useAuthStore } from './store';
+import { getPreferredLanguage } from '@/localization';
 import { useEffect } from 'react';
 
 export function useAuthData() {
@@ -46,8 +47,11 @@ export function useAuthData() {
     useEffect(() => {
         const authData = getAuthData();
         if (authData) {
-            const language = getUserLanguage(authData);
-            setLanguageCode(language);
+            const preferredLanguage = getPreferredLanguage();
+            if (!preferredLanguage) {
+                const language = getUserLanguage(authData);
+                setLanguageCode(language);
+            }
             setAuthData(authData);
         }
     }, []);

@@ -1,4 +1,6 @@
 import axtCard from 'assets/cards/axt_card.png?inline';
+import axtVirtual from 'assets/cards/axt_virtual.png?inline';
+import axtVirtual2 from 'assets/cards/axt_virtual_2.png?inline';
 import { CSSProperties, PropsWithChildren } from 'react';
 import classNames from 'classnames';
 import styles from './CardDesign.module.scss';
@@ -30,10 +32,10 @@ export const cardDesign = {
         design: axtCard
     },
     [111018]: {
-        design: axtCard
+        design: axtVirtual
     },
     [111021]: {
-        design: axtCard
+        design: axtVirtual2
     },
     [111028]: {
         design: axtCard

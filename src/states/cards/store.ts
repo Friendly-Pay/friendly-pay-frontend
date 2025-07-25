@@ -38,6 +38,11 @@ export enum CardStatus {
     Frozen = 'Frozen'
 }
 
+export enum CardTransactionType {
+    DEPOSIT = 'deposit',
+    PAYMENT = 'payment'
+}
+
 export enum CardTransactionStatus {
     SUCCESS = 'success',
     FAILED = 'failed',
@@ -46,7 +51,7 @@ export enum CardTransactionStatus {
 
 export interface CardTransaction {
     id: number;
-    type: 'deposit' | 'payment';
+    type: CardTransactionType;
     status: CardTransactionStatus;
     amount: number;
     currency: string;
@@ -101,6 +106,7 @@ interface Actions {
     fetchCardDetails: () => Promise<CardDetailsResponse | void>;
     openTransactionDetails: (data: CardTransaction) => void;
     closeTransactionDetails: () => void;
+    resetTransactionDetails: () => void;
     activateCard: (data: ActivateCardData) => Promise<void>;
 }
 
@@ -235,12 +241,20 @@ export const useCardsStore = create<State & Actions>((set, get) => ({
         });
     },
     closeTransactionDetails: () => {
-        set({
+        set(state => ({
             transactionDetailsModal: {
-                data: null,
+                ...state.transactionDetailsModal,
                 opened: false
             }
-        });
+        }));
+    },
+    resetTransactionDetails: () => {
+        set(state => ({
+            transactionDetailsModal: {
+                ...state.transactionDetailsModal,
+                data: null
+            }
+        }));
     },
 
     activateCard: async (activateData) => {
@@ -262,6 +276,12 @@ export const useCardsStore = create<State & Actions>((set, get) => ({
         }
     }
 }));
+
+
+export const useBankCard = (cardId: number | null) => {
+    const myCards = useCardsStore(state => state.myCards);
+    return cardId && myCards ? myCards[cardId] : null;
+};
 
 export const useCurrentBankCard = () => {
     const myCards = useCardsStore(state => state.myCards);

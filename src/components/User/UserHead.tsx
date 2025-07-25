@@ -3,6 +3,7 @@ import { Avatar } from './Avatar';
 import { useUserStore } from '@/states/user/store';
 import { openTelegramLink } from '@/utils';
 import { PropsWithChildren } from 'react';
+import { useNavigate } from 'react-router-dom';
 import classNames from 'classnames';
 import styles from './UserHead.module.scss';
 
@@ -16,6 +17,11 @@ export function UserHead({ className, children }: PropsWithChildren<UserHeadProp
         openTelegramLink(import.meta.env.VITE_SUPPORT_URL);
     };
 
+    const navigate = useNavigate();
+    const handleOpenProfile = () => {
+        navigate('/user/profile');
+    };
+
     return (
         <div
             id='pageHead'
@@ -25,6 +31,7 @@ export function UserHead({ className, children }: PropsWithChildren<UserHeadProp
                 {avatar && <Avatar
                     src={avatar}
                     className={styles.avatar}
+                    onClick={handleOpenProfile}
                 />}
 
                 {children && <div className={styles.content}>
