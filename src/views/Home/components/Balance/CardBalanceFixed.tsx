@@ -1,7 +1,6 @@
-import { languageCodeToLocale } from '@/localization/utils';
+import { useFormattedCurrencyParts } from '@/hooks/useFormattedCurrencyParts';
 import { useUserStore } from '@/states/user/store';
 import { TextBlur } from '@/uikit';
-import { supportsNarrowCurrencyDisplay } from '@/utils';
 import { useLayoutEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
@@ -17,11 +16,7 @@ export function CardBalanceFixed({ value, currency }: CardBalanceFixedProps) {
     const [t] = useTranslation();
     const blurBalance = useUserStore(state => state.blurBalance);
     const languageCode = useUserStore(state => state.languageCode);
-    const formattedCurrencyParts = Intl.NumberFormat(languageCodeToLocale(languageCode), {
-        style: 'currency',
-        currencyDisplay: supportsNarrowCurrencyDisplay() ? 'narrowSymbol' : 'symbol',
-        currency: currency,
-    }).formatToParts(typeof value === 'string' ? parseFloat(value) : value);
+    const formattedCurrencyParts = useFormattedCurrencyParts(value, currency, languageCode);
 
     const [visible, setVisible] = useState(false);
     const balanceTriggered = useRef<boolean>(false);

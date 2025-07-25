@@ -1,6 +1,7 @@
 import s3Upload from './vite.s3.plugin';
 import react from '@vitejs/plugin-react-swc';
 import autoprefixer from 'autoprefixer';
+import path from 'path';
 import { defineConfig, loadEnv } from 'vite';
 import { createHtmlPlugin } from 'vite-plugin-html';
 import tsconfigPaths from 'vite-tsconfig-paths';
@@ -10,6 +11,7 @@ import tsconfigPaths from 'vite-tsconfig-paths';
 export default defineConfig(({ mode }) => {
     process.env = { ...process.env, ...loadEnv(mode, process.cwd()) };
 
+    const translationsDir = path.resolve(__dirname, 'src/localization/translates');
     const uploadToS3 = mode === 'production' && process.env.VITE_S3_UPLOAD === 'true';
     const baseUrl = uploadToS3 ? process.env.VITE_CDN_URL : undefined;
 
@@ -62,6 +64,9 @@ export default defineConfig(({ mode }) => {
             rollupOptions: {
                 output: {
                     manualChunks(id) {
+                        if (id.startsWith(translationsDir)) {
+                            return 'translations';
+                        }
                         if (id.includes('node_modules')) {
                             if (id.includes('react') || id.includes('react-dom')) {
                                 return 'react-vendor';

@@ -228,5 +228,5 @@ export const countriesEn = {
     WF: 'Wallis and Futuna',
     YE: 'Yemen',
     ZM: 'Zambia',
-    ZW: 'Zimbabwe'
+    ZW: 'Zimbabwe',
 } as const;

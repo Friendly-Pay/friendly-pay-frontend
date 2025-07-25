@@ -1,8 +1,7 @@
-import { languageCodeToLocale } from '@/localization/utils';
+import { useFormattedCurrencyParts } from '@/hooks/useFormattedCurrencyParts';
 import { CardStatus } from '@/states/cards/store';
 import { useUserStore } from '@/states/user/store';
 import { Text, TextBlur } from '@/uikit';
-import { supportsNarrowCurrencyDisplay } from '@/utils';
 import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
 import styles from './CardBalance.module.scss';
@@ -22,11 +21,7 @@ export function CardBalance({ value, currency, cardStatus, className }: CardBala
     const [t] = useTranslation();
     const blurBalance = useUserStore(state => state.blurBalance);
     const languageCode = useUserStore(state => state.languageCode);
-    const formattedCurrencyParts = Intl.NumberFormat(languageCodeToLocale(languageCode), {
-        style: 'currency',
-        currencyDisplay: supportsNarrowCurrencyDisplay() ? 'narrowSymbol' : 'symbol',
-        currency: currency,
-    }).formatToParts(typeof value === 'string' ? parseFloat(value) : value);
+    const formattedCurrencyParts = useFormattedCurrencyParts(value, currency, languageCode);
 
     const isNeedActivation = cardStatus === CardStatus.NeedActivation;
     const isActivationFailed = cardStatus === CardStatus.ActivationFailed || cardStatus === CardStatus.VerificationFailed;

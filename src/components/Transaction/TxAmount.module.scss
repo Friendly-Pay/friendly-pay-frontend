@@ -1,0 +1,12 @@
+.amount {
+    width: auto;
+    position: relative;
+
+    &.deposit {
+        color: var(--color-green);
+    }
+
+    &.failed {
+        color: var(--color-red);
+    }
+}

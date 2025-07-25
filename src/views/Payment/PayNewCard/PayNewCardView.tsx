@@ -1,6 +1,6 @@
+import { BottomFixedContainer } from '@/components/common/BottomFixedContainer';
 import { MainLayout } from '@/components/common/MainLayout';
 import { Image } from '@/components/Image/Image';
-import { FixedBottomLoading } from '@/components/Loading/FixedBottomLoading';
 import { CardPrice } from '@/components/Payment/Head/CardPrice';
 import { PaymentHead } from '@/components/Payment/Head/PaymentHead';
 import { PurchaseCard } from '@/components/Payment/Head/PurchaseCard';
@@ -10,7 +10,7 @@ import { languageCodeToLocale } from '@/localization/utils';
 import { useCardsStore } from '@/states/cards/store';
 import { PaymentStatus, usePaymentPurchaseCurrency, usePaymentStore } from '@/states/payment/store';
 import { useUserStore } from '@/states/user/store';
-import { Line, Text } from '@/uikit';
+import { Button, Line, Text } from '@/uikit';
 import { formatTokenCurrency } from '@/utils';
 import { useTranslation } from 'react-i18next';
 import { Navigate } from 'react-router-dom';
@@ -27,6 +27,14 @@ export function PayNewCardView() {
     const order = usePaymentStore(state => state.purchaseOrder);
     const status = usePaymentStore(state => state.purchaseStatus);
 
+    const handleCancel = () => {
+        usePaymentStore.getState().cancelCardPurchase();
+    };
+
+    const handleDone = () => {
+        usePaymentStore.getState().userCompleteWaitingCardPurchase();
+    };
+
     if (!purchaseCurrency) {
         return <Navigate
             to='/'
@@ -36,13 +44,6 @@ export function PayNewCardView() {
 
     return (
         <MainLayout>
-            {import.meta.env.DEV && <button
-                style={{ position: 'absolute', top: '0', left: '0' }}
-                onClick={() => usePaymentStore.getState().completeCardPurchase(
-                    usePaymentStore.getState().purchaseOrder!.transactionId
-                )}
-            >Confirm</button>}
-
             <div className={styles.head}>
                 <Text
                     type='headline'
@@ -105,7 +106,22 @@ export function PayNewCardView() {
                     }}
                 />
 
-                {status === PaymentStatus.Waiting && <FixedBottomLoading text={t('Waiting for payment...')} />}
+                {!(status === PaymentStatus.Idle || status === PaymentStatus.Creating) && <BottomFixedContainer className={styles.buttons}>
+                    <Button
+                        view='secondary'
+                        className={styles.button}
+                        onClick={handleCancel}
+                    >
+                        {t('Cancel')}
+                    </Button>
+                    <Button
+                        view='primary'
+                        className={styles.button}
+                        onClick={handleDone}
+                    >
+                        {t('Done')}
+                    </Button>
+                </BottomFixedContainer>}
             </div>
         </MainLayout >
     );

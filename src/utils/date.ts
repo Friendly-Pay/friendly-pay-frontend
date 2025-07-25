@@ -1,3 +1,5 @@
+import i18next from 'i18next';
+
 const getDayLabel = (dateInput: Date | string | number): string => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -6,17 +8,23 @@ const getDayLabel = (dateInput: Date | string | number): string => {
     const targetDate = new Date(dateInput);
     targetDate.setHours(0, 0, 0, 0);
     if (targetDate.getTime() === today.getTime()) {
-        return 'today';
+        return i18next.t('Today');
     } else if (targetDate.getTime() === yesterday.getTime()) {
-        return 'yesterday';
+        return i18next.t('Yesterday');
     }
-    return 'once';
+    const supported = Intl.DateTimeFormat.supportedLocalesOf(i18next.language);
+    const locale = supported.length > 0 ? supported[0] : 'en';
+    const dateDay = targetDate.getDate();
+    const dateParts = new Intl.DateTimeFormat(locale, { day: 'numeric', month: 'long' }).formatToParts(targetDate);
+    const dateMonth = dateParts.find(p => p.type === 'month')?.value || new Intl.DateTimeFormat(locale, { month: 'long' }).format(targetDate);
+    const dateYear = targetDate.getFullYear();
+    return dateYear === today.getFullYear() ? `${dateDay} ${dateMonth}` : `${dateDay} ${dateMonth}, ${dateYear}`;
 };
 
 export const formatDateWithLabel = (dateInput: Date): string => {
     const hours = String(dateInput.getHours()).padStart(2, '0');
     const minutes = String(dateInput.getMinutes()).padStart(2, '0');
-    return `${getDayLabel(dateInput)} at ${hours}:${minutes}`;
+    return `${getDayLabel(dateInput)} ${i18next.t('at')} ${hours}:${minutes}`;
 };
 
 export const formatCardExpiration = (unixTimestamp: number): string => {

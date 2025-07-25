@@ -6,7 +6,6 @@ import { Button } from '@/uikit';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'sonner';
 import styles from './CardActivation.module.scss';
 
 type CardActivationProps = {
@@ -60,8 +59,9 @@ export function CardActivation({ cardId, status }: CardActivationProps) {
             await useCardsStore.getState().loadMyCards();
             window.Telegram.WebApp.HapticFeedback.notificationOccurred('success');
         } catch (error) {
-            console.error('Card activation failed', error);
-            toast.error('Card activation failed');
+            console.error(error);
+            setCardId(cardId);
+            navigate('/verification/user/error');
         } finally {
             setLoading(false);
         }

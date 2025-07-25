@@ -1,6 +1,7 @@
 import { CityItem } from './CityItem';
 import { SelectModal } from '@/components/Modals/SelectModal';
-import { cities, CityOption } from '@/states/verification/config';
+import { useSupportedCitiesStore } from '@/states/verification/city';
+import { CityOption } from '@/states/verification/config';
 import { Input } from '@/uikit';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -18,15 +19,16 @@ type CitySelectProps = {
 export function CitySelect({ cityCode, countryCode, tabIndex, className, onSelect }: CitySelectProps) {
     const { t } = useTranslation();
     const [opened, setOpened] = useState(false);
+    const supportedCities = useSupportedCitiesStore(state => state.cities);
 
     const citiesList = useMemo(() => {
-        return cities
-            .filter((c) => c.country === countryCode)
-            .map((c) => ({
-                code: c.code,
-                label: t(c.code),
-            })) as CityOption[];
-    }, [countryCode, t]);
+        if (!supportedCities) return [];
+        const cities = supportedCities[countryCode];
+        return Object.values(cities).map((code) => ({
+            code: code,
+            label: t(code),
+        })) as CityOption[];
+    }, [supportedCities, countryCode, t]);
 
     const [searchTerm, setSearchTerm] = useState('');
     const [filteredCities, setFilteredCities] = useState<CityOption[]>(citiesList);

@@ -1,104 +1,166 @@
 .root {
+    position: relative;
     display: flex;
     align-items: center;
-    padding: 10px 0;
     user-select: none;
-    column-gap: 20px;
+    cursor: pointer;
+    color: var(--color-typo-primary);
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-appearance: none;
+    appearance: none;
+    background: none;
+    border: 0;
+    text-decoration: none;
+    padding: 14px 0;
 }
 
-.icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 42px;
-    height: 42px;
+.txIcon {
     flex-shrink: 0;
-    border-radius: 18px;
-}
-
-.root.deposit {
-    .icon {
-        background-color: #4EC269;
-    }
-
-    .amount {
-        color: #4EC269;
-    }
-}
-
-.root.payment {
-    .icon {
-        background-color: #202022;
-    }
-}
-
-.root.failed {
-    .icon {
-        background-color: var(--color-red);
-    }
-
-    .amount {
-        color: var(--color-red);
-    }
-}
-
-.root.pending {
-    .amount {
-        color: var(--color-typo-primary-40);
-    }
-}
-
-.amount {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
 }
 
 .content {
-    flex: 1 1 auto;
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    flex-grow: 1;
+    overflow: hidden;
+    margin-left: 16px;
+}
+
+.data {
+    align-items: flex-start;
+    display: flex;
     justify-content: space-between;
+
+    &+.data {
+        margin-top: 4px;
+    }
 }
 
-.type {
-    display: flex;
-    flex-flow: column nowrap;
-}
-
-.title {
+.title,
+.date {
+    overflow: hidden;
     white-space: nowrap;
-    margin-bottom: 4px;
+    text-overflow: ellipsis;
+    flex-shrink: 7;
 }
 
 .date {
-    color: var(--color-typo-primary-60);
-    white-space: nowrap;
+    max-width: 70%;
+    color: var(--color-typo-primary-40);
 }
 
-.warning {
-    color: var(--color-red);
-    width: 16px;
-    height: 16px;
+.txAmount,
+.txStatus {
+    margin-left: 8px;
     flex-shrink: 0;
-    margin-right: 6px;
-
-    svg {
-        display: block;
-        width: 100%;
-        height: 100%;
-    }
 }
 
-.clock {
-    width: 16px;
-    height: 16px;
-    flex-shrink: 0;
-    margin-right: 6px;
-
-    svg {
-        display: block;
-        width: 100%;
-        height: 100%;
-    }
+.txAmount {
+    margin-left: 16px;
 }
+
+
+// .root {
+//     display: flex;
+//     align-items: center;
+//     padding: 10px 0;
+//     user-select: none;
+//     column-gap: 20px;
+// }
+
+// .icon {
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+//     width: 42px;
+//     height: 42px;
+//     flex-shrink: 0;
+//     border-radius: 18px;
+// }
+
+// .root.deposit {
+//     .icon {
+//         background-color: #4EC269;
+//     }
+
+//     .amount {
+//         color: #4EC269;
+//     }
+// }
+
+// .root.payment {
+//     .icon {
+//         background-color: #202022;
+//     }
+// }
+
+// .root.failed {
+//     .icon {
+//         background-color: var(--color-red);
+//     }
+
+//     .amount {
+//         color: var(--color-red);
+//     }
+// }
+
+// .root.pending {
+//     .amount {
+//         color: var(--color-typo-primary-40);
+//     }
+// }
+
+// .amount {
+//     display: flex;
+//     align-items: center;
+//     justify-content: flex-end;
+// }
+
+// .content {
+//     flex: 1 1 auto;
+//     display: flex;
+//     align-items: center;
+//     justify-content: space-between;
+// }
+
+// .type {
+//     display: flex;
+//     flex-flow: column nowrap;
+// }
+
+// .title {
+//     white-space: nowrap;
+//     margin-bottom: 4px;
+// }
+
+// .date {
+//     color: var(--color-typo-primary-60);
+//     white-space: nowrap;
+// }
+
+// .warning {
+//     color: var(--color-red);
+//     width: 16px;
+//     height: 16px;
+//     flex-shrink: 0;
+//     margin-right: 6px;
+
+//     svg {
+//         display: block;
+//         width: 100%;
+//         height: 100%;
+//     }
+// }
+
+// .clock {
+//     width: 16px;
+//     height: 16px;
+//     flex-shrink: 0;
+//     margin-right: 6px;
+
+//     svg {
+//         display: block;
+//         width: 100%;
+//         height: 100%;
+//     }
+// }

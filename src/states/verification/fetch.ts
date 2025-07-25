@@ -1,6 +1,11 @@
 import { apiClient } from '@/utils/api';
 import axios from 'axios';
 
+export const fetchSupportedCities = async () => {
+    const res = await apiClient.get<{ code: string, country: string }[]>('/common/cities/list');
+    return res.data;
+};
+
 /** @returns iso2 */
 export const fetchSupportedCountries = async () => {
     const res = await apiClient.get<string[]>('/common/countries/list');
