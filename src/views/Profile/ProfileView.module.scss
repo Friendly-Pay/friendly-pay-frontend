@@ -1,0 +1,90 @@
+.layout {
+    display: flex;
+    flex-direction: column;
+}
+
+.content {
+    padding: 24px 0 60px;
+}
+
+.head {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.avatar {
+    width: 86px;
+    height: 86px;
+}
+
+.name {
+    margin-top: 16px;
+}
+
+.data {
+    display: flex;
+    flex-direction: column;
+    padding: 6px 20px;
+    background-color: var(--color-fill-5);
+    border-radius: 18px;
+}
+
+.dataItem {
+    display: flex;
+    flex-direction: column;
+    padding: 18px 0;
+
+    &+.dataItem {
+        border-top: 1px solid rgba(0, 0, 0, 0.1);
+    }
+}
+
+.text {
+    color: var(--color-typo-primary-60);
+}
+
+.value {
+    color: var(--color-typo-primary);
+    margin-bottom: 4px;
+}
+
+.settings,
+.legal {
+    display: flex;
+    flex-direction: column;
+}
+
+.settings,
+.legal {
+    margin-top: 44px;
+}
+
+.settings+.legal {
+    margin-top: 32px;
+}
+
+.title {
+    color: var(--color-typo-primary-60);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    font-size: 11px;
+}
+
+.link {
+    color: var(--color-primary);
+    font-family: inherit;
+    pointer-events: all;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    text-decoration: none;
+    user-select: none;
+    padding: 12px 0;
+}
+
+.legalList {
+    display: flex;
+    flex-direction: column;
+}

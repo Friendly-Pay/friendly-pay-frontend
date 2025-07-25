@@ -8,39 +8,36 @@ export function TelegramBackButton({ children }: PropsWithChildren) {
     const location = useLocation();
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const handleBackButtonClick = () => {
-            // Верификация сменяем сцены
-            // @TODO доделать (нужно сохранять значения в форме)
-            // if (location.pathname === '/verification/user') {
-            //     const { stage, setStage, resetVerification } = useVerificationStore.getState();
-            //     if (stage !== VerificationStage.PersonalData) {
-            //         const stagesOrder: VerificationStage[] = [
-            //             VerificationStage.Preloading,
-            //             VerificationStage.PersonalData,
-            //             VerificationStage.Address,
-            //             VerificationStage.Email,
-            //             VerificationStage.PhoneNumber,
-            //         ];
-            //         const currentIdx = stagesOrder.indexOf(stage);
-            //         if (currentIdx > 0) {
-            //             setStage(stagesOrder[currentIdx - 1]);
-            //             return;
-            //         }
-            //     }
-            //     resetVerification();
-            // }
-            // Обычная навигация
-            navigate(-1);
-        };
+    const handleBackButtonClick = () => {
+        // Верификация сменяем сцены
+        // @TODO доделать (нужно сохранять значения в форме)
+        // if (location.pathname === '/verification/user') {
+        //     const { stage, setStage, resetVerification } = useVerificationStore.getState();
+        //     if (stage !== VerificationStage.PersonalData) {
+        //         const stagesOrder: VerificationStage[] = [
+        //             VerificationStage.Preloading,
+        //             VerificationStage.PersonalData,
+        //             VerificationStage.Address,
+        //             VerificationStage.Email,
+        //             VerificationStage.PhoneNumber,
+        //         ];
+        //         const currentIdx = stagesOrder.indexOf(stage);
+        //         if (currentIdx > 0) {
+        //             setStage(stagesOrder[currentIdx - 1]);
+        //             return;
+        //         }
+        //     }
+        //     resetVerification();
+        // }
+        navigate(-1);
+    };
 
+    useEffect(() => {
         window.Telegram.WebApp.onEvent('backButtonClicked', handleBackButtonClick);
 
         if (location.pathname !== previousRoute) {
             const onHomePage = location.pathname === '/';
-            const onResultPage = location.pathname === '/payments/topup/result' || location.pathname === '/payments/pay-new-card/result';
-
-            // Когда нет карт
+            const onResultPage = location.pathname.startsWith('/payments');
             const onHomeNewProductPage = useCardsStore.getState().myCardsCount === 0 && location.pathname === '/new-product';
 
             if (onHomePage || onHomeNewProductPage || onResultPage) {
@@ -57,5 +54,11 @@ export function TelegramBackButton({ children }: PropsWithChildren) {
         };
     }, [location, navigate]);
 
-    return <>{children}</>;
+    return <>
+        {import.meta.env.DEV && location.pathname !== '/' && <div
+            style={{ position: 'absolute', top: 'var(--safe-are-top)', left: '0', zIndex: '9999' }}
+            onClick={handleBackButtonClick}
+        >back</div>}
+        {children}
+    </>;
 }

@@ -1,6 +1,6 @@
 import { TopupModal } from '../../components/Modals/TopupModal';
 import { CardDetailsModal } from '@/components/Modals/CardDetailsModal';
-// import { TransactionDetailsModal } from '@/components/Modals/TransactionDetailsModal';
+import { TransactionDetailsModal } from '@/components/Modals/Transaction/TransactionDetailsModal';
 import { useCardsStore } from '@/states/cards/store';
 import { useQuery } from '@tanstack/react-query';
 import { PropsWithChildren, useEffect } from 'react';
@@ -30,9 +30,10 @@ export function CardController({ children }: PropsWithChildren) {
     });
 
     useEffect(() => {
-        const { topupModal, detailsModal, closeTopupModal, closeCardDetails } = useCardsStore.getState();
+        const { topupModal, detailsModal, transactionDetailsModal, closeTopupModal, closeCardDetails, closeTransactionDetails } = useCardsStore.getState();
         if (topupModal.opened) closeTopupModal();
         if (detailsModal.opened) closeCardDetails();
+        if (transactionDetailsModal.opened) closeTransactionDetails();
     }, [location]);
 
     return (<>
@@ -41,7 +42,7 @@ export function CardController({ children }: PropsWithChildren) {
         {selectedCardId && <>
             <TopupModal />
             <CardDetailsModal />
-            {/* <TransactionDetailsModal /> */}
+            <TransactionDetailsModal />
         </>}
     </>);
 }

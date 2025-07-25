@@ -25,7 +25,6 @@
     width: 100%;
     display: flex;
     flex-flow: column;
-    padding: 20px var(--safe-area-right) 0 var(--safe-area-left);
     background-color: var(--color-modal-background);
     border-radius: 20px 20px 0px 0px;
     will-change: transform;
@@ -39,12 +38,19 @@
     width: 100%;
     display: flex;
     flex-flow: column;
-    height: calc(100% - var(--safe-area-top) - 70px);
-    height: calc(100dvh - var(--safe-area-top) - 70px);
-    height: calc(100svh - var(--safe-area-top) - 70px);
-    padding: 20px var(--safe-area-right) var(--safe-area-bottom) var(--safe-area-left);
+    height: calc(100% - var(--safe-area-top) - 16px);
+    height: calc(100dvh - var(--safe-area-top) - 16px);
+    height: calc(100svh - var(--safe-area-top) - 16px);
     background-color: var(--color-modal-background);
     z-index: 1000;
     border-radius: 20px 20px 0px 0px;
     will-change: transform;
+}
+
+.box.padding {
+    padding: 24px var(--safe-area-right) 0 var(--safe-area-left);
+
+    &.fullscreen {
+        padding: 24px var(--safe-area-right) var(--safe-area-bottom) var(--safe-area-left);
+    }
 }

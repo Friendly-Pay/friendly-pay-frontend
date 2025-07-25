@@ -15,6 +15,25 @@ export interface UserRes {
     postCode: string | null;
     verificationLevel: 'None' | 'Base';
     status: 'Active' | 'Blocked';
+    transactionType: 'Purchase' | 'Deposit' | null;
+    purchaseTransaction: InitialPurchaseOrder | null;
+    depositTransaction: InitialTopupOrder | null;
+}
+
+export interface InitialPurchaseOrder {
+    transactionId: number;
+    cardTypeId: number;
+    address: string;
+    expireAt: number;
+    amount: number;
+    currency: string;
+}
+
+export interface InitialTopupOrder {
+    cardId: number;
+    transactionId: number;
+    address: string;
+    expireAt: number;
 }
 
 export const authUser = async ({ webAppData, referralId }: { webAppData: string, referralId: string }) => {

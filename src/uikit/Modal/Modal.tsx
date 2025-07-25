@@ -7,6 +7,7 @@ import styles from './Modal.module.scss';
 
 export type ModalProps = {
     isOpen: boolean
+    padding?: boolean
     fullscreen?: boolean
     onClose?: () => void
     onAnimationCompleted?: () => void
@@ -43,7 +44,7 @@ const portalRoot = typeof window !== 'undefined'
     ? document.getElementById('modal-elements') || document.body
     : null;
 
-export function Modal({ isOpen, onClose, onAnimationCompleted, fullscreen, children }: PropsWithChildren<ModalProps>) {
+export function Modal({ isOpen, onClose, onAnimationCompleted, padding = true, fullscreen, children }: PropsWithChildren<ModalProps>) {
     const scrollableBodyRef = useRef<HTMLDivElement>(null);
     const contextProvider: ModalState = useMemo(() => ({
         isOpen,
@@ -74,7 +75,7 @@ export function Modal({ isOpen, onClose, onAnimationCompleted, fullscreen, child
 
                     <motion.div
                         {...boxAnim}
-                        className={classNames(styles.box, fullscreen && styles.fullscreen)}
+                        className={classNames(styles.box, padding && styles.padding, fullscreen && styles.fullscreen)}
                         onAnimationComplete={onAnimationCompleted}
                     >
                         <ModalContext.Provider value={contextProvider}>

@@ -1,0 +1,32 @@
+.title {
+    margin-bottom: 14px;
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+}
+
+.item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 0;
+}
+
+.content {
+    display: flex;
+    align-items: center;
+    flex-shrink: 1;
+    width: 100%;
+}
+
+.emoji {
+    font-size: 20px;
+    margin-right: 12px;
+}
+
+.icon {
+    color: var(--color-typo-primary-25);
+    flex-shrink: 0;
+}

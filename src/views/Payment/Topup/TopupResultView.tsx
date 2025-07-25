@@ -1,81 +1,98 @@
+import { CenteredContent } from '../components/CenteredContent';
+import { PaymentIcon } from '../components/PaymentIcon';
 import { MainLayout } from '@/components/common/MainLayout';
-import { Clock } from '@/components/Icons/Clock';
+import { ClockFill } from '@/components/Icons/Clock';
 import { TopupBold } from '@/components/Icons/Topup';
-import { CurrencyAmountParts } from '@/components/Payment/CurrencyAmountParts';
-import { useCurrentBankCard } from '@/states/cards/store';
-import { usePaymentStore } from '@/states/payment/store';
+import { useFormattedCurrencyParts } from '@/hooks/useFormattedCurrencyParts';
+import { useBankCard } from '@/states/cards/store';
+import { PaymentStatus, usePaymentStore } from '@/states/payment/store';
+import { useUserStore } from '@/states/user/store';
 import { Button, Text } from '@/uikit';
 import { formatCardLastFourDigits } from '@/utils';
+import { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import styles from './TopupResultView.module.scss';
 
 export function TopupResultView() {
     const [t] = useTranslation();
-    const bankCard = useCurrentBankCard()!;
+    const cardId = usePaymentStore(state => state.topupSelectedCardId);
+    const bankCard = useBankCard(cardId);
+
     const order = usePaymentStore(state => state.topupOrder!);
+    const status = usePaymentStore(state => state.topupStatus);
+
+    const languageCode = useUserStore(state => state.languageCode);
+    const formattedCurrencyParts = useFormattedCurrencyParts(order.receivedAmount || '0', order.receivedCurrency || undefined, languageCode);
 
     const navigate = useNavigate();
-    const handleContinue = () => {
+    const handleContinue = useCallback(() => {
         navigate('/');
         usePaymentStore.getState().resetTopup();
-    };
+    }, [navigate]);
+
+    useEffect(() => {
+        window.Telegram.WebApp.HapticFeedback.notificationOccurred('success');
+    }, []);
 
     return (
-        <MainLayout fullSpace>
-            <div className={styles.centered}>
-                <Text
-                    type='caption'
-                    align='center'
-                    weight='regular'
-                    className={styles.label}
-                >
-                    {t('Top-up in progress')}
-                </Text>
+        <MainLayout>
+            <div className={styles.wrap}>
+                <CenteredContent className={styles.content}>
+                    {bankCard?.number && <Text
+                        type='caption'
+                        align='center'
+                        weight='medium'
+                        className={styles.bankAccount}
+                    >
+                        {t('Account')} <span>{formatCardLastFourDigits(bankCard.number)}</span>
+                    </Text>}
 
-                <div className={styles.icon}>
-                    <div className={styles.topup}><TopupBold /></div>
-                    <div className={styles.clock}><Clock /></div>
-                </div>
+                    <PaymentIcon className={styles.icon}>
+                        <TopupBold />
+                    </PaymentIcon>
 
-                <Text
-                    type='body'
-                    align='center'
-                    weight='semibold'
-                    className={styles.card}
-                >
-                    {t('Card')} <span>{formatCardLastFourDigits(bankCard.number!)}</span>
-                </Text>
+                    {Boolean(order.receivedAmount && order.receivedCurrency) && <Text
+                        type='headlineLarge'
+                        align='center'
+                        weight='semibold'
+                        className={styles.amount}
+                    >
+                        +{formattedCurrencyParts.map((part, index) => (
+                            <span
+                                key={index}
+                                className={styles[part.type]}
+                            >
+                                {part.value}
+                            </span>
+                        ))}
+                    </Text>}
 
-                {Boolean(order.receivedAmount && order.receivedCurrency) && <Text
-                    type='headlineExtraLarge'
-                    align='center'
-                    weight='semibold'
-                    className={styles.amount}
-                >
-                    <CurrencyAmountParts
-                        value={order.receivedAmount!}
-                        currency={order.receivedCurrency!}
-                    />
-                </Text>}
+                    {status === PaymentStatus.Processing && <Text
+                        weight='regular'
+                        className={styles.status}
+                    >
+                        <ClockFill />
+                        <div>{t('Top-up in progress')}</div>
+                    </Text>}
 
-                <Text
-                    type='caption'
-                    align='center'
-                    weight='regular'
-                    className={styles.label}
+                    <Text
+                        align='center'
+                        weight='regular'
+                        className={styles.text}
+                    >
+                        {t('Funds will be credited to your account after processing is complete')}
+                    </Text>
+                </CenteredContent>
+
+                <Button
+                    view='primary'
+                    className={styles.button}
+                    onClick={handleContinue}
                 >
-                    {t('As soon as the funds are credited, we will immediately send you a notification')}
-                </Text>
+                    {t('Back to home')}
+                </Button>
             </div>
-
-            <Button
-                view='primary'
-                className={styles.button}
-                onClick={handleContinue}
-            >
-                {t('Continue')}
-            </Button>
         </MainLayout>
     );
 }

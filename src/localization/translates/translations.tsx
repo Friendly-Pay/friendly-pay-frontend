@@ -1,11 +1,12 @@
-import { citiesRu } from './geo/cities';
-import { countriesRu } from './geo/countries';
 import { citiesEn } from './geo/en/cities';
 import { countriesEn } from './geo/en/countries';
-import { zh } from './translates/zh';
+import { citiesRu } from './geo/ru/cities';
+import { countriesRu } from './geo/ru/countries';
+import { it } from './it';
 
+// @TODO сделать переводы каждый язык отдельным файлом - подгружаем просто нужный
 export const translations = {
-    zh,
+    it,
     en: {
         translates: {
             ...citiesEn,
@@ -66,20 +67,28 @@ export const translations = {
             'Payment': 'Оплата',
             'at': 'в',
             'Card': 'Карта',
+            'Account': 'Счет',
             'Card issued': 'Карта оформлена',
             'Wallet copied': 'Кошелек скопирован',
             'Payment was successful — you only need to activate the card to start using it': 'Оплата прошла успешно — осталось только активировать карту, и можно начинать пользоваться',
             'Top-up': 'Пополнение',
-            'Commission <span>{{depositFee}}%</span>, crediting ≈ <span>{{processingTime}}</span>': 'Комиссия <span>{{depositFee}}%</span>, зачисление ≈ <span>{{processingTime}}</span>',
+            'Commission <span>{{depositFee}}%</span>, minimum ≈ <span>{{minAmount}}</span>': 'Комиссия <span>{{depositFee}}%</span>, минимальная сумма <span>{{minAmount}}</span>',
             'Send only <span>{{topupCurrencyName}} {{topupCurrencyNetwork}}</span>. Do not resend funds to the specified address': 'Отправляйте только <span>{{topupCurrencyName}} {{topupCurrencyNetwork}}</span>. Не отправляйте средства повторно на указанный адрес',
             'Top-up in progress': 'Пополнение в обработке',
             'As soon as the funds are credited, we will immediately send you a notification': 'Как только средства будут зачислены, мы сразу отправим вам уведомление',
+            'Funds will be credited to your account after processing is complete': 'Средства будут начислены на ваш счет, после завершения обработки',
             'Waiting for top-up...': 'Ожидание пополнения...',
             'Card payment': 'Оплата карты',
             'Send': 'Отправьте',
             'to the wallet:': 'на кошелек:',
             'Send only <span>{{purchaseCurrencyName}} {{purchaseCurrencyNetwork}}</span> to this address. Other assets will be lost': 'Отправляйте только <span>{{purchaseCurrencyName}} {{purchaseCurrencyNetwork}}</span> на этот адрес. Другие активы, они будут утеряны',
             'Waiting for payment...': 'Ожидание оплаты...',
+            'Searching for your transaction...': 'Ищем вашу транзакцию...',
+            'Waiting for confirmation...': 'Ждем подтверждения...',
+            'This will take ≈ {{minutes}} min. You can wait or close the window, we will send a notification': 'Это займет ≈ {{minutes}} мин. Можете подождать или закрыть окно, мы пришлем уведомление',
+            'Done': 'Готово',
+            'Cancel': 'Отменить',
+            'Back to home': 'На главную',
             'Free service': 'Бесплатное обслуживание',
             'For all cards': 'Для всех карт',
             'ATM withdrawals': 'Снятие в банкоматах',
@@ -95,7 +104,19 @@ export const translations = {
             'Next!': 'Вперед!',
             'Phone number': 'Номер телефона',
             'Share your phone number<br /> to continue.': 'Поделитесь свои номером телефона,<br /> чтобы продолжить.',
+            'Card issuance': 'Оформление карты',
             'Share': 'Поделиться',
+            'Today': 'Сегодня',
+            'Yesterday': 'Вчера',
+            'Once': 'Ранее',
+            'Transaction amount': 'Сумма операции',
+            'Exchange rate': 'Курс',
+            'Fee': 'Комиссия',
+            'Processing': 'В обработке',
+            'Deposit error': 'Ошибка пополнения',
+            'Authorization error': 'Ошибка авторизации',
+            'Operation in progress': 'Операция в обработке',
+            'Operation declined': 'Операция отклонена',
             'Update Telegram': 'Обновите Telegram',
             'Email': 'Email',
             'Name': 'Имя',
@@ -115,6 +136,8 @@ export const translations = {
             'Specify your country and home address 🏠': 'Укажите вашу страну и домашний адрес 🏠',
             'Please provide your email, we will send the codes 💌': 'Скажите ваш email,  будем слать коды 💌',
             'Only your phone number is left and we get started 📞': 'Остался только ваш номер телефона и начинаем 📞',
+            'An error occurred while activating your card 🚫': 'Произошла ошибка при активации карты 🚫',
+            'Please enter your details again and submit the card activation request': 'Введите свои данные еще раз и отправьте заявку на активацию карты',
             'Enter your email': 'Введите ваш email',
             'Invalid email format': 'Неверный формат email',
             'This email is not supported': 'Email не поддерживается',
@@ -125,6 +148,7 @@ export const translations = {
             'Date cannot be in the future': 'Дата не может быть в будущем',
             'Enter only letters and the following symbols: \' (apostrophe), - (hyphen)': 'Вводите только латинские буквы (русские буквы недопустимы) и символы: \' (апостроф), - (дефис)',
             'Enter a valid postal code (2–20 letters, digits, spaces or -)': 'Введите корректный почтовый индекс (2–20 букв, цифр, пробелов или -)',
+            'Card activation failed, possibly incorrect data': 'Не получилось активировать карту, возможно, данные введены с ошибкой',
             'Data correct?': 'Данные совпадают?',
             'Incorrect name and date of birth may restrict account functionality.': 'Неправильное имя и дата рождения могут привести к ограничению работы аккаунта.',
             'Confirm': 'Подтвердить',
@@ -145,7 +169,17 @@ export const translations = {
             'Open Google Pay. Tap "Add card". Follow the on-screen instructions.': 'Откройте Google Pay. Нажмите «Добавить карту». Следуйте инструкциям на экране.',
             'For online purchases in Google Ads, Facebook Ads, Chat GPT subscription and other services': 'Для онлайн покупок в Google Ads, Facebook Ads, подписки Chat GPT и других сервисов',
             'Supports Apple Pay, WeChat, and Alipay scenarios, and supports super large purchases.': 'Поддерживает Apple Pay, WeChat Pay и Alipay, а также крупные покупки',
-            'Suitable for payment on Steam, Google Play, App Store, Roblox, Discord, YouTube and other platforms': 'Подходит для оплаты в Steam, Google Play, AppStore, Roblox, Discord, YouTube и на других платформах'
+            'Suitable for payment on Steam, Google Play, App Store, Roblox, Discord, YouTube and other platforms': 'Подходит для оплаты в Steam, Google Play, AppStore, Roblox, Discord, YouTube и на других платформах',
+            'Language': 'Язык',
+            'Hide balances': 'Скрыть балансы',
+            'Select language': 'Выберите язык',
+            'Verification level': 'Уровень верификации',
+            'Basic': 'Basic',
+            'Not completed': 'Не пройдена',
+            'Settings': 'Настройки',
+            'Information': 'Информация',
+            'User Agreement': 'Пользовательское соглашение',
+            'Privacy Policy': 'Политика конфиденциальности'
         }
     }
 } as const;

@@ -13,6 +13,7 @@ type LastTransactionsProps = {
     className?: string
 }
 
+// @TODO виртуальный scroll
 export function LastTransactions({ list, lastFourDigits, className }: LastTransactionsProps) {
     const [t] = useTranslation();
     const openTransactionDetails = useCardsStore(state => state.openTransactionDetails);

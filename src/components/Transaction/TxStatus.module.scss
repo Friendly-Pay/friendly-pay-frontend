@@ -1,0 +1,29 @@
+.status {
+    display: flex;
+    align-items: center;
+    width: auto;
+    color: var(--color-typo-primary-40);
+}
+
+.icon {
+    display: block;
+    width: 14px;
+    height: 14px;
+    color: var(--color-typo-primary-25);
+    flex-shrink: 0;
+    margin-right: 6px;
+
+    svg {
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.status.danger {
+    color: var(--color-red);
+
+    .icon {
+        color: var(--color-red);
+    }
+}

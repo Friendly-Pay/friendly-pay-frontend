@@ -1,0 +1,42 @@
+.root {
+    display: flex;
+    flex-direction: column;
+}
+
+.item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 0;
+}
+
+.text {
+    width: 100%;
+    flex-shrink: 3;
+    max-width: 70%;
+}
+
+.value {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    margin-left: 16px;
+}
+
+.language {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+
+    &Emoji {
+        font-size: 20px;
+        margin-right: 8px;
+    }
+}
+
+.arrow {
+    flex-shrink: 0;
+    color: var(--color-typo-primary-25);
+    margin-left: 12px;
+}
