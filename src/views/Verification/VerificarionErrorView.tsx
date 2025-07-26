@@ -2,6 +2,7 @@ import { MainLayout } from '@/components/common/MainLayout';
 import { TelegramMainButton } from '@/components/common/TelegramMainButton';
 import { useVerificationStore } from '@/states/verification/store';
 import { Text } from '@/uikit';
+import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import styles from './VerificationErrorView.module.scss';
@@ -11,6 +12,13 @@ export function VerificationErrorView() {
     const navigate = useNavigate();
     const setCardId = useVerificationStore(state => state.setCardId);
     const resetVerification = useVerificationStore(state => state.resetVerification);
+
+    const triggered = useRef<boolean>(false);
+    useEffect(() => {
+        if (triggered.current) return;
+        triggered.current = true;
+        window.Telegram.WebApp.HapticFeedback.notificationOccurred('error');
+    }, []);
 
     const handleStartOver = () => {
         const cardId = useVerificationStore.getState().data.cardId;
@@ -24,22 +32,23 @@ export function VerificationErrorView() {
     };
 
     return (
-        <MainLayout className={styles.content}>
-            <div className={styles.head}>
-                <Text
-                    type='headline'
-                    align='left'
-                    weight='semibold'
-                    className={styles.title}
-                >{t('An error occurred while activating your card 🚫')}</Text>
-                <Text
-                    type='body'
-                    align='left'
-                    weight='regular'
-                    className={styles.text}
-                >{t('Please enter your details again and submit the card activation request')}</Text>
+        <MainLayout>
+            <div className={styles.content}>
+                <div className={styles.head}>
+                    <Text
+                        type='headline'
+                        align='left'
+                        weight='semibold'
+                        className={styles.title}
+                    >{t('An error occurred while activating your card 🚫')}</Text>
+                    <Text
+                        type='body'
+                        align='left'
+                        weight='regular'
+                        className={styles.text}
+                    >{t('Please enter your details again and submit the card activation request')}</Text>
+                </div>
             </div>
-
             <TelegramMainButton
                 text={t('Start over')}
                 onClick={handleStartOver}

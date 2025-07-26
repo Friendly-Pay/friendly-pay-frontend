@@ -110,6 +110,7 @@ interface Actions {
     activateCard: (data: ActivateCardData) => Promise<void>;
 }
 
+// @TODO завести класс CardActions (тут оставить только логику работы с данными) а в него вынести все ручки (в том числе и загрузку)
 export const useCardsStore = create<State & Actions>((set, get) => ({
     selectedCardId: null,
     cardsTypes: null,
@@ -263,17 +264,12 @@ export const useCardsStore = create<State & Actions>((set, get) => ({
             console.warn('[activateCard] myCards is null');
             return;
         }
-        try {
-            const cardData = myCards[activateData.cardId];
-            if (!cardData) throw new Error(`[activateCard] card ${activateData.cardId} undefined`);
-            if (cardData.status !== CardStatus.NeedActivation) {
-                return;
-            }
-            await activateCard(activateData);
-        } catch (error: any) {
-            toast.error(error.message);
-            console.error('[error] failed to activate card', error);
+        const cardData = myCards[activateData.cardId];
+        if (!cardData) throw new Error(`[activateCard] card ${activateData.cardId} undefined`);
+        if (cardData.status !== CardStatus.NeedActivation) {
+            return;
         }
+        await activateCard(activateData);
     }
 }));
 
