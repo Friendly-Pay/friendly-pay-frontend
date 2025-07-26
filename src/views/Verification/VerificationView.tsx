@@ -1,5 +1,6 @@
 import { AddressStage } from './components/Address/AddressStage';
 import { EmailStage } from './components/EmailStage';
+import { PersonalDataStage } from './components/PersonalDataStage';
 import { PhoneStage } from './components/PhoneStage';
 import { PreloadingStage } from './components/PreloadingStage';
 import { MainLayout } from '@/components/common/MainLayout';
@@ -55,7 +56,7 @@ export function VerificationView() {
     return (
         <MainLayout>
             {stage === VerificationStage.Preloading && <PreloadingStage />}
-            {stage === VerificationStage.PersonalData && <AddressStage />}
+            {stage === VerificationStage.PersonalData && <PersonalDataStage />}
             {stage === VerificationStage.Address && <AddressStage />}
             {stage === VerificationStage.Email && <EmailStage />}
             {stage === VerificationStage.PhoneNumber && <PhoneStage />}
