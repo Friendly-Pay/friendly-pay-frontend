@@ -49,9 +49,9 @@ export function PhoneStage() {
     const handleSubmit = useCallback(async () => {
         if (isSubmitDisabled) return;
         setUserDataProperty('phoneNumber', phoneNumber);
+        const { data, setCardId } = useVerificationStore.getState();
         try {
             setSubmitLoading(true);
-            const { data } = useVerificationStore.getState();
             await useCardsStore.getState().activateCard({
                 cardId: data.cardId!,
                 email: data.email!,
@@ -68,8 +68,13 @@ export function PhoneStage() {
             window.Telegram.WebApp.HapticFeedback.notificationOccurred('success');
             navigate('/');
         } catch (error) {
-            console.error('Card activation failed', error);
-            toast.error(t('Card activation failed, possibly incorrect data'));
+            console.error(error);
+            if (data.cardId) {
+                setCardId(data.cardId);
+                navigate('/verification/user/error');
+            } else {
+                navigate('/');
+            }
         } finally {
             setSubmitLoading(false);
         }

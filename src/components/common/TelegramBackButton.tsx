@@ -29,6 +29,10 @@ export function TelegramBackButton({ children }: PropsWithChildren) {
         //     }
         //     resetVerification();
         // }
+        if (location.pathname.startsWith('/verification/user')) {
+            navigate('/');
+            return;
+        }
         navigate(-1);
     };
 
