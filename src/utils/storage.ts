@@ -10,6 +10,9 @@ class UnsupportedCloudStorage {
     static get() {
         this.warn();
     }
+    static getKeys() {
+        this.warn();
+    }
 }
 
 class SupportedCloudStorage {
@@ -25,6 +28,11 @@ class SupportedCloudStorage {
         callback?: CloudStorageGetItemCallback
     ): void {
         TelegramCloudStorage.getItem(key, callback);
+    }
+    static getKeys(
+        callback?: CloudStorageGetKeysCallback
+    ): void {
+        TelegramCloudStorage.getKeys(callback);
     }
 }
 

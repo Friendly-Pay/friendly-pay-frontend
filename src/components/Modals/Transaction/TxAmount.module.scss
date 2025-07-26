@@ -1,0 +1,51 @@
+.root {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.amount {
+    line-height: 38px;
+    text-transform: uppercase;
+}
+
+// .decimal,
+// .literal,
+// .fraction,
+// .currency {
+//     font-weight: 400;
+//     opacity: 0.6;
+// }
+
+.status {
+    display: flex;
+    align-items: center;
+    font-size: 13px;
+    color: var(--color-typo-primary-40);
+    margin-top: 12px;
+
+    svg {
+        width: 14px;
+        height: 14px;
+        margin-right: 6px;
+        color: var(--color-typo-primary-25);
+    }
+}
+
+.success {
+    .amount {
+        color: var(--color-green);
+    }
+}
+
+.danger {
+    .status {
+        color: var(--color-red);
+
+        svg {
+            color: var(--color-red);
+        }
+    }
+}

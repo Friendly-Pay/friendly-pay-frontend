@@ -1,6 +1,5 @@
 import { useAuthStore } from '../auth/store';
-import { useCardsStore } from '../cards/store';
-import { authUser, fetchUser } from './fetch';
+import { authUser } from './fetch';
 import { useUserStore } from './store';
 import { createSocketConnection } from '@/socket';
 import { useSocketStore } from '@/socket/store';
@@ -31,54 +30,16 @@ export function useUserAuth() {
         }
     };
 
-    const [setUser, setUserFetchStatus] = useUserStore(state => [
-        state.setUser,
-        state.setUserFetchStatus,
-    ]);
-
-    const loadUserData = async () => {
-        setUserFetchStatus(FetchStatus.Pending);
-        try {
-            const userData = await fetchUser();
-            setUser({
-                id: String(userData.userId),
-                email: userData.email,
-                phoneNumber: userData.phoneNumber,
-                firstName: userData.firstName,
-                lastName: userData.lastName,
-                username: userData.username,
-                avatar: userData.avatar,
-                birthday: userData.birthday,
-                country: userData.country,
-                town: userData.town,
-                address: userData.address,
-                postCode: userData.postCode,
-                status: userData.status,
-                verificationLevel: userData.verificationLevel,
-            });
-            setUserFetchStatus(FetchStatus.Fulfilled);
-            return userData;
-        } catch (error) {
-            console.error('[error] ошибка получения данных пользователя', error);
-            setUserFetchStatus(FetchStatus.Rejected);
-            return false;
-        }
-    };
-
     const setSocketReady = useSocketStore(state => state.setSocketReady);
     const initSocket = (accessToken: string) => {
         createSocketConnection(accessToken);
         setSocketReady(true);
     };
 
-    const loadCardsTypes = useCardsStore(state => state.loadCardsTypes);
     const auth = async () => {
         const accessToken = await authSession();
         if (accessToken) {
-            await Promise.all([
-                loadUserData(),
-                loadCardsTypes()
-            ]);
+            await useUserStore.getState().loadUser();
             initSocket(accessToken);
             setIsAuth(true);
         }

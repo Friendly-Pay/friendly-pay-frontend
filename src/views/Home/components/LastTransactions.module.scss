@@ -2,7 +2,7 @@
     position: relative;
     display: flex;
     flex-flow: column nowrap;
-    padding: 16px 0 4px 0;
+    padding: 16px 16px 4px;
     border-radius: 18px;
     background-color: var(--color-white);
     margin-bottom: 32px;
@@ -11,8 +11,7 @@
 .head {
     position: relative;
     display: flex;
-    padding: 0 18px;
-    margin-bottom: 16px;
+    margin-bottom: 20px;
 }
 
 .placeholder {

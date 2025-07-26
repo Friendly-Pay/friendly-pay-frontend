@@ -15,7 +15,6 @@ import { Navbar } from '@/components/Navbar/Navbar';
 import { UserHead } from '@/components/User/UserHead';
 import { CardStatus, useCardsStore } from '@/states/cards/store';
 import { useUserStore } from '@/states/user/store';
-import { FetchStatus } from '@/utils/api';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Navigate } from 'react-router-dom';
@@ -36,9 +35,6 @@ const contentAppearance = {
     transition: { duration: 0.25 }
 };
 
-
-// @TODO skeleton
-// @TODO number может null
 export function HomeView() {
     const [t] = useTranslation();
     const myCards = useCardsStore(state => state.myCards);
@@ -53,14 +49,14 @@ export function HomeView() {
 
     const skipIntro = useUserStore(state => state.skipIntro);
     const myCardsCount = useCardsStore(state => state.myCardsCount);
-    const myCardsFetchStatus = useCardsStore(state => state.myCardsFetchStatus);
+
     if (!skipIntro) {
         return <Navigate
             to='/intro'
             replace
         />;
     }
-    if (!myCardsCount && myCardsFetchStatus === FetchStatus.Fulfilled) {
+    if (!myCardsCount) {
         return <Navigate
             to='/new-product'
             replace

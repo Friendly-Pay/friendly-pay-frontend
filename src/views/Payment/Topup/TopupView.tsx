@@ -1,25 +1,35 @@
+import { BottomFixedContainer } from '@/components/common/BottomFixedContainer';
 import { MainLayout } from '@/components/common/MainLayout';
-import { FixedBottomLoading } from '@/components/Loading/FixedBottomLoading';
 import { PaymentHead } from '@/components/Payment/Head/PaymentHead';
 import { TopupCard } from '@/components/Payment/Head/TopupCard';
 import { TopupCurrency } from '@/components/Payment/Head/TopupCurrency';
 import { PaymentAddress } from '@/components/Payment/PaymentAddress';
 import { Skeleton } from '@/components/Skeleton/Skeleton';
-import { useCurrentBankCard } from '@/states/cards/store';
+import { useBankCard } from '@/states/cards/store';
 import { PaymentStatus, usePaymentStore, usePaymentTopupCurrency } from '@/states/payment/store';
-import { Line, Text } from '@/uikit';
+import { Button, Line, Text } from '@/uikit';
 import { useTranslation } from 'react-i18next';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import styles from './TopupView.module.scss';
 
-// @TODO добавить мин сумму перевода
 export function TopupView() {
     const [t] = useTranslation();
-    const bankCard = useCurrentBankCard();
+    const cardId = usePaymentStore(state => state.topupSelectedCardId);
+    const bankCard = useBankCard(cardId);
     const topupCurrency = usePaymentTopupCurrency();
 
     const order = usePaymentStore(state => state.topupOrder);
     const status = usePaymentStore(state => state.topupStatus);
+
+    const navigate = useNavigate();
+    const handleCancel = () => {
+        navigate('/');
+        usePaymentStore.getState().cancelTopup();
+    };
+
+    const handleDone = () => {
+        usePaymentStore.getState().userCompleteWaitingTopup();
+    };
 
     if (!bankCard || !topupCurrency) {
         return <Navigate
@@ -30,11 +40,6 @@ export function TopupView() {
 
     return (
         <MainLayout>
-            {import.meta.env.DEV && <button
-                style={{ position: 'absolute', top: '0', left: '0' }}
-                onClick={() => usePaymentStore.getState().completeTopup(usePaymentStore.getState().topupOrder!.transactionId, 10, 'usd')}
-            >Processing</button>}
-
             <div className={styles.head}>
                 <Text
                     type='headline'
@@ -71,9 +76,9 @@ export function TopupView() {
                         weight='regular'
                         className={styles.info}
                         dangerouslySetInnerHTML={{
-                            __html: t('Commission <span>{{depositFee}}%</span>, crediting ≈ <span>{{processingTime}}</span>', {
+                            __html: t('Commission <span>{{depositFee}}%</span>, minimum ≈ <span>{{minAmount}}</span>', {
                                 depositFee: bankCard.depositFee,
-                                processingTime: `10 ${t('min')}`
+                                minAmount: '25$' // @TODO
                             })
                         }}
                     />
@@ -109,7 +114,22 @@ export function TopupView() {
                     }}
                 />
 
-                {status === PaymentStatus.Waiting && <FixedBottomLoading text={t('Waiting for top-up...')} />}
+                {!(status === PaymentStatus.Idle || status === PaymentStatus.Creating) && <BottomFixedContainer className={styles.buttons}>
+                    <Button
+                        view='secondary'
+                        className={styles.button}
+                        onClick={handleCancel}
+                    >
+                        {t('Cancel')}
+                    </Button>
+                    <Button
+                        view='primary'
+                        className={styles.button}
+                        onClick={handleDone}
+                    >
+                        {t('Done')}
+                    </Button>
+                </BottomFixedContainer>}
             </div>
         </MainLayout>
     );

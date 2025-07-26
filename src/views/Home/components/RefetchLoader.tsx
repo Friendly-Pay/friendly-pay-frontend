@@ -17,56 +17,57 @@ export function RefetchLoader() {
     const [loading, setLoading] = useState(false);
 
     const startY = useRef(0);
-    const fetching = useRef(false);
-    const touchProcessing = useRef(false);
+    const isRefreshing = useRef(false); // Флаг для отслеживания состояния обновления
+    const isPullActive = useRef(false); // Флаг активного жеста "pull-to-refresh"
 
     useLayoutEffect(() => {
         const mainLayout = document.getElementById('mainLayout');
-        if (!mainLayout) {
-            return;
-        }
+        if (!mainLayout) return;
 
         const loadCards = useCardsStore.getState().loadMyCards;
+
         const refetchCards = async () => {
-            if (fetching.current) {
-                return;
-            }
+            if (isRefreshing.current) return;
             try {
-                fetching.current = true;
+                isRefreshing.current = true;
                 setLoading(true);
                 window.Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
+                const start = performance.now();
+                const minLoaderTimeMs = 300;
                 await loadCards();
+                const elapsed = performance.now() - start;
+                const wait = minLoaderTimeMs - elapsed;
+                if (wait > 0) {
+                    await new Promise<void>(r => setTimeout(r, wait));
+                }
             } finally {
-                fetching.current = false;
-                if (!touchProcessing.current) {
-                    setLoading(false);
-                }
-            }
-        };
-
-        const handleTouchStart = (e: TouchEvent) => {
-            touchProcessing.current = true;
-            if (mainLayout.scrollTop <= 0) {
-                const clientY = e.touches[0].clientY;
-                startY.current = clientY;
-            }
-        };
-
-        const handleTouchMove = (e: TouchEvent) => {
-            const clientY = e.touches[0].clientY;
-            const delta = clientY - startY.current;
-
-            if (mainLayout.scrollTop <= 0) {
-                if (delta > 170) {
-                    refetchCards();
-                }
-            } else if (mainLayout.scrollTop > 1) {
+                isRefreshing.current = false;
                 setLoading(false);
             }
         };
 
+        const handleTouchStart = (e: TouchEvent) => {
+            isPullActive.current = true;
+            if (mainLayout.scrollTop <= 0) {
+                startY.current = e.touches[0].clientY;
+            }
+        };
+
+        const handleTouchMove = (e: TouchEvent) => {
+            if (!isPullActive.current || mainLayout.scrollTop > 0) return;
+
+            const currentY = e.touches[0].clientY;
+            const delta = currentY - startY.current;
+
+            if (delta < 0) return;
+            if (delta > 170 && !isRefreshing.current) {
+                refetchCards();
+                isPullActive.current = false;
+            }
+        };
+
         const handleTouchEnd = () => {
-            touchProcessing.current = false;
+            isPullActive.current = false;
         };
 
         mainLayout.addEventListener('touchstart', handleTouchStart, { passive: true });

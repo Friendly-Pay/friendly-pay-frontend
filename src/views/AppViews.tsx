@@ -1,28 +1,36 @@
+import { AppLoader } from './AppLoader';
 import { HomeView } from './Home/HomeView';
 import { IntroView } from './Intro/IntroView';
 import { NewProductView } from './NewProduct/NewProductView';
 import { PaymentController } from './Payment/PaymentController';
+import { PaymentRestore } from './Payment/PaymentRestore';
 import { PayNewCardResultView } from './Payment/PayNewCard/PayNewCardResultView';
 import { PayNewCardView } from './Payment/PayNewCard/PayNewCardView';
+import { PayNewCardWaitingView } from './Payment/PayNewCard/PayNewCardWaitingView';
 import { TopupResultView } from './Payment/Topup/TopupResultView';
 import { TopupView } from './Payment/Topup/TopupView';
+import { TopupWaitingView } from './Payment/Topup/TopupWaitingView';
 import { QRPlaceholderView } from './Placeholder/QrPlaceholderView';
 import { TransferPlaceholderView } from './Placeholder/TransferPlaceholderView';
+import { ProfileView } from './Profile/ProfileView';
+import { VerificationErrorView } from './Verification/VerificationErrorView';
 import { VerificationView } from './Verification/VerificationView';
 import { TelegramBackButton } from '@/components/common/TelegramBackButton';
 import { ToastsRoot } from '@/components/Toast/ToastsRoot';
-import { useAuthStore } from '@/states/auth/store';
+import { useLoaderStore } from '@/states/loader';
 import { CardController } from '@/views/Home/CardController';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
-// @TODO blocked
-// @TODO когда нет карт ведем на выбрать карту + позде будет еще отдельная страница
 export function AppViews() {
-    const isAuth = useAuthStore(state => state.isAuth);
+    const rootInitiated = useLoaderStore(state => state.rootInitiated);
     return (
         <>
-            {isAuth && <Router>
-                <TelegramBackButton>
+            <AppLoader />
+            <ToastsRoot />
+
+            {rootInitiated && <Router>
+                <TelegramBackButton />
+                <PaymentRestore>
                     <CardController>
                         <Routes>
                             <Route
@@ -39,8 +47,8 @@ export function AppViews() {
                             />
 
                             <Route
-                                path='/profile'
-                                element={<IntroView />}
+                                path='/user/profile'
+                                element={<ProfileView />}
                             />
 
                             <Route element={<PaymentController />}>
@@ -49,12 +57,20 @@ export function AppViews() {
                                     element={<PayNewCardView />}
                                 />
                                 <Route
+                                    path='/payments/pay-new-card/waiting'
+                                    element={<PayNewCardWaitingView />}
+                                />
+                                <Route
                                     path='/payments/pay-new-card/result'
                                     element={<PayNewCardResultView />}
                                 />
                                 <Route
                                     path='/payments/topup'
                                     element={<TopupView />}
+                                />
+                                <Route
+                                    path='/payments/topup/waiting'
+                                    element={<TopupWaitingView />}
                                 />
                                 <Route
                                     path='/payments/topup/result'
@@ -66,6 +82,10 @@ export function AppViews() {
                                 element={<VerificationView />}
                             />
                             <Route
+                                path='/verification/user/error'
+                                element={<VerificationErrorView />}
+                            />
+                            <Route
                                 path='/payment/transfer'
                                 element={<TransferPlaceholderView />}
                             />
@@ -75,10 +95,8 @@ export function AppViews() {
                             />
                         </Routes>
                     </CardController>
-                </TelegramBackButton>
+                </PaymentRestore>
             </Router>}
-
-            <ToastsRoot />
         </>
     );
 }

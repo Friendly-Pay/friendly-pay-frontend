@@ -1,6 +1,15 @@
+import parsePhoneNumberFromString from 'libphonenumber-js';
+
 export const getRandomInt = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1) + min);
 
 export const formatUsername = (username: string) => `${username.includes('@') ? '' : '@'}${username}`;
+
+export const formatUserFirstNameAndLastName = (firstName: string, lastName: string) => {
+    const name = firstName.trim();
+    const last = lastName.trim();
+    const initial = last ? ` ${last.charAt(0).toUpperCase()}.` : '';
+    return `${name}${initial}`;
+};
 
 export const removeAtSymbol = (username: string) => username.replace('@', '');
 
@@ -10,6 +19,17 @@ export const formatCardNumber = (number: string) => {
 };
 
 export const formatCardLastFourDigits = (digits: string | number) => `${String(digits).length > 4 ? digits : `•• ${digits}`}`;
+
+export function formatPhoneNumber(phone: string | null | undefined): string {
+    if (!phone) return '';
+    let phoneNumber = phone.trim();
+    if (!phoneNumber.startsWith('+')) {
+        phoneNumber = `+${phoneNumber}`;
+    }
+    const parsed = parsePhoneNumberFromString(phoneNumber);
+    if (!parsed) return phoneNumber;
+    return parsed.formatInternational();
+}
 
 export const truncateText = (text: string, maxLength: number = 18, addEllipsis: boolean = true) =>
     !text || !text.slice ? text : text.slice(0, maxLength) + (text.length > maxLength && addEllipsis ? '...' : '');
@@ -55,8 +75,8 @@ export const abbreviateNumber = (value: number, t: any, decimals = 0) => {
     return value;
 };
 
-export const openWebviewLink = (url: string) => {
-    window.Telegram.WebApp.openLink(url);
+export const openWebviewLink = (url: string, options: { try_instant_view?: boolean } = {}) => {
+    window.Telegram.WebApp.openLink(url, options);
 };
 
 export const openTelegramLink = (username: string) => {

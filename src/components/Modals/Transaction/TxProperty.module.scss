@@ -1,0 +1,22 @@
+.root {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &+.root {
+        margin-top: 24px;
+    }
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+}
+
+.label {
+    color: var(--color-typo-primary-60);
+}
+
+.value {
+    margin-top: 6px;
+}

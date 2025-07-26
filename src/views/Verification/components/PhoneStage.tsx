@@ -69,7 +69,7 @@ export function PhoneStage() {
             navigate('/');
         } catch (error) {
             console.error('Card activation failed', error);
-            toast.error('Card activation failed');
+            toast.error(t('Card activation failed, possibly incorrect data'));
         } finally {
             setSubmitLoading(false);
         }

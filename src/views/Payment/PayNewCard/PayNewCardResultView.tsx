@@ -1,8 +1,11 @@
+import { CenteredContent } from '../components/CenteredContent';
+import { PaymentIcon } from '../components/PaymentIcon';
 import { MainLayout } from '@/components/common/MainLayout';
 import { Confetti } from '@/components/Confetti/Confetti';
 import { BankCardFill } from '@/components/Icons/BankCard';
 import { usePaymentStore } from '@/states/payment/store';
 import { Button, Text } from '@/uikit';
+import { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import styles from './PayNewCardResultView.module.scss';
@@ -10,45 +13,50 @@ import styles from './PayNewCardResultView.module.scss';
 export function PayNewCardResultView() {
     const [t] = useTranslation();
     const navigate = useNavigate();
-    const handleContinue = () => {
+    const handleContinue = useCallback(() => {
         navigate('/');
         usePaymentStore.getState().resetTopup();
-    };
+    }, [navigate]);
+
+    useEffect(() => {
+        window.Telegram.WebApp.HapticFeedback.notificationOccurred('success');
+    }, []);
 
     return (
-        <MainLayout fullSpace>
+        <MainLayout>
             <Confetti />
-            <div className={styles.centered}>
-                <div className={styles.icon}>
-                    <BankCardFill />
-                </div>
+            <div className={styles.wrap}>
+                <CenteredContent className={styles.data}>
+                    <PaymentIcon className={styles.icon}>
+                        <BankCardFill />
+                    </PaymentIcon>
 
-                <Text
-                    type='headlineLarge'
-                    align='center'
-                    weight='semibold'
-                    className={styles.title}
-                >
-                    {t('Card issued')}
-                </Text>
+                    <Text
+                        type='headline'
+                        align='center'
+                        weight='semibold'
+                        className={styles.title}
+                    >
+                        {t('Card issued')}
+                    </Text>
 
-                <Text
-                    type='caption'
-                    align='center'
-                    weight='regular'
-                    className={styles.text}
+                    <Text
+                        align='center'
+                        weight='regular'
+                        className={styles.text}
+                    >
+                        {t('Payment was successful — you only need to activate the card to start using it')}
+                    </Text>
+                </CenteredContent>
+
+                <Button
+                    view='primary'
+                    className={styles.button}
+                    onClick={handleContinue}
                 >
-                    {t('Payment was successful — you only need to activate the card to start using it')}
-                </Text>
+                    {t('Back to home')}
+                </Button>
             </div>
-
-            <Button
-                view='primary'
-                className={styles.button}
-                onClick={handleContinue}
-            >
-                {t('Continue')}
-            </Button>
         </MainLayout>
     );
 }

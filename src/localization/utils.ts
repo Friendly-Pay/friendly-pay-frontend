@@ -16,6 +16,8 @@ export const languageCodeToLocale = (languageCode: string) => {
             return 'ru-RU';
         case 'zh':
             return 'zh-CN';
+        case 'it':
+            return 'it-IT';
         case 'en':
         default:
             return 'en-US';

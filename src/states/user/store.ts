@@ -1,8 +1,9 @@
-import { fetchUser } from './fetch';
+import { fetchUser, InitialPurchaseOrder, InitialTopupOrder, UserRes } from './fetch';
 import { initLocalization } from '@/localization';
 import { safeLanguageCode } from '@/localization/utils';
 import { FetchStatus } from '@/utils/api';
 import { CloudStorage, isCloudStorageAvailable } from '@/utils/storage';
+import i18next from 'i18next';
 import { create } from 'zustand';
 
 interface User {
@@ -28,6 +29,8 @@ interface State {
     blurBalance: boolean;
     languageCode: string;
     userFetchStatus: FetchStatus;
+    initialTopupOrder: InitialTopupOrder | null;
+    initialPurchaseOrder: InitialPurchaseOrder | null;
 }
 
 interface Actions {
@@ -35,8 +38,10 @@ interface Actions {
     setSkipIntro: (skip: boolean) => void;
     setBlurBalance: (blur: boolean) => void;
     setUserFetchStatus: (status: FetchStatus) => void;
+    setInitialsPaymentOrders: (topup: InitialTopupOrder | null, purchase: InitialPurchaseOrder | null) => void;
+    resetInitialsPaymentOrders: () => void;
     setLanguageCode: (lang: string) => void;
-    refetchUser: () => Promise<void>;
+    loadUser: () => Promise<UserRes | boolean>;
 }
 
 const initIntro = () => {
@@ -59,12 +64,14 @@ const initBlurBalance = () => {
     return localStorage.getItem('blurBalance') === 'true';
 };
 
-export const useUserStore = create<State & Actions>((set) => ({
+export const useUserStore = create<State & Actions>((set, get) => ({
     user: null,
     skipIntro: initIntro(),
     blurBalance: initBlurBalance(),
     languageCode: initLocalization(),
     userFetchStatus: FetchStatus.Idle,
+    initialTopupOrder: null,
+    initialPurchaseOrder: null,
 
     setUser: (user) => set({ user }),
     setSkipIntro: (skip) => {
@@ -85,20 +92,47 @@ export const useUserStore = create<State & Actions>((set) => ({
         }
         set({ blurBalance: blur });
     },
-    setLanguageCode: (languageCode) => set({ languageCode: safeLanguageCode(languageCode) }),
+    setLanguageCode: (languageCode) => {
+        const safe = safeLanguageCode(languageCode);
+        set({ languageCode: safe });
+        i18next.changeLanguage(safe);
+    },
     setUserFetchStatus: (userFetchStatus) => set({ userFetchStatus }),
 
-    refetchUser: async () => {
-        const { userId, ...userData } = await fetchUser();
-        set({
-            user: {
-                id: String(userId),
-                ...userData
-            }
-        });
+    setInitialsPaymentOrders: (topup, purchase) => set({ initialTopupOrder: topup, initialPurchaseOrder: purchase }),
+    resetInitialsPaymentOrders: () => set({ initialTopupOrder: null, initialPurchaseOrder: null }),
+
+    loadUser: async () => {
+        const { setUserFetchStatus, setUser, setInitialsPaymentOrders } = get();
+        setUserFetchStatus(FetchStatus.Pending);
+        try {
+            const userData = await fetchUser();
+            setUser({
+                id: String(userData.userId),
+                email: userData.email,
+                phoneNumber: userData.phoneNumber,
+                firstName: userData.firstName,
+                lastName: userData.lastName,
+                username: userData.username,
+                avatar: userData.avatar,
+                birthday: userData.birthday,
+                country: userData.country,
+                town: userData.town,
+                address: userData.address,
+                postCode: userData.postCode,
+                status: userData.status,
+                verificationLevel: userData.verificationLevel,
+            });
+            setUserFetchStatus(FetchStatus.Fulfilled);
+            setInitialsPaymentOrders(userData.depositTransaction || null, userData.purchaseTransaction || null);
+            return userData;
+        } catch (error) {
+            console.error('[error] ошибка получения данных пользователя', error);
+            setUserFetchStatus(FetchStatus.Rejected);
+            return false;
+        }
     },
 }));
-
 
 if (import.meta.env.DEV) {
     // @ts-ignore

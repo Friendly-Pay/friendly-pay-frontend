@@ -15,13 +15,15 @@ export function TopupModal() {
     const [t] = useTranslation();
     const isOpen = useCardsStore(state => state.topupModal.opened);
     const onClose = useCardsStore(state => state.closeTopupModal);
+    const cardId = useCardsStore(state => state.selectedCardId);
     const currencies = usePaymentStore(state => state.currencies);
     const currenciesMap = useMemo(() => Object.values(currencies), [currencies]);
 
     const navigate = useNavigate();
     const handleSelectCurrency = (currencyId: string) => {
+        if (!cardId) return;
+        usePaymentStore.getState().startTopup(cardId, currencyId);
         navigate('/payments/topup');
-        usePaymentStore.getState().startTopup(currencyId);
     };
 
     return (
