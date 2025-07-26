@@ -2,6 +2,7 @@ import { useFormattedCurrencyParts } from '@/hooks/useFormattedCurrencyParts';
 import { CardStatus } from '@/states/cards/store';
 import { useUserStore } from '@/states/user/store';
 import { Text, TextBlur } from '@/uikit';
+import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
 import styles from './CardBalance.module.scss';
@@ -34,11 +35,33 @@ export function CardBalance({ value, currency, cardStatus, className }: CardBala
         balanceLabel = t('Activation error');
     }
 
+    const tapCountRef = useRef(0);
+    const tapTimeoutRef = useRef<any>(null);
     const setBlurBalance = useUserStore(state => state.setBlurBalance);
-    const toggleBlurBalance = () => {
-        setBlurBalance(!blurBalance);
-        window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
+
+    const handleBalanceTap = () => {
+        if (tapTimeoutRef.current) {
+            clearTimeout(tapTimeoutRef.current);
+        }
+        tapCountRef.current += 1;
+        if (tapCountRef.current === 3) {
+            setBlurBalance(!blurBalance);
+            window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
+            tapCountRef.current = 0;
+            return;
+        }
+        tapTimeoutRef.current = setTimeout(() => {
+            tapCountRef.current = 0;
+        }, 300);
     };
+
+    useEffect(() => {
+        return () => {
+            if (tapTimeoutRef.current) {
+                clearTimeout(tapTimeoutRef.current);
+            }
+        };
+    }, []);
 
     // const targetOpacityRef = useRef(1);
     // const targetScaleRef = useRef(1);
@@ -112,7 +135,7 @@ export function CardBalance({ value, currency, cardStatus, className }: CardBala
     return (
         <div
             className={classNames(styles.root, blurBalance && styles.blur, className)}
-            onClick={toggleBlurBalance}
+            onClick={handleBalanceTap}
         >
             <Text
                 type='caption'
