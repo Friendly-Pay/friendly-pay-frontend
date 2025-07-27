@@ -23,6 +23,10 @@ export function TransactionItem({ transaction, className, onClick }: Transaction
         title = t('Deposit');
     } else if (transaction.type === CardTransactionType.PAYMENT) {
         title = transaction.remark || t('Payment');
+    } else if (transaction.type === CardTransactionType.REFUND) {
+        title = `${t('Refund')} ${transaction.remark}`;
+    } else if (transaction.type === CardTransactionType.VOID) {
+        title = `${t('Cancel operation')} ${transaction.remark}`;
     }
 
     return (

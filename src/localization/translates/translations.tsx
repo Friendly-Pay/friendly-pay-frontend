@@ -179,7 +179,10 @@ export const translations = {
             'Settings': 'Настройки',
             'Information': 'Информация',
             'User Agreement': 'Пользовательское соглашение',
-            'Privacy Policy': 'Политика конфиденциальности'
+            'Privacy Policy': 'Политика конфиденциальности',
+            'Refund': 'Возврат',
+            'Cancel operation': 'Отмена операции',
+            'Refund to account': 'Возврат на счет'
         }
     }
 } as const;

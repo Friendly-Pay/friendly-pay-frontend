@@ -40,7 +40,9 @@ export enum CardStatus {
 
 export enum CardTransactionType {
     DEPOSIT = 'deposit',
-    PAYMENT = 'payment'
+    PAYMENT = 'payment',
+    REFUND = 'refund', // Возврат покупки
+    VOID = 'void' // Отмена покупки
 }
 
 export enum CardTransactionStatus {
