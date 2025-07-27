@@ -22,15 +22,19 @@ export function TxAmount({ type, fee, amount, currency, status, className }: TxA
     const languageCode = useUserStore(state => state.languageCode);
 
     let totalAmount = amount;
-    if (fee && type === CardTransactionType.PAYMENT) {
-        totalAmount += fee;
+    if (fee) {
+        if (type === CardTransactionType.PAYMENT) {
+            totalAmount += fee;
+        } else if (type === CardTransactionType.REFUND || type === CardTransactionType.VOID) {
+            totalAmount -= fee;
+        }
     }
     let amountSign = '';
     if (type === CardTransactionType.PAYMENT) {
         if (status === CardTransactionStatus.IN_PROGRESS || status === CardTransactionStatus.SUCCESS) {
             amountSign = '-';
         }
-    } else if (type === CardTransactionType.DEPOSIT) {
+    } else if (type === CardTransactionType.DEPOSIT || type === CardTransactionType.REFUND || type === CardTransactionType.VOID) {
         amountSign = '+';
     }
     const formattedCurrencyParts = useFormattedCurrencyParts(totalAmount, currency, languageCode);
@@ -58,7 +62,7 @@ export function TxAmount({ type, fee, amount, currency, status, className }: TxA
     return (
         <div
             className={classNames(styles.root, {
-                [styles.success]: type === CardTransactionType.DEPOSIT && (status === CardTransactionStatus.IN_PROGRESS || status === CardTransactionStatus.SUCCESS),
+                [styles.success]: (type === CardTransactionType.DEPOSIT || type === CardTransactionType.REFUND || type === CardTransactionType.VOID) && (status === CardTransactionStatus.IN_PROGRESS || status === CardTransactionStatus.SUCCESS),
                 [styles.danger]: status === CardTransactionStatus.FAILED
             }, className)}
         >

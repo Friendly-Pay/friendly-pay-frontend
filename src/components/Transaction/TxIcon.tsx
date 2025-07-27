@@ -48,6 +48,8 @@ const Payment = (props: SVGProps<SVGSVGElement>) => {
 export function TxIcon({ type, size = 's', className }: TxIconProps) {
     switch (type) {
         case CardTransactionType.PAYMENT:
+        case CardTransactionType.REFUND:
+        case CardTransactionType.VOID:
             return <div className={classNames(styles.icon, styles[size], styles.payment, className)}><Payment /></div>;
         case CardTransactionType.DEPOSIT:
             return <div className={classNames(styles.icon, styles[size], styles.deposit, className)}><Deposit /></div>;

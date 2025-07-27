@@ -26,6 +26,17 @@ export function TransactionDetailsModal() {
             name = t('Deposit');
         } else if (transaction.type === CardTransactionType.PAYMENT) {
             name = transaction.remark || t('Payment');
+        } else if (transaction.type === CardTransactionType.REFUND) {
+            name = `${t('Refund')} ${transaction.remark}`;
+        } else if (transaction.type === CardTransactionType.VOID) {
+            name = `${t('Cancel operation')} ${transaction.remark}`;
+        }
+    }
+
+    let cardLabel = t('Account');
+    if (transaction) {
+        if (transaction.type === CardTransactionType.REFUND || transaction.type === CardTransactionType.VOID) {
+            cardLabel = t('Refund to account');
         }
     }
 
@@ -41,7 +52,7 @@ export function TransactionDetailsModal() {
         if (transaction.type === CardTransactionType.DEPOSIT) {
             const total = transaction.amount + transaction.fee;
             transactionAmount = `${formatCurrency(total, transaction.currency, locale, 2)}`;
-        } else if (transaction.type === CardTransactionType.PAYMENT) {
+        } else if (transaction.type === CardTransactionType.PAYMENT || transaction.type === CardTransactionType.REFUND || transaction.type === CardTransactionType.VOID) {
             transactionAmount = `${formatCurrency(transaction.originalAmount, transaction.originalCurrency, locale, 2)}`;
         }
     }
@@ -105,7 +116,7 @@ export function TransactionDetailsModal() {
                     </div>
                     <div className={styles.list}>
                         {!!currentBankCard && <TxProperty
-                            label={t('Card')}
+                            label={cardLabel}
                             value={<div className={styles.bankAccount}>
                                 {cardPaymentSystem} <span>{formatCardLastFourDigits(currentBankCard.number!)}</span>
                             </div>}
