@@ -196,6 +196,9 @@ export const it = {
         'Settings': 'Impostazioni',
         'Information': 'Informazioni',
         'User Agreement': 'Contratto di utilizzo',
-        'Privacy Policy': 'Informativa sulla privacy'
+        'Privacy Policy': 'Informativa sulla privacy',
+        'Refund': 'Rimborso',
+        'Cancel operation': 'Annulla operazione',
+        'Refund to account': 'Rimborso sul conto'
     }
 } as const;

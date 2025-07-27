@@ -61,7 +61,7 @@ export interface UserCardResponse {
     currency: string;
     transactions: {
         id: number;
-        type: 'deposit' | 'payment';
+        type: 'deposit' | 'payment' | 'refund' | 'void';
         status: 'success' | 'failed' | 'in-progress';
         amount: number;
         currency: string;
