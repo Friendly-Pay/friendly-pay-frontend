@@ -19,9 +19,14 @@ export function TxAmount({ type, fee, amount, currency, status, className }: TxA
     const languageCode = useUserStore(state => state.languageCode);
 
     let totalAmount = amount;
-    if (fee && type === CardTransactionType.PAYMENT) {
-        totalAmount += fee;
+    if (fee) {
+        if (type === CardTransactionType.PAYMENT) {
+            totalAmount += fee;
+        } else if (type === CardTransactionType.REFUND || type === CardTransactionType.VOID) {
+            totalAmount -= fee;
+        }
     }
+    const isTopup = type === CardTransactionType.DEPOSIT || type === CardTransactionType.REFUND || type === CardTransactionType.VOID;
 
     return (
         <Text
@@ -29,11 +34,11 @@ export function TxAmount({ type, fee, amount, currency, status, className }: TxA
             align='right'
             weight='semibold'
             className={classNames(styles.amount, {
-                [styles.deposit]: type === CardTransactionType.DEPOSIT,
+                [styles.topup]: isTopup,
                 [styles.failed]: status === CardTransactionStatus.FAILED
             }, className)}
         >
-            {type === CardTransactionType.DEPOSIT && '+'}{formatCurrency(totalAmount, currency, languageCodeToLocale(languageCode), 2)}
+            {isTopup && '+'}{formatCurrency(totalAmount, currency, languageCodeToLocale(languageCode), 2)}
         </Text>
     );
 }
