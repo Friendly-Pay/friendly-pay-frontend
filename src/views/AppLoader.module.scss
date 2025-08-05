@@ -1,0 +1,40 @@
+.loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: var(--safe-area-top);
+    padding-bottom: var(--safe-area-bottom);
+    background-color: var(--color-white);
+    z-index: 9999;
+    overflow: hidden;
+    transform: translateZ(0);
+
+    svg {
+        transform: translateY(-25%);
+        animation: blink 1.2s infinite ease-in-out;
+    }
+}
+
+@keyframes blink {
+
+    0%,
+    30%,
+    100% {
+        opacity: 1;
+    }
+
+    65% {
+        opacity: 0.8;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .loader svg {
+        animation: none;
+    }
+}
