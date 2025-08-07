@@ -8,8 +8,11 @@ export interface CardTypeResponse {
     paymentSystem: 'Visa' | 'Mastercard';
     price: number;
     isVirtual: boolean;
+    minDeposit: number;
     depositFee: number;
     depositTime: number; // секунды
+    hasGooglePay: boolean;
+    hasAppleWallet: boolean;
     canWithdrawalAtm: boolean;
     available: boolean;
     limits: {
@@ -59,6 +62,7 @@ export interface UserCardResponse {
     status: 'Active' | 'NeedActivation' | 'VerificationProcessing' | 'ActivationProcessing' | 'VerificationFailed' | 'ActivationFailed' | 'Frozen';
     balance: number;
     currency: string;
+    createdAt: number;
     transactions: {
         id: number;
         type: 'deposit' | 'payment' | 'refund' | 'void';
@@ -76,6 +80,7 @@ export interface UserCardResponse {
 export const fetchMyCards = async () => {
     const res = await apiClient.get<UserCardResponse[]>('/card/user/list');
     return res.data;
+    // return [];
     // return [
     //     {
     //         'id': 3,

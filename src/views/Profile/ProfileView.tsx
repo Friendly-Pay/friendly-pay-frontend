@@ -24,7 +24,7 @@ export function ProfileView() {
     const handleOpenLink = (e: React.MouseEvent<HTMLAnchorElement>) => {
         e.preventDefault();
         const url = e.currentTarget.href;
-        openWebviewLink(url);
+        openWebviewLink(url, { try_instant_view: true });
     };
 
     return (
@@ -106,13 +106,13 @@ export function ProfileView() {
 
                     <div className={styles.legalList}>
                         <a
-                            href='/'
+                            href={import.meta.env.VITE_LEGAL_USER_AGREEMENT}
                             className={styles.link}
                             onClick={handleOpenLink}
                         >{t('User Agreement')}</a>
 
                         <a
-                            href='/'
+                            href={import.meta.env.VITE_LEGAL_PRIVACY_POLICY}
                             className={styles.link}
                             onClick={handleOpenLink}
                         >{t('Privacy Policy')}</a>

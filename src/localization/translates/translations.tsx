@@ -39,6 +39,8 @@ export const translations = {
             'Almost ready, waiting for<br/> confirmation from the bank...': 'Почти готово, ждем<br/> подтверждения от банка...',
             'Reviewing your documents,<br/> and moving on...': 'Смотрим ваши документы,<br/> и идем далее...',
             'We encountered an error while verifying your data. Please contact support': 'Мы обнаружили ошибку при проверке ваших данных. Пожалуйста, свяжитесь с поддержкой',
+            'Failed to refresh account data. Please try restarting the app or pulling down to refresh': 'Не смогли обновить данные о счетах. Попробуйте перезапустить приложение или потянуть экран вниз',
+            'Failed to fetch card data. Please try reopening the details window': 'Не удалось получить данные карты. Попробуйте повторно открыть окно реквизитов',
             'Contact support': 'Обратиться в поддержку',
             'Add card to wallet': 'Добавить карту в кошелек',
             'Order new card': 'Оформить новую карту',
@@ -53,6 +55,8 @@ export const translations = {
             'sec': 'сек',
             'M': 'млн.',
             'k': 'тыс.',
+            'Yes': 'Да',
+            'No': 'Нет',
             'Loading...': 'Загрузка...',
             'Activation...': 'Активация...',
             'Last transactions': 'Последние операции',
@@ -182,7 +186,10 @@ export const translations = {
             'Privacy Policy': 'Политика конфиденциальности',
             'Refund': 'Возврат',
             'Cancel operation': 'Отмена операции',
-            'Refund to account': 'Возврат на счет'
+            'Refund to account': 'Возврат на счет',
+            'Do you want to cancel?': 'Вы хотите отменить?',
+            'The top-up will be cancelled.<br/>Do not send funds to this address': 'Пополнение будет отменено.<br/>Не отправляйте средства на этот адрес',
+            'The purchase will be cancelled.<br/>Do not send funds to this address': 'Покупка будет отменена.<br/>Не отправляйте средства на этот адрес'
         }
     }
 } as const;
