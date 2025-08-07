@@ -36,19 +36,17 @@
     }
 }
 
-.top {
-    position: absolute;
-    top: 14px;
-    left: 16px;
-    right: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
 .logo {
+    position: absolute;
+    bottom: 14px + 30px + 6px;
+    left: 22px;
     display: flex;
     color: var(--logo-color);
+
+    svg {
+        width: 24px;
+        height: 24px;
+    }
 }
 
 .bottom {

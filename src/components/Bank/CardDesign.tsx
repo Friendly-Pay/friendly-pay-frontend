@@ -44,7 +44,6 @@ export const cardDesign = {
     },
     [111021]: {
         design: virtual2,
-        colorLogo: true,
         border: '2px solid #B3BAC4',
         previewBorder: '1px solid #B3BAC4'
     },

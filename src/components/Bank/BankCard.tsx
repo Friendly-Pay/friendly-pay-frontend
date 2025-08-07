@@ -1,5 +1,4 @@
 import { ArbiLogoSign } from '../Icons/ArbiLogo';
-import { Cloud } from '../Icons/Cloud';
 import { Eye } from '../Icons/Eye';
 import { CardDesign } from './CardDesign';
 import { PaymentSystemIcon } from './PaymentSystemIcon';
@@ -24,7 +23,7 @@ type BankCardProps = {
     onClickDigits?: () => void
 }
 
-export function BankCard({ typeId, lastFourDigits, hideDigits, paymentSystem, status, active, virtual, style, className, onClick, onClickDigits }: BankCardProps) {
+export function BankCard({ typeId, lastFourDigits, hideDigits, paymentSystem, status, active, style, className, onClick, onClickDigits }: BankCardProps) {
     const isDisabled = status === CardStatus.NeedActivation || status === CardStatus.ActivationFailed || status === CardStatus.VerificationFailed;
     const isActivation = status === CardStatus.ActivationProcessing || status === CardStatus.VerificationProcessing;
     const lastFourDigitsPlaceholder = '••••';
@@ -42,12 +41,8 @@ export function BankCard({ typeId, lastFourDigits, hideDigits, paymentSystem, st
             backgroundClassName={styles.background}
             onClick={onClick}
         >
-            <div className={styles.top}>
-                <div className={styles.logo}>
-                    <ArbiLogoSign />
-                </div>
-
-                {virtual && <div className={styles.cloud}><Cloud /></div>}
+            <div className={styles.logo}>
+                <ArbiLogoSign />
             </div>
 
             <div className={classNames(styles.bottom, !hideDigits && styles.withDigits)}>

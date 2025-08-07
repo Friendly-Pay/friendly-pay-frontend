@@ -7,16 +7,24 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 type WalletBannerProps = {
+    hasAppleWallet: boolean
+    hasGooglePay: boolean
     className?: string
 }
 
-export function WalletBanner({ className }: WalletBannerProps) {
+export function WalletBanner({ hasAppleWallet, hasGooglePay, className }: WalletBannerProps) {
     const [t] = useTranslation();
     const [opened, setOpened] = useState(false);
     const platform = useDeviceStore(state => state.platform);
     const isIos = platform === 'ios' || platform === 'macos';
     const title = isIos ? 'Apple Pay' : 'Google Pay';
 
+    if (isIos && !hasAppleWallet) {
+        return null;
+    }
+    if (!isIos && !hasGooglePay) {
+        return null;
+    }
     return (
         <>
             <ClickableBanner

@@ -1,16 +1,19 @@
 import { BottomFixedContainer } from '@/components/common/BottomFixedContainer';
 import { MainLayout } from '@/components/common/MainLayout';
+import { DoorOpened } from '@/components/Icons/Door';
 import { PaymentHead } from '@/components/Payment/Head/PaymentHead';
 import { TopupCard } from '@/components/Payment/Head/TopupCard';
 import { TopupCurrency } from '@/components/Payment/Head/TopupCurrency';
 import { PaymentAddress } from '@/components/Payment/PaymentAddress';
 import { Skeleton } from '@/components/Skeleton/Skeleton';
 import { useBankCard } from '@/states/cards/store';
+import { useDialogStore } from '@/states/dialog';
 import { PaymentStatus, usePaymentStore, usePaymentTopupCurrency } from '@/states/payment/store';
 import { Button, Line, Text } from '@/uikit';
 import { useTranslation } from 'react-i18next';
 import { Navigate, useNavigate } from 'react-router-dom';
 import styles from './TopupView.module.scss';
+
 
 export function TopupView() {
     const [t] = useTranslation();
@@ -23,8 +26,15 @@ export function TopupView() {
 
     const navigate = useNavigate();
     const handleCancel = () => {
-        navigate('/');
-        usePaymentStore.getState().cancelTopup();
+        useDialogStore.getState().openDialog({
+            title: t('Do you want to cancel?'),
+            text: t('The top-up will be cancelled.<br/>Do not send funds to this address'),
+            icon: <DoorOpened />,
+            onConfirm: () => {
+                navigate('/');
+                usePaymentStore.getState().cancelTopup();
+            }
+        });
     };
 
     const handleDone = () => {
@@ -78,7 +88,7 @@ export function TopupView() {
                         dangerouslySetInnerHTML={{
                             __html: t('Commission <span>{{depositFee}}%</span>, minimum ≈ <span>{{minAmount}}</span>', {
                                 depositFee: bankCard.depositFee,
-                                minAmount: '25$' // @TODO
+                                minAmount: `${bankCard.minDeposit} USDT` // @TODO dynamic currency
                             })
                         }}
                     />
