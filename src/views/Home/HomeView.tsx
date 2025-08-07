@@ -143,7 +143,11 @@ export function HomeView() {
 
                         <div className={styles.stack}>
                             <div className={styles.banners}>
-                                {/* <WalletBanner className={styles.banner} /> */}
+                                <WalletBanner
+                                    hasGooglePay={currentBankCard.hasGooglePay}
+                                    hasAppleWallet={currentBankCard.hasAppleWallet}
+                                    className={styles.banner}
+                                />
                                 <OrderCardBanner className={styles.banner} />
                             </div>
 

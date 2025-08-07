@@ -19,13 +19,13 @@ export function TransactionWaiting({ type, children, className }: PropsWithChild
     const [t] = useTranslation();
     const navigate = useNavigate();
     const myCardsCount = useCardsStore(state => state.myCardsCount);
-    const canHideWaiting = type === 'topup' || type === 'purchase' && myCardsCount > 0;
+    const canGoHome = type === 'topup' || type === 'purchase' && myCardsCount > 0;
 
     const handleBackHome = (e: any) => {
         e.preventDefault();
         navigate('/');
-        const { userHiddenWaitingTopup, userCompleteWaitingCardPurchase } = usePaymentStore.getState();
-        type === 'topup' ? userHiddenWaitingTopup() : userCompleteWaitingCardPurchase();
+        const { userHiddenWaitingTopup, userHiddenWaitingCardPurchase } = usePaymentStore.getState();
+        type === 'topup' ? userHiddenWaitingTopup() : userHiddenWaitingCardPurchase();
     };
 
     const headings: string[] = [
@@ -50,12 +50,12 @@ export function TransactionWaiting({ type, children, className }: PropsWithChild
 
     return (
         <div className={classNames(styles.root, className)}>
-            {canHideWaiting && <div
+            <div
                 className={styles.close}
                 onClick={handleBackHome}
             >
                 <CloseFill />
-            </div>}
+            </div>
 
             <CenteredContent className={styles.content}>
                 <div className={styles.top}>{children}</div>
@@ -77,7 +77,7 @@ export function TransactionWaiting({ type, children, className }: PropsWithChild
                 >
                     {t('This will take ≈ {{minutes}} min. You can wait or close the window, we will send a notification', { minutes: 5 })}
                 </Text>
-                {canHideWaiting && <a
+                {canGoHome && <a
                     href='/'
                     className={styles.button}
                     onClick={handleBackHome}

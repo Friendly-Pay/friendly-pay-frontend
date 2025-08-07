@@ -1,7 +1,7 @@
 import { OrderStorage } from '@/states/payment/storage';
 import { PaymentStatus, usePaymentStore } from '@/states/payment/store';
 import { useUserStore } from '@/states/user/store';
-import { PropsWithChildren, useEffect } from 'react';
+import { PropsWithChildren, useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 
 export function PaymentRestore({ children }: PropsWithChildren) {
@@ -12,9 +12,14 @@ export function PaymentRestore({ children }: PropsWithChildren) {
     const restoreTopup = usePaymentStore((state) => state.restoreTopup);
     const restoreCardPurchase = usePaymentStore((state) => state.restoreCardPurchase);
 
+    const [isMounted, setMounted] = useState(false);
     useEffect(() => {
-        resetInitialsPaymentOrders();
-    }, []);
+        if (isMounted) {
+            resetInitialsPaymentOrders();
+        } else {
+            setMounted(true);
+        }
+    }, [isMounted]);
 
     if (initialPurchaseOrder) {
         const order = OrderStorage.get(initialPurchaseOrder.transactionId);
@@ -36,6 +41,10 @@ export function PaymentRestore({ children }: PropsWithChildren) {
                 replace
             />;
         }
+    }
+
+    if (!isMounted) {
+        return null;
     }
 
     return <>{children}</>;

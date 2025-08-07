@@ -42,6 +42,8 @@ export const it = {
         'sec': 'sec',
         'M': 'Mln',
         'k': 'k',
+        'Yes': 'Sì',
+        'No': 'No',
         'Loading...': 'Caricamento...',
         'Activation...': 'Attivazione...',
         'Last transactions': 'Ultime transazioni',
@@ -199,6 +201,9 @@ export const it = {
         'Privacy Policy': 'Informativa sulla privacy',
         'Refund': 'Rimborso',
         'Cancel operation': 'Annulla operazione',
-        'Refund to account': 'Rimborso sul conto'
+        'Refund to account': 'Rimborso sul conto',
+        'Do you want to cancel?': 'Vuoi annullare?',
+        'The top-up will be cancelled.<br/>Do not send funds to this address': 'La ricarica sarà annullata.<br/>Non inviare fondi a questo indirizzo',
+        'The purchase will be cancelled.<br/>Do not send funds to this address': 'L’acquisto sarà annullato.<br/>Non inviare fondi a questo indirizzo'
     }
 } as const;

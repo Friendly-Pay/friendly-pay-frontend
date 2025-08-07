@@ -1,5 +1,6 @@
 import { BottomFixedContainer } from '@/components/common/BottomFixedContainer';
 import { MainLayout } from '@/components/common/MainLayout';
+import { DoorOpened } from '@/components/Icons/Door';
 import { Image } from '@/components/Image/Image';
 import { CardPrice } from '@/components/Payment/Head/CardPrice';
 import { PaymentHead } from '@/components/Payment/Head/PaymentHead';
@@ -8,6 +9,7 @@ import { PaymentAddress } from '@/components/Payment/PaymentAddress';
 import { Skeleton } from '@/components/Skeleton/Skeleton';
 import { languageCodeToLocale } from '@/localization/utils';
 import { useCardsStore } from '@/states/cards/store';
+import { useDialogStore } from '@/states/dialog';
 import { PaymentStatus, usePaymentPurchaseCurrency, usePaymentStore } from '@/states/payment/store';
 import { useUserStore } from '@/states/user/store';
 import { Button, Line, Text } from '@/uikit';
@@ -28,7 +30,14 @@ export function PayNewCardView() {
     const status = usePaymentStore(state => state.purchaseStatus);
 
     const handleCancel = () => {
-        usePaymentStore.getState().cancelCardPurchase();
+        useDialogStore.getState().openDialog({
+            title: t('Do you want to cancel?'),
+            text: t('The purchase will be cancelled.<br/>Do not send funds to this address'),
+            icon: <DoorOpened />,
+            onConfirm: () => {
+                usePaymentStore.getState().cancelCardPurchase();
+            }
+        });
     };
 
     const handleDone = () => {

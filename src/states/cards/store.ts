@@ -1,5 +1,6 @@
 import { activateCard, ActivateCardData, CardDetailsResponse, fetchCardDetails, fetchCardTypes, fetchMyCards } from './fetch';
 import { FetchStatus } from '@/utils/api';
+import i18next from 'i18next';
 import { toast } from 'sonner';
 import { create } from 'zustand';
 
@@ -21,8 +22,11 @@ interface CardType {
     paymentSystem: PaymentSystem;
     price: number;
     isVirtual: boolean;
+    minDeposit: number;
     depositFee: number;
     depositTime: number;
+    hasGooglePay: boolean;
+    hasAppleWallet: boolean;
     canWithdrawalAtm: boolean;
     available: boolean;
     limits: CardLimits;
@@ -72,6 +76,7 @@ export interface MyCard extends Omit<CardType, 'id'> {
     status: CardStatus;
     balance: number;
     currency: string;
+    createdAt: number;
     transactions: CardTransaction[];
 }
 
@@ -169,10 +174,12 @@ export const useCardsStore = create<State & Actions>((set, get) => ({
         set({ myCardsFetchStatus: FetchStatus.Pending });
         try {
             const myCards = await fetchMyCards();
+            const sortedCards = [...myCards].sort((a, b) => b.createdAt - a.createdAt);
+
             const cardsIds: number[] = [];
             const cardsTypesIds: number[] = [];
             const cardsHashMap: Record<number, MyCard> = {};
-            for (const card of myCards) {
+            for (const card of sortedCards) {
                 const cardType = cardsTypes[card.typeId];
                 if (!cardType) throw new Error(`[cards] undefined type ${card.typeId}`);
                 cardsIds.push(card.id);
@@ -186,6 +193,7 @@ export const useCardsStore = create<State & Actions>((set, get) => ({
                     status: card.status as CardStatus,
                     balance: card.balance,
                     currency: card.currency,
+                    createdAt: card.createdAt,
                     transactions: card.transactions as CardTransaction[],
                 };
             }
@@ -205,7 +213,7 @@ export const useCardsStore = create<State & Actions>((set, get) => ({
             return cardsIds;
         } catch (error: any) {
             console.error('[error]', error);
-            toast.error(error.message);
+            toast.error(i18next.t('Failed to refresh account data. Please try restarting the app or pulling down to refresh'));
             set({ myCardsFetchStatus: FetchStatus.Rejected });
         }
     },
@@ -231,7 +239,7 @@ export const useCardsStore = create<State & Actions>((set, get) => ({
             return detail;
         } catch (error: any) {
             console.error('[loadCardDetails]', error);
-            toast.error(error.message);
+            toast.error(i18next.t('Failed to fetch card data. Please try reopening the details window'));
         }
     },
 

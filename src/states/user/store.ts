@@ -134,6 +134,10 @@ export const useUserStore = create<State & Actions>((set, get) => ({
     },
 }));
 
+export const useHasPaymentRestoreInitials = () => {
+    return useUserStore(state => Boolean(state.initialPurchaseOrder || state.initialTopupOrder));
+};
+
 if (import.meta.env.DEV) {
     // @ts-ignore
     window.getUserStore = () => useUserStore.getState();
