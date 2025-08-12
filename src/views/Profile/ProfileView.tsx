@@ -44,10 +44,9 @@ export function ProfileView() {
                 </div>
 
                 <div className={styles.data}>
-                    <div className={styles.dataItem}>
+                    {user.email && <div className={styles.dataItem}>
                         <Text
-                            type='bodyLarge'
-                            weight='medium'
+                            type='body'
                             align='left'
                             className={styles.value}
                         >{user.email}</Text>
@@ -56,12 +55,11 @@ export function ProfileView() {
                             align='left'
                             className={styles.text}
                         >{t('Email')}</Text>
-                    </div>
+                    </div>}
 
-                    <div className={styles.dataItem}>
+                    {user.phoneNumber && <div className={styles.dataItem}>
                         <Text
-                            type='bodyLarge'
-                            weight='medium'
+                            type='body'
                             align='left'
                             className={styles.value}
                         >{formatPhoneNumber(user.phoneNumber)}</Text>
@@ -70,12 +68,11 @@ export function ProfileView() {
                             align='left'
                             className={styles.text}
                         >{t('Phone number')}</Text>
-                    </div>
+                    </div>}
 
                     <div className={styles.dataItem}>
                         <Text
-                            type='bodyLarge'
-                            weight='medium'
+                            type='body'
                             align='left'
                             className={styles.value}
                         >{hasCompletedKyc ? 'Basic' : t('Not completed')}</Text>
