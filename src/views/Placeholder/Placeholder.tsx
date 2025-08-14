@@ -1,4 +1,3 @@
-import { Navbar } from '@/components/Navbar/Navbar';
 import { Text } from '@/uikit';
 import { motion } from 'framer-motion';
 import styles from './Placeholder.module.scss';
@@ -43,7 +42,6 @@ export function Placeholder({ title, text, image }: PlaceholderProps) {
                     </Text>
                 </div>
             </motion.div>
-            <Navbar />
         </>
     );
 }

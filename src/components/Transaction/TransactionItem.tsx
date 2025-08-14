@@ -27,6 +27,8 @@ export function TransactionItem({ transaction, className, onClick }: Transaction
         title = `${t('Refund')} ${transaction.remark}`;
     } else if (transaction.type === CardTransactionType.VOID) {
         title = `${t('Cancel operation')} ${transaction.remark}`;
+    } else if (transaction.type === CardTransactionType.DEPOSIT_BY_REFERRAL) {
+        title = `${t('Bonus from friends')}`;
     }
 
     return (

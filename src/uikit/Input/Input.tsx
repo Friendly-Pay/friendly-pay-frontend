@@ -7,6 +7,7 @@ import classNames from 'classnames';
 import styles from './Input.module.scss';
 
 export type InputProps = {
+    view?: 'primary' | 'inverse',
     danger?: boolean
     canCopy?: boolean
     readOnly?: boolean
@@ -23,7 +24,7 @@ export const Input = forwardRef<
     InputProps & Omit<InputHTMLAttributes<HTMLInputElement>, 'onInput'>
 >(
     (
-        { value, className, danger, readOnly, asSelect, startIcon, canCopy, copiedToastText, onInput, onClick, onCopied, ...props },
+        { view = 'primary', value, className, danger, readOnly, asSelect, startIcon, canCopy, copiedToastText, onInput, onClick, onCopied, ...props },
         ref
     ) => {
         const handleInput: FormEventHandler<HTMLInputElement> = (event) => {
@@ -44,6 +45,7 @@ export const Input = forwardRef<
             <div
                 className={classNames(
                     styles.root,
+                    styles[view],
                     !!value && styles.hasValue,
                     !!startIcon && styles.hasStartIcon,
                     readOnly && styles.readonly,

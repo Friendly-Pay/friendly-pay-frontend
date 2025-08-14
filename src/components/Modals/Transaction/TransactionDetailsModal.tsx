@@ -30,6 +30,8 @@ export function TransactionDetailsModal() {
             name = `${t('Refund')} ${transaction.remark}`;
         } else if (transaction.type === CardTransactionType.VOID) {
             name = `${t('Cancel operation')} ${transaction.remark}`;
+        } else if (transaction.type === CardTransactionType.DEPOSIT_BY_REFERRAL) {
+            name = `${t('Bonus from friends')}`;
         }
     }
 
@@ -49,7 +51,7 @@ export function TransactionDetailsModal() {
 
     let transactionAmount: string = '';
     if (transaction) {
-        if (transaction.type === CardTransactionType.DEPOSIT) {
+        if (transaction.type === CardTransactionType.DEPOSIT || transaction.type === CardTransactionType.DEPOSIT_BY_REFERRAL) {
             const total = transaction.amount + transaction.fee;
             transactionAmount = `${formatCurrency(total, transaction.currency, locale, 2)}`;
         } else if (transaction.type === CardTransactionType.PAYMENT || transaction.type === CardTransactionType.REFUND || transaction.type === CardTransactionType.VOID) {

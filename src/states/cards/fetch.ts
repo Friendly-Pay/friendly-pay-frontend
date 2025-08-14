@@ -11,6 +11,8 @@ export interface CardTypeResponse {
     minDeposit: number;
     depositFee: number;
     depositTime: number; // секунды
+    referralAmount: number;
+    referralDepositPercent: number;
     hasGooglePay: boolean;
     hasAppleWallet: boolean;
     canWithdrawalAtm: boolean;

@@ -187,7 +187,26 @@ export const translations = {
             'The purchase will be cancelled.<br/>Do not send funds to this address': 'Покупка будет отменена.<br/>Не отправляйте средства на этот адрес',
             'Fast online shopping, subscriptions, any online services without Apple/Google Pay. Perfect for everyday payments and simple tasks. Instant issue, convenient for freelancers and private buyers.': 'Быстрые интернет-покупки, подписки, любые онлайн-сервисы без Apple/Google Pay. Отлично подходит для ежедневных платежей и простых задач. Моментальный выпуск, удобно для фрилансеров и частых покупателей.',
             'A universal card for stable large online payments, subscriptions, business services and services with authorization via Visa. For professionals, digital specialists, large online purchases.': 'Универсальная карта для стабильных крупных онлайн-оплат, подписок, бизнес-сервисов и сервисов с авторизацией через Visa. Для профессионалов, digital-специалистов, крупных интернет-покупок.',
-            'A premium card for any task - online and offline payments, maximum limits, VIP service and freedom for business, investments, travel and large expenses.': 'Премиум-карта для любых задач — онлайн и оффлайн-платежи, максимальные лимиты, VIP-сервис и свобода для бизнеса, инвестиций, путешествий и крупных расходов.'
+            'A premium card for any task - online and offline payments, maximum limits, VIP service and freedom for business, investments, travel and large expenses.': 'Премиум-карта для любых задач — онлайн и оффлайн-платежи, максимальные лимиты, VIP-сервис и свобода для бизнеса, инвестиций, путешествий и крупных расходов.',
+            'Bonus balance': 'Бонусный баланс',
+            'Enter the amount': 'Введите сумму',
+            'Transfer': 'Перевод',
+            'Minimum amount is <span>{{value}} $</span>': 'Минимальная сумма <span>{{value}} $</span>',
+            'Insufficient balance': 'Недостаточно средств',
+            'Insufficient balance. Available <span>{{value}} $</span>': 'Недостаточно средств. Доступно <span>{{value}} $</span>',
+            'An error occurred. Please try again later or contact support': 'Произошла ошибка. Пожалуйста, попробуйте позже или свяжитесь с поддержкой',
+            'Bonus from friends': 'Бонус от друзей',
+            'Copy link': 'Скопировать ссылку',
+            'Link copied': 'Ссылка скопирована',
+            'Friends': 'Друзья',
+            'Credited': 'Зачислено',
+            'Withdraw': 'Вывести',
+            'Invite friends<br /> and earn bonuses': 'Приводи друзей<br /> и получай бонусы',
+            'Share your referral link and earn up to $150 for card issuance and 0.5% of turnover': 'Делись реферальной ссылкой и получай до 150$ за выпуск карты и 0,5% от оборота',
+            'Bonus terms': 'Условия начислений',
+            'By inviting partners, you receive bonuses from card issuance and from the partner’s top-ups for 12 months': 'Привлекая партнеров, вы получаете бонусы от самого выпуска карт, а также суммы от пополнения партнера в течении 12 месяцев',
+            'Issuance': 'Выпуск',
+            '% of turnover': '% с оборота'
         }
     }
 } as const;

@@ -1,4 +1,7 @@
 import { AppLoader } from './AppLoader';
+import { BonusTransferResultView } from './Friends/BonusTransferResultView';
+import { BonusTransferView } from './Friends/BonusTransferView';
+import { BonusView } from './Friends/BonusView';
 import { HomeView } from './Home/HomeView';
 import { IntroView } from './Intro/IntroView';
 import { NewProductView } from './NewProduct/NewProductView';
@@ -10,13 +13,13 @@ import { PayNewCardWaitingView } from './Payment/PayNewCard/PayNewCardWaitingVie
 import { TopupResultView } from './Payment/Topup/TopupResultView';
 import { TopupView } from './Payment/Topup/TopupView';
 import { TopupWaitingView } from './Payment/Topup/TopupWaitingView';
-import { QRPlaceholderView } from './Placeholder/QrPlaceholderView';
 import { TransferPlaceholderView } from './Placeholder/TransferPlaceholderView';
 import { ProfileView } from './Profile/ProfileView';
 import { VerificationErrorView } from './Verification/VerificationErrorView';
 import { VerificationView } from './Verification/VerificationView';
 import { TelegramBackButton } from '@/components/common/TelegramBackButton';
 import { DialogController } from '@/components/DialogController';
+import { Navbar } from '@/components/Navbar/Navbar';
 import { ToastsRoot } from '@/components/Toast/ToastsRoot';
 import { useLoaderStore } from '@/states/loader';
 import { CardController } from '@/views/Home/CardController';
@@ -32,6 +35,7 @@ export function AppViews() {
             {rootInitiated && <Router>
                 <TelegramBackButton />
                 <DialogController />
+                <Navbar />
                 <PaymentRestore>
                     <CardController>
                         <Routes>
@@ -88,13 +92,23 @@ export function AppViews() {
                                 path='/verification/user/error'
                                 element={<VerificationErrorView />}
                             />
+
+                            <Route
+                                path='/friends/bonus'
+                                element={<BonusView />}
+                            />
+                            <Route
+                                path='/friends/bonus/transfer'
+                                element={<BonusTransferView />}
+                            />
+                            <Route
+                                path='/friends/bonus/transfer/result'
+                                element={<BonusTransferResultView />}
+                            />
+
                             <Route
                                 path='/payment/transfer'
                                 element={<TransferPlaceholderView />}
-                            />
-                            <Route
-                                path='/payment/qr'
-                                element={<QRPlaceholderView />}
                             />
                         </Routes>
                     </CardController>

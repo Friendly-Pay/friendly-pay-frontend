@@ -11,7 +11,6 @@ import { CardsSlider } from '@/components/Bank/CardsSlider';
 import { MainLayout } from '@/components/common/MainLayout';
 import { CardDetails } from '@/components/Icons/CardDetailts';
 import { Topup } from '@/components/Icons/Topup';
-import { Navbar } from '@/components/Navbar/Navbar';
 import { UserHead } from '@/components/User/UserHead';
 import { CardStatus, useCardsStore } from '@/states/cards/store';
 import { useUserStore } from '@/states/user/store';
@@ -168,8 +167,6 @@ export function HomeView() {
                         </div>
                     </motion.div>
                 </AnimatePresence>
-
-                <Navbar />
             </div>}
         </MainLayout>
     );

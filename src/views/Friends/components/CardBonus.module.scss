@@ -1,0 +1,45 @@
+.root {
+    display: flex;
+    flex-direction: column;
+    background-color: #F4F6F9;
+    border-radius: 12px;
+    user-select: none;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+}
+
+.head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.name {
+    flex-shrink: 1;
+}
+
+.preview {
+    display: flex;
+    flex-shrink: 0;
+}
+
+.cardPreview {
+    width: 54px;
+    height: 36px;
+}
+
+.data {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding: 16px 0;
+}
+
+.label {
+    color: var(--color-typo-primary-60);
+}

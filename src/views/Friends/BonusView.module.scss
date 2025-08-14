@@ -1,0 +1,104 @@
+.wrap {
+    display: flex;
+    flex-direction: column;
+    padding-top: 32px;
+    padding-bottom: 72px;
+}
+
+.terms {
+    display: flex;
+    flex-direction: column;
+    padding-top: 32px;
+    margin-bottom: 20px;
+
+    &Title {
+        color: #A2A2B8;
+        margin-bottom: 8px;
+    }
+
+    &Text {
+        color: #A2A2B8;
+        font-size: 15px;
+        line-height: 22px;
+        max-width: 350px;
+        margin: 0 auto;
+    }
+}
+
+.promo {
+    display: flex;
+    width: 100%;
+    max-width: 100%;
+    position: relative;
+    margin-bottom: 32px;
+    user-select: none;
+
+    img {
+        max-width: 100%;
+        margin: 0 auto;
+        pointer-events: none;
+    }
+}
+
+.block {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    background-color: var(--color-white);
+    border-radius: 18px;
+    overflow: hidden;
+    user-select: none;
+
+    &+.block {
+        margin-top: 12px;
+    }
+}
+
+.balanceWrap {
+    display: flex;
+    align-items: center;
+}
+
+.balanceContent {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    flex-shrink: 3;
+
+    .label {
+        margin-bottom: 4px;
+        line-height: 20px;
+    }
+}
+
+.label {
+    color: var(--color-typo-primary-60)
+}
+
+.buttonTransfer {
+    min-width: 116px;
+    flex-shrink: 0;
+    height: 48px;
+}
+
+.linkWrap {
+    display: flex;
+    flex-direction: column;
+}
+
+.linkTitle {
+    margin-bottom: 12px;
+}
+
+.linkText {
+    color: var(--color-typo-primary-60);
+    min-height: 66px;
+    margin-bottom: 20px;
+}
+
+.cardsList {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}

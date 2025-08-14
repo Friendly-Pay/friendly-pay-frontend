@@ -7,11 +7,12 @@ type ButtonProps = {
     view?: 'primary' | 'secondary' | 'secondaryColored' | 'white' | 'green';
     loading?: boolean;
     disabled?: boolean;
+    smallSize?: boolean;
     className?: string;
     onClick?: (event: any) => void;
 }
 
-export function Button({ view = 'primary', loading, disabled, className, children, onClick }: PropsWithChildren<ButtonProps>) {
+export function Button({ view = 'primary', smallSize, loading, disabled, className, children, onClick }: PropsWithChildren<ButtonProps>) {
     const isLoading = !disabled && loading;
     const handleClick = (event: any) => {
         if (isLoading || disabled) {
@@ -28,6 +29,7 @@ export function Button({ view = 'primary', loading, disabled, className, childre
                 styles[view],
                 loading && styles.loading,
                 disabled && styles.disabled,
+                smallSize && styles.smallSize,
                 className
             )}
             onClick={handleClick}

@@ -1,0 +1,14 @@
+.input {
+    color: var(--color-typo-primary);
+
+    input {
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+        &:focus {
+            overflow: hidden;
+        }
+    }
+}

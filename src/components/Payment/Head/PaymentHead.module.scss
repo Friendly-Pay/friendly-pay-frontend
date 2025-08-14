@@ -2,15 +2,8 @@
     display: flex;
     flex-direction: column;
     min-width: 100%;
-    background-color: var(--color-fill-5);
+    background-color: var(--color-white);
     padding: 0 20px;
     border-radius: 16px;
     user-select: none;
-}
-
-
-@media screen and (max-height: 700px) {
-    .root {
-        padding: 0 16px;
-    }
 }

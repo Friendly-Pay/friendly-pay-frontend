@@ -22,15 +22,16 @@ export const ArrowRight = (props: SVGProps<SVGSVGElement>) => {
 export const ArrowDown = (props: SVGProps<SVGSVGElement>) => {
     return (
         <svg
-            width="24"
-            height="25"
-            viewBox="0 0 24 25"
-            fill="none"
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
             xmlns="http://www.w3.org/2000/svg"
             {...props}
         >
             <path
-                d="M23.4131 12.031L13.7061 21.738L12.292 20.324L19.585 13.031H1.99902V11.031H19.585L12.292 3.73804L13.7061 2.32397L23.4131 12.031Z"
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M13.7071 5.30126C14.0976 5.70294 14.0976 6.3542 13.7071 6.75588L8.70711 11.8987C8.31658 12.3004 7.68342 12.3004 7.29289 11.8987L2.2929 6.75588C1.9024 6.3542 1.9024 5.70294 2.2929 5.30126C2.6834 4.89958 3.3166 4.89958 3.7071 5.30126L8 9.71681L12.2929 5.30126C12.6834 4.89958 13.3166 4.89958 13.7071 5.30126Z"
                 fill="currentColor"
             />
         </svg>
