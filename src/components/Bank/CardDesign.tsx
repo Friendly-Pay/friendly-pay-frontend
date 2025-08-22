@@ -1,8 +1,6 @@
-import eliteVirtual from 'assets/cards/elite_virtual.png?inline';
-import gamingVirtual from 'assets/cards/gaming_virtual.png';
-import platinumVirtual from 'assets/cards/platinum_virtual.png?inline';
-import premiumVirtual from 'assets/cards/premium_virtual.png?inline';
-import seamlessVirtual from 'assets/cards/seamless_virtual.png?inline';
+import virtual1 from 'assets/cards/virtual_1.png?inline';
+import virtual2 from 'assets/cards/virtual_2.png?inline';
+import virtual3 from 'assets/cards/virtual_3.png?inline';
 import { CSSProperties, PropsWithChildren } from 'react';
 import classNames from 'classnames';
 import styles from './CardDesign.module.scss';
@@ -17,36 +15,14 @@ type CardDesignProps = {
 }
 
 export const cardDesign = {
-    /** @deprecated */
-    [100008]: {
-        design: eliteVirtual,
-    },
-    /** @deprecated */
-    [100005]: {
-        design: gamingVirtual
-    },
-    /** @deprecated */
-    [100004]: {
-        design: platinumVirtual
-    },
-    /** @deprecated */
-    [100010]: {
-        inverse: true,
-        design: premiumVirtual,
-        border: '2px solid #574199',
-        previewBorder: '1px solid #574199'
-    },
     [111018]: {
-        design: eliteVirtual
+        design: virtual1
     },
     [111021]: {
-        design: seamlessVirtual
+        design: virtual2
     },
     [111028]: {
-        inverse: true,
-        design: platinumVirtual,
-        border: '2px solid #574199',
-        previewBorder: '1px solid #574199'
+        design: virtual3,
     },
 } as const;
 

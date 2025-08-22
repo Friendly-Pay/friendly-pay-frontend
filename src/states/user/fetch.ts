@@ -36,7 +36,7 @@ export interface InitialTopupOrder {
     expireAt: number;
 }
 
-export const authUser = async ({ webAppData, referralId }: { webAppData: string, referralId: string }) => {
+export const authUser = async ({ webAppData, referralId }: { webAppData: string, referralId: string | null }) => {
     const project = Boolean(import.meta.env.VITE_PROJECT) ? import.meta.env.VITE_PROJECT : undefined;
     const res = await apiClient.post<string>('/user/auth', { webAppData, referralId, project });
     return { accessToken: res.data };
