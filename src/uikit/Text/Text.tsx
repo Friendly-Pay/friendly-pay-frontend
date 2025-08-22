@@ -20,6 +20,7 @@ export type TextProps = {
     style?: CSSProperties;
     className?: string;
     children?: React.ReactNode;
+    onClick?: () => void;
     dangerouslySetInnerHTML?: {
         __html: string | TrustedHTML;
     } | undefined

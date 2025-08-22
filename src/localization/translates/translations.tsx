@@ -189,7 +189,15 @@ export const translations = {
             'Refund to account': 'Возврат на счет',
             'Do you want to cancel?': 'Вы хотите отменить?',
             'The top-up will be cancelled.<br/>Do not send funds to this address': 'Пополнение будет отменено.<br/>Не отправляйте средства на этот адрес',
-            'The purchase will be cancelled.<br/>Do not send funds to this address': 'Покупка будет отменена.<br/>Не отправляйте средства на этот адрес'
+            'The purchase will be cancelled.<br/>Do not send funds to this address': 'Покупка будет отменена.<br/>Не отправляйте средства на этот адрес',
+            'Bonus balance': 'Бонусный баланс',
+            'Enter the amount': 'Введите сумму',
+            'Transfer': 'Перевести',
+            'Minimum amount is <span>{{value}} $</span>': 'Минимальная сумма <span>{{value}} $</span>',
+            'Insufficient balance': 'Недостаточно средств',
+            'Insufficient balance. Available <span>{{value}} $</span>': 'Недостаточно средств. Доступно <span>{{value}} $</span>',
+            'An error occurred. Please try again later or contact support': 'Произошла ошибка. Пожалуйста, попробуйте позже или свяжитесь с поддержкой',
+            'Bonus from friends': 'Бонус от друзей'
         }
     }
 } as const;
