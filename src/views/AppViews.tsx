@@ -14,6 +14,7 @@ import { ProfileView } from './Profile/ProfileView';
 import { VerificationErrorView } from './Verification/VerificarionErrorView';
 import { VerificationView } from './Verification/VerificationView';
 import { TelegramBackButton } from '@/components/common/TelegramBackButton';
+import { DialogController } from '@/components/DialogController';
 import { ToastsRoot } from '@/components/Toast/ToastsRoot';
 import { useLoaderStore } from '@/states/loader';
 import { CardController } from '@/views/Home/CardController';
@@ -28,6 +29,7 @@ export function AppViews() {
 
             {rootInitiated && <Router>
                 <TelegramBackButton />
+                <DialogController />
                 <PaymentRestore>
                     <CardController>
                         <Routes>
@@ -75,6 +77,7 @@ export function AppViews() {
                                     element={<TopupResultView />}
                                 />
                             </Route>
+
                             <Route
                                 path='/verification/user'
                                 element={<VerificationView />}

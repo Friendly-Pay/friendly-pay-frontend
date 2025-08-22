@@ -1,6 +1,8 @@
 import { CardBalance } from './components/Balance/CardBalance';
 import { CardBalanceFixed } from './components/Balance/CardBalanceFixed';
 import { OrderCardBanner } from './components/Banners/OrderCardBanner';
+import { WalletBanner } from './components/Banners/WalletBanner';
+import { CardActivation } from './components/CardActivation';
 import { CardLimits } from './components/CardLimits';
 import { LastTransactions } from './components/LastTransactions';
 import { MainButton } from './components/MainButton';
@@ -142,7 +144,11 @@ export function HomeView() {
 
                         <div className={styles.stack}>
                             <div className={styles.banners}>
-                                {/* <WalletBanner className={styles.banner} /> */}
+                                <WalletBanner
+                                    hasGooglePay={currentBankCard.hasGooglePay}
+                                    hasAppleWallet={currentBankCard.hasAppleWallet}
+                                    className={styles.banner}
+                                />
                                 <OrderCardBanner className={styles.banner} />
                             </div>
 
