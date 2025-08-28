@@ -1,7 +1,8 @@
 import { apiClient } from '@/utils/api';
 
 export const authUser = async ({ webAppData, referralId }: { webAppData: string, referralId?: string | null }) => {
-    const res = await apiClient.post<string>('/user/auth', { webAppData, referralId });
+    const project = import.meta.env.VITE_PROJECT || undefined;
+    const res = await apiClient.post<string>('/user/auth', { webAppData, referralId, project });
     return { accessToken: res.data };
     // return { 'accessToken': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI2OTk3Nzc2MzMiLCJuYmYiOjE3NDM2MjY3OTYsImV4cCI6MTc0MzcxMzE5NiwiaWF0IjoxNzQzNjI2Nzk2fQ.O1dj9Hmi-CyXZ-9pgMRg0wIm7wCVxGHg1tjvQDs9q2I' };
 };
