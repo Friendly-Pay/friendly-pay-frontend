@@ -22,7 +22,7 @@ export const TextBlur = memo(function TextBlur({
         update(svgRef.current.getBoundingClientRect().width);
     }, [cell]);
 
-    const palette = ['#DFDFDF', '#EDEDED', '#EEEEEE', '#F4F4F4'];
+    const palette = ['#0B1220', '#121A2B', '#1A2436', '#223047'];
     const pick = () => palette[Math.random() * palette.length | 0];
 
     const rects = () => {

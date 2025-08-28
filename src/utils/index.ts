@@ -34,6 +34,7 @@ export function formatPhoneNumber(phone: string | null | undefined): string {
 export const truncateText = (text: string, maxLength: number = 18, addEllipsis: boolean = true) =>
     !text || !text.slice ? text : text.slice(0, maxLength) + (text.length > maxLength && addEllipsis ? '...' : '');
 
+// @TODO не создавать каждый раз new Intl.NumberFormat
 export const formatCurrency = (amount: string | number, currency: string, locale: string, minimumFractionDigits = 2) => {
     const number = typeof amount === 'string' ? parseFloat(amount) : amount;
     if (isNaN(number)) {

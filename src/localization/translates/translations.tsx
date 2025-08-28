@@ -44,6 +44,7 @@ export const translations = {
             'Contact support': 'Обратиться в поддержку',
             'Add card to wallet': 'Добавить карту в кошелек',
             'Order new card': 'Оформить новую карту',
+            'Order card': 'Оформить карту',
             'Plastic or virtual': 'Пластик или виртуальная',
             'Card details': 'Реквизиты',
             'Card number copied': 'Номер карты скопирован',
@@ -197,7 +198,9 @@ export const translations = {
             'Insufficient balance': 'Недостаточно средств',
             'Insufficient balance. Available <span>{{value}} $</span>': 'Недостаточно средств. Доступно <span>{{value}} $</span>',
             'An error occurred. Please try again later or contact support': 'Произошла ошибка. Пожалуйста, попробуйте позже или свяжитесь с поддержкой',
-            'Bonus from friends': 'Бонус от друзей'
+            'Bonus from friends': 'Бонус от друзей',
+            'Instruction': 'Инструкция',
+            'Virtual': 'Виртуальная'
         }
     }
 } as const;

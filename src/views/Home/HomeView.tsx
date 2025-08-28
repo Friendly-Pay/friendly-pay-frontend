@@ -13,7 +13,7 @@ import { CardDetails } from '@/components/Icons/CardDetailts';
 import { Topup } from '@/components/Icons/Topup';
 import { UserHead } from '@/components/User/UserHead';
 import { CardStatus, useCardsStore } from '@/states/cards/store';
-import { useUserStore } from '@/states/user/store';
+// import { useUserStore } from '@/states/user/store';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Navigate } from 'react-router-dom';
@@ -46,15 +46,15 @@ export function HomeView() {
     const isNeedActivation = currentBankCard && currentBankCard.status === CardStatus.NeedActivation;
     const isActivationFailed = currentBankCard && (currentBankCard.status === CardStatus.ActivationFailed || currentBankCard.status === CardStatus.VerificationFailed);
 
-    const skipIntro = useUserStore(state => state.skipIntro);
+    // const skipIntro = useUserStore(state => state.skipIntro);
     const myCardsCount = useCardsStore(state => state.myCardsCount);
 
-    if (!skipIntro) {
-        return <Navigate
-            to='/intro'
-            replace
-        />;
-    }
+    // if (!skipIntro) {
+    //     return <Navigate
+    //         to='/intro'
+    //         replace
+    //     />;
+    // }
     if (!myCardsCount) {
         return <Navigate
             to='/new-product'

@@ -2,7 +2,7 @@ import { useCardsStore } from '../cards/store';
 import { InitialPurchaseOrder, InitialTopupOrder } from '../user/fetch';
 import { cancelTopup, fetchPurchaseStatus, fetchTopupStatus, makeCardDeposit, purchaseCard } from './fetch';
 import { OrderStorage } from './storage';
-import usdtTrc20 from 'assets/coins/usdt_trc20.png';
+import usdtTrc20 from 'assets/deposit/usdt_trc20.png';
 import { create } from 'zustand';
 
 export enum PaymentStatus {

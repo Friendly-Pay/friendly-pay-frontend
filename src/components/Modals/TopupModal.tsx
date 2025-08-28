@@ -1,13 +1,16 @@
 import { TopupCurrency } from './TopupCurrency';
+import { TopupCurrencySoon } from './TopupCurrencySoon';
 import { useCardsStore } from '@/states/cards/store';
 import { usePaymentStore } from '@/states/payment/store';
 import { Modal, ModalBody } from '@/uikit';
 import { ModalClose } from '@/uikit/Modal/Close/ModalClose';
 import { ModalTitle } from '@/uikit/Modal/Title/ModalTitle';
+import spbImage from 'assets/deposit/sbp.png?inline';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import styles from './TopupModal.module.scss';
+
 
 export function TopupModal() {
     const [t] = useTranslation();
@@ -43,6 +46,12 @@ export function TopupModal() {
                         onClick={() => handleSelectCurrency(item.id)}
                     />
                 ))}
+
+                <TopupCurrencySoon
+                    name='Пополнение по СБП'
+                    text='Доступно скоро'
+                    image={spbImage}
+                />
             </ModalBody>
         </Modal>
     );
