@@ -84,3 +84,12 @@ export const parseDateFromFormattedString = (dateString: string, formatTemplate:
     const fullYear = dateNumbers[yearIndex] < 100 ? dateNumbers[yearIndex] + 100 : dateNumbers[yearIndex];
     return new Date(fullYear, dateNumbers[monthIndex] - 1, dateNumbers[dayIndex]);
 };
+
+export const formatExpireDaysAsMonths = (
+    expireDays: number,
+    averageDaysPerMonth = 31
+): string => {
+    const months = Math.max(0, Math.ceil(expireDays / averageDaysPerMonth));
+    const unit = i18next.t('mo');
+    return `${months} ${unit}`;
+};

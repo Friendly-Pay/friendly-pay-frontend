@@ -3,6 +3,8 @@ import secondVirtual from 'assets/cards/second_virtual.png?inline';
 import virtual1 from 'assets/cards/virtual_1.png?inline';
 import virtual2 from 'assets/cards/virtual_2.png?inline';
 import virtual3 from 'assets/cards/virtual_3.png?inline';
+import virtual4 from 'assets/cards/virtual_4.png?inline';
+import virtual5 from 'assets/cards/virtual_5.png?inline';
 import { CSSProperties, PropsWithChildren } from 'react';
 import classNames from 'classnames';
 import styles from './CardDesign.module.scss';
@@ -42,13 +44,36 @@ export const cardDesign = {
         border: '2px solid #B3BAC4',
         previewBorder: '1px solid #B3BAC4'
     },
+    /** @deprecated */
     [111021]: {
         design: virtual2,
         border: '2px solid #B3BAC4',
         previewBorder: '1px solid #B3BAC4'
     },
+    /** @deprecated */
+    [111030]: {
+        design: virtual5,
+        border: '2px solid #B3BAC4',
+        previewBorder: '1px solid #B3BAC4'
+    },
     [111028]: {
         design: virtual3,
+    },
+    [111029]: {
+        inverse: true,
+        design: virtual4,
+        border: '2px solid #B3BAC4',
+        previewBorder: '1px solid #B3BAC4'
+    },
+    [111032]: {
+        design: virtual2,
+        border: '2px solid #B3BAC4',
+        previewBorder: '1px solid #B3BAC4'
+    },
+    [111031]: {
+        design: virtual5,
+        border: '2px solid #B3BAC4',
+        previewBorder: '1px solid #B3BAC4'
     },
 } as const;
 

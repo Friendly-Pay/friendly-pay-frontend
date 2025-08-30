@@ -206,7 +206,16 @@ export const translations = {
             'Bonus terms': 'Условия начислений',
             'By inviting partners, you receive bonuses from card issuance and from the partner’s top-ups for 12 months': 'Привлекая партнеров, вы получаете бонусы от самого выпуска карт, а также суммы от пополнения партнера в течении 12 месяцев',
             'Issuance': 'Выпуск',
-            '% of turnover': '% с оборота'
+            '% of turnover': '% с оборота',
+            'For travel, payments in restaurants, hotels, shops abroad. Apple Pay and Google Pay support for offline expenses — maximum freedom while traveling.': 'Для путешествий, оплаты в ресторанах, отелях, магазинах за границей. Поддержка Apple Pay и Google Pay для оффлайн-расходов — максимум свободы в поездках.',
+            'A premium card for any task — online and offline payments, maximum limits, VIP service and freedom for business, investments, travel and large expenses.': 'Премиум-карта для любых задач — онлайн и оффлайн-платежи, максимальные лимиты, VIP-сервис и свобода для бизнеса, инвестиций, путешествий и крупных расходов.',
+            'For entrepreneurs, marketers, arbitrageurs, for advertising and large transactions. Automatic reissue when blocked, guaranteed uninterrupted operation. Ideal for online advertising.': 'Для предпринимателей, маркетологов, арбитражников, для рекламы и крупных транзакций. Автоматический перевыпуск при блокировке, гарантия бесперебойной работы. Идеально для рекламы в интернете.',
+            'Opening<br/> balance': 'Баланс при<br/> открытии',
+            'Expiration<br/> date': 'Срок<br/> действия',
+            'mo': 'мес.',
+            'KYC and AML': 'KYC и AML',
+            'Terms of use': 'Условия использования',
+            'Expired': 'Истекла'
         }
     }
 } as const;

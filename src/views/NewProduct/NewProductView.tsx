@@ -33,6 +33,8 @@ export function NewProductView() {
                         key={card.id}
                         name={card.name}
                         price={card.price}
+                        cashback={card.cashback}
+                        expireDays={card.expireDays}
                         depositFee={card.depositFee}
                         description={card.description}
                         virtual={card.isVirtual}

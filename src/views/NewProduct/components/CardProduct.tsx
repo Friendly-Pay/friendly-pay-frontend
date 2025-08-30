@@ -5,6 +5,7 @@ import { CardLimits, PaymentSystem } from '@/states/cards/store';
 import { useUserStore } from '@/states/user/store';
 import { Text } from '@/uikit';
 import { formatCurrency } from '@/utils';
+import { formatExpireDaysAsMonths } from '@/utils/date';
 import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
 import styles from './CardProduct.module.scss';
@@ -12,6 +13,8 @@ import styles from './CardProduct.module.scss';
 type CardProductProps = {
     name: string
     price: number
+    cashback?: number
+    expireDays: number
     depositFee: number
     limits: CardLimits
     typeId: number
@@ -22,7 +25,7 @@ type CardProductProps = {
     onCardSelect?: () => void
 }
 
-export function CardProduct({ name, price, depositFee, limits, typeId, paymentSystem, description, className, onCardSelect }: CardProductProps) {
+export function CardProduct({ name, price, depositFee, cashback, expireDays, limits, typeId, paymentSystem, description, className, onCardSelect }: CardProductProps) {
     const [t] = useTranslation();
     const languageCode = useUserStore(state => state.languageCode);
 
@@ -65,6 +68,15 @@ export function CardProduct({ name, price, depositFee, limits, typeId, paymentSy
                     onClick={onCardSelect}
                 />
 
+                <Text
+                    type='caption'
+                    align='left'
+                    weight='regular'
+                    className={styles.price}
+                >
+                    Стоимость выпуска карты: <span>{formatCurrency(price, 'usd', languageCodeToLocale(languageCode), 0)}</span>
+                </Text>
+
                 <div className={styles.data}>
                     <div className={styles.item}>
                         <Text
@@ -95,19 +107,33 @@ export function CardProduct({ name, price, depositFee, limits, typeId, paymentSy
                             className={styles.itemText}
                         ><div dangerouslySetInnerHTML={{ __html: t('Top-up<br/> fee') }} /></Text>
                     </div>
+                    {cashback && <div className={styles.item}>
+                        <Text
+                            type='body'
+                            align='center'
+                            weight='semibold'
+                            className={styles.itemValue}
+                        >{formatCurrency(cashback, 'usd', languageCodeToLocale(languageCode), 0)}</Text>
+                        <Text
+                            type='captionSmall'
+                            align='center'
+                            weight='regular'
+                            className={styles.itemText}
+                        ><div dangerouslySetInnerHTML={{ __html: t('Opening<br/> balance') }} /></Text>
+                    </div>}
                     <div className={styles.item}>
                         <Text
                             type='body'
                             align='center'
                             weight='semibold'
                             className={styles.itemValue}
-                        >{formatCurrency(price, 'usd', languageCodeToLocale(languageCode), 0)}</Text>
+                        >{formatExpireDaysAsMonths(expireDays)}</Text>
                         <Text
                             type='captionSmall'
                             align='center'
                             weight='regular'
                             className={styles.itemText}
-                        ><div dangerouslySetInnerHTML={{ __html: t('Card<br/> issue fee') }} /></Text>
+                        ><div dangerouslySetInnerHTML={{ __html: t('Expiration<br/> date') }} /></Text>
                     </div>
                 </div>
             </div>

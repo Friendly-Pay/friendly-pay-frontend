@@ -16,6 +16,8 @@ export interface CardTypeResponse {
     hasGooglePay: boolean;
     hasAppleWallet: boolean;
     canWithdrawalAtm: boolean;
+    cashback?: number;
+    expireDays: number;
     available: boolean;
     limits: {
         purchase: { day: number; transaction: number };
@@ -65,6 +67,7 @@ export interface UserCardResponse {
     balance: number;
     currency: string;
     createdAt: number;
+    customExpireAt: number;
     transactions: {
         id: number;
         type: 'deposit' | 'payment' | 'refund' | 'void';

@@ -30,6 +30,8 @@ interface CardType {
     hasGooglePay: boolean;
     hasAppleWallet: boolean;
     canWithdrawalAtm: boolean;
+    cashback?: number;
+    expireDays: number;
     available: boolean;
     limits: CardLimits;
 }
@@ -81,6 +83,7 @@ export interface MyCard extends Omit<CardType, 'id'> {
     currency: string;
     createdAt: number;
     transactions: CardTransaction[];
+    customExpireAt?: number
 }
 
 export interface CardDetails {
@@ -198,6 +201,7 @@ export const useCardsStore = create<State & Actions>((set, get) => ({
                     currency: card.currency,
                     createdAt: card.createdAt,
                     transactions: card.transactions as CardTransaction[],
+                    customExpireAt: card.customExpireAt
                 };
             }
 

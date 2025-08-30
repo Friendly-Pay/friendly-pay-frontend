@@ -90,6 +90,7 @@ export function CardsSlider({ myCards, currentCardId }: CardsSliderProps) {
                                 typeId={cardData.typeId}
                                 lastFourDigits={cardData.number}
                                 paymentSystem={cardData.paymentSystem}
+                                customExpireAt={cardData.customExpireAt}
                                 status={cardData.status}
                                 active={index === activeIndex}
                                 virtual={cardData.isVirtual}

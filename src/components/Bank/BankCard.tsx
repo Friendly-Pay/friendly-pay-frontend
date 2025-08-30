@@ -1,6 +1,7 @@
 import { ArbiLogoSign } from '../Icons/ArbiLogo';
 import { Eye } from '../Icons/Eye';
 import { CardDesign } from './CardDesign';
+import { ExpireLabel } from './ExpireLabel';
 import { PaymentSystemIcon } from './PaymentSystemIcon';
 import { CardStatus, PaymentSystem } from '@/states/cards/store';
 import { Spinner } from '@/uikit';
@@ -13,6 +14,7 @@ type BankCardProps = {
     typeId: number
     lastFourDigits?: string | null
     hideDigits?: boolean
+    customExpireAt?: number
     paymentSystem: PaymentSystem
     status?: CardStatus
     active?: boolean
@@ -23,7 +25,7 @@ type BankCardProps = {
     onClickDigits?: () => void
 }
 
-export function BankCard({ typeId, lastFourDigits, hideDigits, paymentSystem, status, active, style, className, onClick, onClickDigits }: BankCardProps) {
+export function BankCard({ typeId, lastFourDigits, customExpireAt, hideDigits, paymentSystem, status, active, style, className, onClick, onClickDigits }: BankCardProps) {
     const isDisabled = status === CardStatus.NeedActivation || status === CardStatus.ActivationFailed || status === CardStatus.VerificationFailed;
     const isActivation = status === CardStatus.ActivationProcessing || status === CardStatus.VerificationProcessing;
     const lastFourDigitsPlaceholder = '••••';
@@ -44,6 +46,10 @@ export function BankCard({ typeId, lastFourDigits, hideDigits, paymentSystem, st
             <div className={styles.logo}>
                 <ArbiLogoSign />
             </div>
+
+            {customExpireAt && <div className={styles.expireWrap}>
+                <ExpireLabel unix={customExpireAt} />
+            </div>}
 
             <div className={classNames(styles.bottom, !hideDigits && styles.withDigits)}>
                 {!hideDigits && <div
