@@ -18,7 +18,11 @@ export const cardDesign = {
     [111018]: {
         design: virtual1
     },
+    /** @deprecated */
     [111021]: {
+        design: virtual2
+    },
+    [111034]: {
         design: virtual2
     },
     [111028]: {
