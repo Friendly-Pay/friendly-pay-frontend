@@ -19,13 +19,15 @@ type CardProductProps = {
     limits: CardLimits
     typeId: number
     virtual?: boolean
+    hasApplePay: boolean
+    hasGoogleWallet: boolean
     paymentSystem: PaymentSystem
     description?: string
     className?: string
     onCardSelect?: () => void
 }
 
-export function CardProduct({ name, price, depositFee, cashback, expireDays, limits, typeId, paymentSystem, description, className, onCardSelect }: CardProductProps) {
+export function CardProduct({ name, price, depositFee, cashback, expireDays, limits, typeId, paymentSystem, description, hasApplePay, hasGoogleWallet, className, onCardSelect }: CardProductProps) {
     const [t] = useTranslation();
     const languageCode = useUserStore(state => state.languageCode);
 
@@ -57,6 +59,24 @@ export function CardProduct({ name, price, depositFee, cashback, expireDays, lim
                 >
                     {t(description)}
                 </Text>}
+
+                {!hasApplePay && !hasGoogleWallet
+                    ? <Text
+                        type='caption'
+                        align='left'
+                        weight='regular'
+                        className={styles.notSupportsApplePay}
+                    >
+                        {t('NOT SUPPORTED APPLE PAY / GOOGLE PAY. Online payments only')}
+                    </Text>
+                    : <Text
+                        type='caption'
+                        align='left'
+                        weight='regular'
+                        className={styles.supportsApplePay}
+                    >
+                        {t('SUPPORTED APPLE PAY / GOOGLE PAY')}
+                    </Text>}
             </div>
 
             <div className={styles.content}>

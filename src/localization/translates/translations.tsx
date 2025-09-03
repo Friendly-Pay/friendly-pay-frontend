@@ -215,7 +215,10 @@ export const translations = {
             'mo': 'мес.',
             'KYC and AML': 'KYC и AML',
             'Terms of use': 'Условия использования',
-            'Expired': 'Истекла'
+            'Expired': 'Истекла',
+            'NOT SUPPORTED APPLE PAY / GOOGLE PAY': 'НЕ ПОДДЕРЖИВАЕТ APPLE PAY / GOOGLE PAY',
+            'SUPPORTED APPLE PAY / GOOGLE PAY': 'ПОДДЕРЖИВАЕТ APPLE PAY / GOOGLE PAY',
+            'NOT SUPPORTED APPLE PAY / GOOGLE PAY. Online payments only': 'НЕ ПОДДЕРЖИВАЕТ APPLE PAY / GOOGLE PAY. Только для онлайн оплат'
         }
     }
 } as const;

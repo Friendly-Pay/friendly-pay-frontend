@@ -26,6 +26,20 @@
     padding-top: 10px;
 }
 
+.notSupportsApplePay,
+.supportsApplePay {
+    font-weight: 600;
+    padding-top: 10px;
+}
+
+.notSupportsApplePay {
+    color: var(--color-typo-primary);
+}
+
+.supportsApplePay {
+    color: var(--color-primary);
+}
+
 .top {
     display: flex;
     align-items: center;

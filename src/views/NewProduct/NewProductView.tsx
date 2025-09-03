@@ -41,6 +41,8 @@ export function NewProductView() {
                         limits={card.limits}
                         typeId={card.id}
                         paymentSystem={card.paymentSystem}
+                        hasApplePay={card.hasAppleWallet}
+                        hasGoogleWallet={card.hasGooglePay}
                         className={styles.card}
                         onCardSelect={() => handleCardSelect(card.id)}
                     />
