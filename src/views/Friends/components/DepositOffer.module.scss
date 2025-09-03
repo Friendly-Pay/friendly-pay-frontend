@@ -1,4 +1,7 @@
 .deposit {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     background-color: var(--color-primary);
     transform: translateZ(0);
 }
@@ -16,9 +19,9 @@
 
 .image {
     position: absolute;
+    top: 0;
     right: 0;
-    bottom: 0;
-    width: 170px;
+    width: 180px;
     pointer-events: none;
 }
 

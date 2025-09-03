@@ -1,7 +1,9 @@
-import { SupportMessage } from '../Icons/Support';
+import { AddFriend } from '../Icons/Friend';
+// import { SupportMessage } from '../Icons/Support';
 import { Avatar } from './Avatar';
+import { ACCESS_TO_FRIENDS_BONUS } from '@/states/friends/access';
 import { useUserStore } from '@/states/user/store';
-import { openTelegramLink } from '@/utils';
+// import { openTelegramLink } from '@/utils';
 import { PropsWithChildren } from 'react';
 import { useNavigate } from 'react-router-dom';
 import classNames from 'classnames';
@@ -12,12 +14,18 @@ type UserHeadProps = {
 }
 
 export function UserHead({ className, children }: PropsWithChildren<UserHeadProps>) {
+    const userId = useUserStore(state => state.user!.id);
     const avatar = useUserStore(state => state.user!.avatar);
-    const handleSupport = () => {
-        openTelegramLink(import.meta.env.VITE_SUPPORT_URL);
-    };
+    const hasAccessToFriendsBonus = ACCESS_TO_FRIENDS_BONUS.includes(userId) || import.meta.env.DEV;
+
+    // const handleOpenSupport = () => {
+    //     openTelegramLink(import.meta.env.VITE_SUPPORT_URL);
+    // };
 
     const navigate = useNavigate();
+    const handleOpenFriends = () => {
+        navigate('/friends/bonus');
+    };
     const handleOpenProfile = () => {
         navigate('/user/profile');
     };
@@ -38,12 +46,20 @@ export function UserHead({ className, children }: PropsWithChildren<UserHeadProp
                     {children}
                 </div>}
 
-                <button
-                    className={styles.support}
-                    onClick={handleSupport}
-                >
-                    <SupportMessage />
-                </button>
+                <div className={styles.buttons}>
+                    {hasAccessToFriendsBonus && <button
+                        className={styles.friends}
+                        onClick={handleOpenFriends}
+                    >
+                        <AddFriend />
+                    </button>}
+                    {/* <button
+                        className={styles.support}
+                        onClick={handleOpenSupport}
+                    >
+                        <SupportMessage />
+                    </button> */}
+                </div>
             </div>
         </div>
     );

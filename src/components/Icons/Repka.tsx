@@ -36,14 +36,14 @@ export const RepkaLogo = () => {
                     y2="33.4588"
                     gradientUnits="userSpaceOnUse"
                 >
-                    <stop stop-color="#61C588" />
+                    <stop stopColor="#61C588" />
                     <stop
                         offset="0.207669"
-                        stop-color="#71C87A"
+                        stopColor="#71C87A"
                     />
                     <stop
                         offset="0.530069"
-                        stop-color="#FEDA49"
+                        stopColor="#FEDA49"
                     />
                 </linearGradient>
                 <linearGradient
@@ -56,12 +56,12 @@ export const RepkaLogo = () => {
                 >
                     <stop
                         offset="0.413776"
-                        stop-color="white"
+                        stopColor="white"
                     />
                     <stop
                         offset="1"
-                        stop-color="white"
-                        stop-opacity="0"
+                        stopColor="white"
+                        stopOpacity="0"
                     />
                 </linearGradient>
                 <linearGradient
@@ -72,14 +72,14 @@ export const RepkaLogo = () => {
                     y2="28.9799"
                     gradientUnits="userSpaceOnUse"
                 >
-                    <stop stop-color="#D4A22D" />
+                    <stop stopColor="#D4A22D" />
                     <stop
                         offset="0.5"
-                        stop-color="#FFC235"
+                        stopColor="#FFC235"
                     />
                     <stop
                         offset="1"
-                        stop-color="#EDB32E"
+                        stopColor="#EDB32E"
                     />
                 </linearGradient>
             </defs>

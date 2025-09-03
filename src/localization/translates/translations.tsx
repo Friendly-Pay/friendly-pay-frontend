@@ -173,7 +173,7 @@ export const translations = {
             'Open Apple Wallet. Tap "+". Follow the instructions to add your card.': 'Откройте Apple Wallet. Нажмите «+». Следуйте инструкциям для добавления карты.',
             'Open Google Pay. Tap "Add card". Follow the on-screen instructions.': 'Откройте Google Pay. Нажмите «Добавить карту». Следуйте инструкциям на экране.',
             'For online purchases in Google Ads, Facebook Ads, Chat GPT subscription and other services': 'Для онлайн покупок в Google Ads, Facebook Ads, подписки Chat GPT и других сервисов',
-            'Supports Apple Pay, WeChat, and Alipay scenarios, and supports super large purchases.': 'Поддерживает Apple Pay, WeChat Pay и Alipay, а также крупные покупки',
+            'Supports Apple Pay, Google Pay, WeChat, and Alipay scenarios, and supports super large purchases.': 'Поддерживает Apple Pay, Google Pay, WeChat Pay и Alipay, а также крупные покупки',
             'Suitable for payment on Steam, Google Play, App Store, Roblox, Discord, YouTube and other platforms': 'Подходит для оплаты в Steam, Google Play, AppStore, Roblox, Discord, YouTube и на других платформах',
             'Language': 'Язык',
             'Hide balances': 'Скрыть балансы',
@@ -200,7 +200,17 @@ export const translations = {
             'An error occurred. Please try again later or contact support': 'Произошла ошибка. Пожалуйста, попробуйте позже или свяжитесь с поддержкой',
             'Bonus from friends': 'Бонус от друзей',
             'Instruction': 'Инструкция',
-            'Virtual': 'Виртуальная'
+            'Virtual': 'Виртуальная',
+            'For online purchases, marketplaces, services, and taxis. Does not support Apple Pay or Google Pay.': 'Для онлайн-покупок, маркетплейсов, сервисов и такси. Не поддерживает Apple Pay и Google Pay',
+            'You earned': 'Вы заработали',
+            'The minimum amount for transfer to the card is {{value}}': 'Минимальная сумма для перевода на карту {{value}}',
+            'Recommend a virtual card': 'Рекомендуй виртуальную карту',
+            'Bonus for an active friend': 'Бонус за активного друга',
+            'Bonus to card': 'Бонус на карту',
+            'To you': 'Вам',
+            '{{percent}}% for each<br/> top-up': '{{percent}}% за каждое<br/> пополнение',
+            'Instantly credited': 'Начисляем моментально',
+            'Link copied': 'Ссылка скопирована'
         }
     }
 } as const;

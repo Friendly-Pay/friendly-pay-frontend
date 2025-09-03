@@ -39,6 +39,7 @@
     font-family: inherit;
     font-size: 14px;
     font-family: var(--font-family);
+    color: rgba(0, 0, 0, 1);
 }
 
 .closeButton {
@@ -59,7 +60,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--color-typo-primary-60);
+    color: rgba(0, 0, 0, 0.6);
 
     svg {
         width: 10px;

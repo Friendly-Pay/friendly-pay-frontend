@@ -3,10 +3,8 @@ import { safeLanguageCode } from '@/localization/utils';
 import { useUserStore } from '@/states/user/store';
 import { Text } from '@/uikit';
 import { formatCurrency } from '@/utils';
-import basicCard from 'assets/bonus/basic_card.png';
-import gamingCard from 'assets/bonus/gaming_card.png';
-import premiumCardBackground from 'assets/bonus/premium_background.png';
-import premiumCard from 'assets/bonus/premium_card.png';
+import virtual1 from 'assets/bonus/virtual_1.png?inline';
+import virtual2 from 'assets/bonus/virtual_2.png?inline';
 import { useTranslation } from 'react-i18next';
 import styles from './PurchaseOffer.module.scss';
 
@@ -21,22 +19,16 @@ type PurchaseOfferProps = {
 }
 
 export const OFFERS_CONFIG = {
-    111018: {
-        image: gamingCard,
-        color: '#FFF',
-        backgroundColor: '#1B2737',
-    },
-    111021: {
-        image: basicCard,
+    111033: {
+        image: virtual1,
         color: 'var(--color-white)',
-        backgroundColor: '#175AEA',
+        backgroundColor: '#04070B',
+        border: '2px solid rgba(255,255,255,0.2)',
     },
     111028: {
-        image: premiumCard,
-        border: '2px solid var(--color-primary)',
-        color: 'var(--color-typo-primary)',
+        image: virtual2,
+        color: '#19212C',
         backgroundColor: 'var(--color-white)',
-        backgroundImage: premiumCardBackground
     }
 };
 
@@ -46,15 +38,14 @@ export function PurchaseOffer({ cardTypeId, cardName, bonusAmount, bonusCurrency
     const locale = safeLanguageCode(languageCode);
 
     const offerConfig = OFFERS_CONFIG[cardTypeId as keyof typeof OFFERS_CONFIG];
+    if (!offerConfig) {
+        return null;
+    }
     const color = offerConfig.color;
     const image = offerConfig.image;
     const border = 'border' in offerConfig ? offerConfig.border : undefined;
     const backgroundColor = offerConfig.backgroundColor;
     const backgroundImage = 'backgroundImage' in offerConfig ? `url(${offerConfig.backgroundImage})` : undefined;
-
-    if (!offerConfig) {
-        return null;
-    }
 
     return (
         <OfferCard
@@ -86,7 +77,7 @@ export function PurchaseOffer({ cardTypeId, cardName, bonusAmount, bonusCurrency
                         style={{ color }}
                         className={styles.label}
                     >
-                        Вам
+                        {t('To you')}
                     </Text>
 
                     <Text

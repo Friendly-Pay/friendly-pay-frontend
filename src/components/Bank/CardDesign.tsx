@@ -14,9 +14,11 @@ type CardDesignProps = {
 }
 
 export const cardDesign = {
+    /** @deprecated */
     [111018]: {
         design: virtual1
     },
+    /** @deprecated */
     [111021]: {
         design: virtual1,
         border: '1px solid #313133',
@@ -28,6 +30,11 @@ export const cardDesign = {
         border: '1px solid #313133',
         previewBorder: '1px solid #313133'
     },
+    [111033]: {
+        design: virtual1,
+        border: '1px solid #313133',
+        previewBorder: '1px solid #313133'
+    }
 } as const;
 
 export function CardDesign({ typeId, preview, style, className, backgroundClassName, children, onClick }: PropsWithChildren<CardDesignProps>) {

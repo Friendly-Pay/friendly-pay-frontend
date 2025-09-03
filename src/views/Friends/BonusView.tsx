@@ -1,28 +1,29 @@
 import { BonusBalance } from './components/BonusBalance';
-import { BANNER_IMAGE, DepositOffer } from './components/DepositOffer';
+import { DepositOffer } from './components/DepositOffer';
 import { OffersSlider } from './components/OffersSlider';
-import { OFFERS_CONFIG, PurchaseOffer } from './components/PurchaseOffer';
+import { PurchaseOffer } from './components/PurchaseOffer';
+import { ShareButton } from './components/ShareButton';
 import { MainLayout } from '@/components/common/MainLayout';
-import { TelegramMainButton } from '@/components/common/TelegramMainButton';
 import { safeLanguageCode } from '@/localization/utils';
 import { useCardsStore } from '@/states/cards/store';
+import { ACCESS_TO_FRIENDS_BONUS } from '@/states/friends/access';
 import { useFriendsBonusesStore } from '@/states/friends/store';
 import { useUserStore } from '@/states/user/store';
 import { Button, Text } from '@/uikit';
 import { formatCurrency } from '@/utils';
 import { FetchStatus } from '@/utils/api';
-import { loadDomImage } from '@/utils/preload';
-import { useCallback, useEffect, useMemo, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useMemo, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Navigate, useNavigate } from 'react-router-dom';
 import styles from './BonusView.module.scss';
 
 const cardsSortIds = [
-    111018, // Gaming
-    111028, // Premium
-    111021, // Basic
+    111033,
+    111028,
 ];
 
 export function BonusView() {
+    const [t] = useTranslation();
     const languageCode = useUserStore(state => state.languageCode);
     const locale = safeLanguageCode(languageCode);
 
@@ -44,7 +45,7 @@ export function BonusView() {
 
     const balance = useFriendsBonusesStore(state => state.balance);
     const balanceCurrency = useFriendsBonusesStore(state => state.balanceCurrency);
-    const transactions = useFriendsBonusesStore(state => state.transactions);
+    // const transactions = useFriendsBonusesStore(state => state.transactions);
     const transferMinAmount = useFriendsBonusesStore(state => state.transferMinAmount);
 
     const navigate = useNavigate();
@@ -64,29 +65,34 @@ export function BonusView() {
         if (triggered.current) return;
         triggered.current = true;
         const preload = async () => {
-            const assets = [BANNER_IMAGE];
-            for (const config of Object.values(OFFERS_CONFIG)) {
-                if (config.image) {
-                    assets.push(config.image);
-                }
-                if ('backgroundImage' in config && config.backgroundImage) {
-                    assets.push(config.backgroundImage);
-                }
-            }
+            // const assets = [BANNER_IMAGE];
+            // for (const config of Object.values(OFFERS_CONFIG)) {
+            //     if (config.image) {
+            //         assets.push(config.image);
+            //     }
+            //     if ('backgroundImage' in config && config.backgroundImage) {
+            //         assets.push(config.backgroundImage);
+            //     }
+            // }
             const loadFriends = useFriendsBonusesStore.getState().load;
             await loadFriends();
-            await Promise.all(
-                assets
-                    .filter(Boolean)
-                    .map(asset => loadDomImage(asset))
-            );
+            // await Promise.all(
+            //     assets
+            //         .filter(Boolean)
+            //         .map(asset => loadDomImage(asset))
+            // );
         };
         preload();
     }, []);
 
-    const handleShare = useCallback(() => {
-
-    }, []);
+    const userId = useUserStore(state => state.user!.id);
+    const hasAccessToFriendsBonus = ACCESS_TO_FRIENDS_BONUS.includes(userId) || import.meta.env.DEV;
+    if (!hasAccessToFriendsBonus) {
+        return (<Navigate
+            to='/'
+            replace
+        />);
+    }
 
     if (isLoading) {
         return null;
@@ -100,7 +106,7 @@ export function BonusView() {
                     align='left'
                     weight='medium'
                 >
-                    Вы заработали
+                    {t('You earned')}
                 </Text>
 
                 <div className={styles.headBalance}>
@@ -114,7 +120,7 @@ export function BonusView() {
                         className={styles.transfer}
                         onClick={handleTransfer}
                     >
-                        Перевод
+                        {t('Transfer')}
                     </Button>
                 </div>
 
@@ -123,7 +129,7 @@ export function BonusView() {
                     weight='regular'
                     className={styles.text}
                 >
-                    Минимальная сумма для перевода на карту {formatCurrency(transferMinAmount!, balanceCurrency, locale, 0)}
+                    {t('The minimum amount for transfer to the card is {{value}}', { value: formatCurrency(transferMinAmount!, balanceCurrency, locale, 0) })}
                 </Text>
             </div>
             <div className={styles.block}>
@@ -133,7 +139,7 @@ export function BonusView() {
                     weight='semibold'
                     className={styles.title}
                 >
-                    Рекомендуй виртуальную карту
+                    {t('Recommend a virtual card')}
                 </Text>
                 <OffersSlider>
                     {availableCards.map(card => <PurchaseOffer
@@ -155,11 +161,12 @@ export function BonusView() {
                     weight='semibold'
                     className={styles.title}
                 >
-                    Бонус за активного друга
+                    {t('Bonus for an active friend')}
                 </Text>
                 <DepositOffer depositBonusPercent={bonusDeposit} />
             </div>}
 
+            {/* 
             {transactions?.length && <div className={styles.block}>
                 <Text
                     type='bodyLarge'
@@ -169,13 +176,11 @@ export function BonusView() {
                 >
                     Последние рекомендации
                 </Text>
-            </div>}
+            </div>} */}
 
-            <TelegramMainButton
-                visible
-                text='Советовать'
-                onClick={handleShare}
-            />
+            <div className={styles.fakeFooter}></div>
+
+            <ShareButton />
         </MainLayout>
     );
 }
