@@ -6,17 +6,22 @@ import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './NewProductView.module.scss';
 
+const CARD_TYPE_ORDER = [111036, 111032, 111031, 111029, 111028];
+
 export function NewProductView() {
     const cardsTypes = useCardsStore(state => state.cardsTypes);
 
-    // const availableCards = useMemo(() => {
-    //     if (!cardsTypes || !myCardsTypesIds) return [];
-    //     return Object.values(cardsTypes).filter(card => card.available && !myCardsTypesIds.includes(card.id));
-    // }, [cardsTypes, myCardsTypesIds]);
-
     const availableCards = useMemo(() => {
         if (!cardsTypes) return [];
-        return Object.values(cardsTypes).filter(card => card.available);
+        const available = Object.values(cardsTypes).filter(card => card.available);
+        const orderMap = new Map();
+        CARD_TYPE_ORDER.forEach((id, index) => orderMap.set(id, index));
+
+        return available.sort((a, b) => {
+            const orderA = orderMap.has(a.id) ? orderMap.get(a.id) : Infinity;
+            const orderB = orderMap.has(b.id) ? orderMap.get(b.id) : Infinity;
+            return orderA - orderB;
+        });
     }, [cardsTypes]);
 
     const navigate = useNavigate();
