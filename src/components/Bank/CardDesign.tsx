@@ -38,6 +38,7 @@ export const cardDesign = {
         // border: '2px solid #175AEA',
         // previewBorder: '1px solid #175AEA'
     },
+    /** @deprecated */
     [111018]: {
         inverse: true,
         design: virtual1,
@@ -75,6 +76,12 @@ export const cardDesign = {
         border: '2px solid #B3BAC4',
         previewBorder: '1px solid #B3BAC4'
     },
+    [111036]: {
+        inverse: true,
+        design: virtual1,
+        border: '2px solid #B3BAC4',
+        previewBorder: '1px solid #B3BAC4'
+    }
 } as const;
 
 export function CardDesign({ typeId, preview, style, className, backgroundClassName, children, onClick }: PropsWithChildren<CardDesignProps>) {
