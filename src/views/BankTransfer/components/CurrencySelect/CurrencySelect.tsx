@@ -25,7 +25,7 @@ interface CurrencyOption {
 const mapToCurrencyOption = (currency: BankTransferCurrency): CurrencyOption => ({
     code: currency.currency,
     name: currency.currency.toUpperCase(),
-    icon: countries.find((c) => c.iso2 === currency.country || c.alpha3 === currency.country)?.emoji || '',
+    icon: countries.find((c) => c.iso2 === currency.country || c.alpha3 === currency.country)?.emoji || '🌐',
     asEmoji: true,
 });
 

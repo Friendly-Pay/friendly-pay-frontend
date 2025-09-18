@@ -23,6 +23,7 @@ import { VerificationErrorView } from './Verification/VerificarionErrorView';
 import { VerificationView } from './Verification/VerificationView';
 import { TelegramBackButton } from '@/components/common/TelegramBackButton';
 import { DialogController } from '@/components/DialogController';
+import { Navbar } from '@/components/Navbar/Navbar';
 import { ToastsRoot } from '@/components/Toast/ToastsRoot';
 import { useLoaderStore } from '@/states/loader';
 import { CardController } from '@/views/Home/CardController';
@@ -36,6 +37,7 @@ export function AppViews() {
             <ToastsRoot />
 
             {rootInitiated && <Router>
+                <Navbar />
                 <TelegramBackButton />
                 <DialogController />
                 <PaymentRestore>
