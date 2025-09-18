@@ -1,0 +1,9 @@
+.content {
+    display: flex;
+    flex-flow: column;
+}
+
+.title,
+.search {
+    margin-bottom: 24px;
+}

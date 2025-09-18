@@ -1,0 +1,17 @@
+.caption {
+    padding-top: 10px;
+    color: var(--color-typo-primary-60)
+}
+
+.error {
+    color: var(--color-red);
+}
+
+.field {
+    display: flex;
+    flex-flow: column nowrap;
+
+    &+.field {
+        margin-top: 20px;
+    }
+}

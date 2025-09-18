@@ -1,0 +1,36 @@
+.root {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 8vh 0;
+}
+
+.icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 86px;
+    height: 86px;
+    background-color: var(--color-fill-5);
+    color: var(--color-typo-primary);
+    border-radius: 30px;
+    margin-bottom: 24px;
+
+    svg {
+        width: 34px;
+        height: 34px;
+    }
+}
+
+.text {
+    max-width: 210px;
+    color: var(--color-typo-primary-60);
+    line-height: 24px;
+}

@@ -11,7 +11,7 @@ import classNames from 'classnames';
 import styles from './TransactionWaiting.module.scss';
 
 type TransactionWaitingProps = {
-    type: 'topup' | 'purchase'
+    type: 'topup' | 'purchase' | 'bank-transfer'
     className?: string
 }
 
@@ -19,15 +19,25 @@ export function TransactionWaiting({ type, children, className }: PropsWithChild
     const [t] = useTranslation();
     const navigate = useNavigate();
     const myCardsCount = useCardsStore(state => state.myCardsCount);
-    const canGoHome = type === 'topup' || type === 'purchase' && myCardsCount > 0;
+    const canGoHome = type === 'topup' || (type === 'purchase' && myCardsCount > 0) || type === 'bank-transfer';
 
     const handleBackHome = (e: any) => {
         e.preventDefault();
-        navigate('/');
-        const { userHiddenWaitingTopup, userHiddenWaitingCardPurchase } = usePaymentStore.getState();
-        type === 'topup' ? userHiddenWaitingTopup() : userHiddenWaitingCardPurchase();
+
+        if (type === 'topup') {
+            navigate('/');
+            const { userHiddenWaitingTopup } = usePaymentStore.getState();
+            userHiddenWaitingTopup();
+        } else if (type === 'purchase') {
+            navigate('/');
+            const { userHiddenWaitingCardPurchase } = usePaymentStore.getState();
+            userHiddenWaitingCardPurchase();
+        } else if (type === 'bank-transfer') {
+            navigate('/bank-transfer');
+        }
     };
 
+    // @TODO Добавить текст: дольше чем обычно... вы точно отправили транзакцию?
     const headings: string[] = [
         t('Searching for your transaction...'),
         t('Waiting for confirmation...')

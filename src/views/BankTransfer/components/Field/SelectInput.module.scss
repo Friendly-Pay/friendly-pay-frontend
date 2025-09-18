@@ -1,0 +1,21 @@
+.caption {
+    padding-top: 10px;
+    color: var(--color-typo-primary-60);
+}
+
+.error {
+    color: var(--color-red);
+}
+
+.error {
+    color: var(--color-red);
+    padding-top: 10px;
+}
+
+.item {
+    display: flex;
+    align-items: center;
+    padding: 12px 6px;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+}

@@ -1,7 +1,15 @@
 import { AppLoader } from './AppLoader';
+import { BankTransferController } from './BankTransfer/BankTransferController';
+import { BankTransferView } from './BankTransfer/views/BankTransferView';
+import { CalculatorView } from './BankTransfer/views/CalculatorView';
+import { CountrySelectView } from './BankTransfer/views/CountrySelectView';
+import { DetailsView } from './BankTransfer/views/DetailsView';
 import { HomeView } from './Home/HomeView';
 import { IntroView } from './Intro/IntroView';
 import { NewProductView } from './NewProduct/NewProductView';
+import { BankTransferPaymentView } from './Payment/BankTransfer/BankTransferPaymentView';
+import { BankTransferResultView } from './Payment/BankTransfer/BankTransferResultView';
+import { BankTransferWaitingView } from './Payment/BankTransfer/BankTransferWaitingView';
 import { PaymentController } from './Payment/PaymentController';
 import { PaymentRestore } from './Payment/PaymentRestore';
 import { PayNewCardResultView } from './Payment/PayNewCard/PayNewCardResultView';
@@ -76,6 +84,20 @@ export function AppViews() {
                                     path='/payments/topup/result'
                                     element={<TopupResultView />}
                                 />
+
+                                {/* Global Transfer */}
+                                <Route
+                                    path='/payments/bank-transfer'
+                                    element={<BankTransferPaymentView />}
+                                />
+                                <Route
+                                    path='/payments/bank-transfer/waiting'
+                                    element={<BankTransferWaitingView />}
+                                />
+                                <Route
+                                    path='/payments/bank-transfer/result'
+                                    element={<BankTransferResultView />}
+                                />
                             </Route>
 
                             <Route
@@ -86,6 +108,26 @@ export function AppViews() {
                                 path='/verification/user/error'
                                 element={<VerificationErrorView />}
                             />
+
+                            {/* Global Transfer */}
+                            <Route element={<BankTransferController />}>
+                                <Route
+                                    path='/bank-transfer'
+                                    element={<BankTransferView />}
+                                />
+                                <Route
+                                    path='/bank-transfer/country'
+                                    element={<CountrySelectView />}
+                                />
+                                <Route
+                                    path='/bank-transfer/calculate'
+                                    element={<CalculatorView />}
+                                />
+                                <Route
+                                    path='/bank-transfer/details'
+                                    element={<DetailsView />}
+                                />
+                            </Route>
                         </Routes>
                     </CardController>
                 </PaymentRestore>

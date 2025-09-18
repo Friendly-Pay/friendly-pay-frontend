@@ -1,0 +1,32 @@
+.root {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 7px;
+    user-select: none;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+
+    &+.root {
+        margin-left: 20px;
+    }
+}
+
+.icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 66px;
+    height: 66px;
+    color: var(--color-white);
+    border-radius: 26px;
+    margin-bottom: 8px;
+}
+
+.content {
+    min-height: 40px;
+}
+
+.text {
+    line-height: 20px;
+}
