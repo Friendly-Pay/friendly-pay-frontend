@@ -1,7 +1,5 @@
 import { BankTransferCurrency, BankTransferMethod, BankTransferTransaction } from './types';
-import { urlSearchParams } from '@/utils';
 import { apiClient } from '@/utils/api';
-// import { apiClient } from '@/utils/api';
 
 export const fetchBankTransferCurrencies = async () => {
     const res = await apiClient.get<BankTransferCurrency[]>('/bank-transfer/currencies');

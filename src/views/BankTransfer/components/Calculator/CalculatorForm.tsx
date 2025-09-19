@@ -61,7 +61,7 @@ export function CalculatorForm({ className }: CalculatorFormProps) {
 
         // feeRate: 0.3 => 0.003 (0.3%)
         const rawFee = outputCurrency.feeRate ?? 0;
-        const feeRate = rawFee > 0.05 ? rawFee / 100 : rawRate; // keep previous heuristic
+        const feeRate = rawFee > 0.05 ? rawFee / 100 : rawFee; // keep previous heuristic
         const feeMinUsd = outputCurrency.feeMin ?? 0;
 
         let inputUsd: number | null = null;     // USD total (c учётом комиссии)
