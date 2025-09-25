@@ -1,5 +1,6 @@
 import { CurrencyAmountParts } from '../CurrencyAmountParts';
 import { BankCardPreview } from '@/components/Bank/BankCardPreview';
+import { ArrowDown } from '@/components/Icons/Arrow';
 import { PaymentSystem } from '@/states/cards/store';
 import { Text } from '@/uikit';
 import { useTranslation } from 'react-i18next';
@@ -13,14 +14,19 @@ type TopupCardProps = {
     virtual?: boolean
     lastFourDigits: string
     paymentSystem: PaymentSystem
+    canSelect?: boolean
     className?: string
+    onClick?: () => void
 }
 
-export function TopupCard({ typeId, balance, currency, virtual, lastFourDigits, className }: TopupCardProps) {
+export function TopupCard({ typeId, balance, currency, virtual, lastFourDigits, canSelect, className, onClick }: TopupCardProps) {
     const [t] = useTranslation();
 
     return (
-        <div className={classNames(styles.root, className)}>
+        <div
+            className={classNames(styles.root, canSelect && styles.clickable, className)}
+            onClick={onClick}
+        >
             <BankCardPreview
                 typeId={typeId}
                 virtual={virtual}
@@ -48,6 +54,10 @@ export function TopupCard({ typeId, balance, currency, virtual, lastFourDigits, 
                     {t('Top-up account')}
                 </Text>
             </div>
+
+            {canSelect && <div className={styles.arrow}>
+                <ArrowDown />
+            </div>}
         </div>
     );
 }

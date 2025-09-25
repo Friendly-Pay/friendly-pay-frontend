@@ -1,0 +1,14 @@
+.root {
+    font-size: 32px;
+    font-weight: 600;
+    text-align: center;
+    line-height: 1;
+    padding: 2px 0;
+}
+
+.decimal,
+.literal,
+.fraction,
+.currency {
+    font-weight: 400;
+}

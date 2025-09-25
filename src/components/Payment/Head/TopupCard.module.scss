@@ -20,8 +20,24 @@
     line-height: 17px;
 }
 
-@media screen and (max-height: 700px) {
-    .root {
-        padding: 16px 0;
+.arrow {
+    position: absolute;
+    top: 50%;
+    right: 0px;
+    margin-top: -8px;
+    width: 16px;
+    height: 16px;
+    opacity: 0.3;
+
+    svg {
+        display: block;
+        width: 100%;
+        height: 100%;
     }
+}
+
+.clickable {
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
 }

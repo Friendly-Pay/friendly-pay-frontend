@@ -1,5 +1,5 @@
 import eliteVirtual from 'assets/cards/elite_virtual.png?inline';
-import gamingVirtual from 'assets/cards/gaming_virtual.png';
+import gamingVirtual from 'assets/cards/gaming_virtual.png?inline';
 import platinumVirtual from 'assets/cards/platinum_virtual.png?inline';
 import premiumVirtual from 'assets/cards/premium_virtual.png?inline';
 import seamlessVirtual from 'assets/cards/seamless_virtual.png?inline';
@@ -36,10 +36,15 @@ export const cardDesign = {
         border: '2px solid #175AEA',
         previewBorder: '1px solid #175AEA'
     },
+    /** @deprecated */
     [111018]: {
         design: gamingVirtual
     },
+    /** @deprecated */
     [111021]: {
+        design: seamlessVirtual
+    },
+    [111035]: {
         design: seamlessVirtual
     },
     [111028]: {

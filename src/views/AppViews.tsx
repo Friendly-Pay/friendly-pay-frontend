@@ -1,4 +1,7 @@
 import { AppLoader } from './AppLoader';
+import { BonusTransferResultView } from './Friends/BonusTransferResultView';
+import { BonusTransferView } from './Friends/BonusTransferView';
+import { BonusView } from './Friends/BonusView';
 import { HomeView } from './Home/HomeView';
 import { IntroView } from './Intro/IntroView';
 import { NewProductView } from './NewProduct/NewProductView';
@@ -85,6 +88,19 @@ export function AppViews() {
                             <Route
                                 path='/verification/user/error'
                                 element={<VerificationErrorView />}
+                            />
+
+                            <Route
+                                path='/friends/bonus'
+                                element={<BonusView />}
+                            />
+                            <Route
+                                path='/friends/bonus/transfer'
+                                element={<BonusTransferView />}
+                            />
+                            <Route
+                                path='/friends/bonus/transfer/result'
+                                element={<BonusTransferResultView />}
                             />
                         </Routes>
                     </CardController>

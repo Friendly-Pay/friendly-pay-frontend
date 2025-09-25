@@ -26,7 +26,7 @@ export function TxAmount({ type, fee, amount, currency, status, className }: TxA
             totalAmount -= fee;
         }
     }
-    const isTopup = type === CardTransactionType.DEPOSIT || type === CardTransactionType.REFUND || type === CardTransactionType.VOID;
+    const isTopup = type === CardTransactionType.DEPOSIT || type === CardTransactionType.REFUND || type === CardTransactionType.VOID || type === CardTransactionType.DEPOSIT_BY_REFERRAL;
 
     return (
         <Text

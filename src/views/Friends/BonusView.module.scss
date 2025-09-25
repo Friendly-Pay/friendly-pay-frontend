@@ -1,0 +1,35 @@
+.head {
+    display: flex;
+    flex-direction: column;
+    padding: 24px 0 0 0;
+    margin-bottom: 38px;
+}
+
+.headBalance {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0 14px;
+}
+
+.text {
+    font-size: 13px;
+    line-height: 16px;
+    color: var(--color-typo-primary-60);
+}
+
+.block {
+    &+.block {
+        margin-top: 40px;
+    }
+}
+
+.title {
+    margin-bottom: 20px;
+}
+
+.scrollableItem {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    flex: 0 0 auto;
+}

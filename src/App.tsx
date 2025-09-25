@@ -1,3 +1,4 @@
+import 'swiper/css';
 import { AppHooks } from './AppHooks.tsx';
 import { AuthErrorFallback } from './components/Error/AuthErrorFallback.tsx';
 // import { useAuthStore } from './states/auth/store.ts';

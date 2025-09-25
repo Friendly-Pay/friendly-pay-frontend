@@ -1,4 +1,3 @@
-import 'swiper/css';
 import { BankCard } from './BankCard';
 import { SliderPagination } from './SliderPagination';
 import { MyCard, useCardsStore } from '@/states/cards/store';

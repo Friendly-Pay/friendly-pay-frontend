@@ -34,7 +34,7 @@ export function TxAmount({ type, fee, amount, currency, status, className }: TxA
         if (status === CardTransactionStatus.IN_PROGRESS || status === CardTransactionStatus.SUCCESS) {
             amountSign = '-';
         }
-    } else if (type === CardTransactionType.DEPOSIT || type === CardTransactionType.REFUND || type === CardTransactionType.VOID) {
+    } else if (type === CardTransactionType.DEPOSIT || type === CardTransactionType.REFUND || type === CardTransactionType.VOID || type === CardTransactionType.DEPOSIT_BY_REFERRAL) {
         amountSign = '+';
     }
     const formattedCurrencyParts = useFormattedCurrencyParts(totalAmount, currency, languageCode);
@@ -62,7 +62,7 @@ export function TxAmount({ type, fee, amount, currency, status, className }: TxA
     return (
         <div
             className={classNames(styles.root, {
-                [styles.success]: (type === CardTransactionType.DEPOSIT || type === CardTransactionType.REFUND || type === CardTransactionType.VOID) && (status === CardTransactionStatus.IN_PROGRESS || status === CardTransactionStatus.SUCCESS),
+                [styles.success]: (type === CardTransactionType.DEPOSIT || type === CardTransactionType.REFUND || type === CardTransactionType.VOID || type === CardTransactionType.DEPOSIT_BY_REFERRAL) && (status === CardTransactionStatus.IN_PROGRESS || status === CardTransactionStatus.SUCCESS),
                 [styles.danger]: status === CardTransactionStatus.FAILED
             }, className)}
         >
