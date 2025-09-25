@@ -21,7 +21,7 @@ export function RefetchLoader() {
     const isPullActive = useRef(false); // Флаг активного жеста "pull-to-refresh"
 
     useLayoutEffect(() => {
-        const mainLayout = document.getElementById('mainLayout');
+        const mainLayout = document.getElementById('mainContent');
         if (!mainLayout) return;
 
         const loadCards = useCardsStore.getState().loadMyCards;

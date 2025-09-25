@@ -27,7 +27,7 @@ export function TopupResultView() {
     }, []);
 
     return (
-        <MainLayout>
+        <MainLayout fullHeight>
             <div className={styles.wrap}>
                 {Boolean(order.receivedAmount && order.receivedCurrency) && <TopupResult
                     isPending={status === PaymentStatus.Processing}

@@ -86,15 +86,15 @@ export const fetchMyCards = async () => {
     // return [
     //     {
     //         'id': 3,
-    //         'typeId': 100010,
+    //         'typeId': 111028,
     //         'number': '2781',
     //         // 'number': null,
     //         'canDeposit': true,
-    //         'status': 'NeedActivation',
+    //         // 'status': 'NeedActivation',
     //         // 'status': 'VerificationProcessing',
     //         // 'status': 'ActivationProcessing',
     //         // 'status': 'VerificationFailed',
-    //         // 'status': 'Active',
+    //         'status': 'Active',
     //         'balance': 0,
     //         'currency': 'USD',
     //         'transactions': []

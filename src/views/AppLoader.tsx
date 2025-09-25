@@ -1,5 +1,6 @@
 import { useAuthStore } from '@/states/auth/store';
 import { useCardsStore } from '@/states/cards/store';
+import { useIbanStore } from '@/states/iban/store';
 import { useLoaderStore } from '@/states/loader';
 import { useEffect, useRef } from 'react';
 
@@ -16,9 +17,11 @@ export function AppLoader() {
             const setRootInitiated = useLoaderStore.getState().setRootInitiated;
             try {
                 const { loadCardsTypes, loadMyCards } = useCardsStore.getState();
+                const loadIbanAccount = useIbanStore.getState().loadAccount;
                 await Promise.all([
                     await loadCardsTypes(),
-                    await loadMyCards()
+                    await loadMyCards(),
+                    await loadIbanAccount()
                 ]);
             } catch (error) {
                 console.error('Ошибка при загрузке данных карт', error);

@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import styles from './Button.module.scss';
 
 type ButtonProps = {
-    view?: 'primary' | 'secondary' | 'secondaryColored' | 'white';
+    view?: 'primary' | 'secondary' | 'secondaryColored' | 'white' | 'transparent';
     loading?: boolean;
     disabled?: boolean;
     smallSize?: boolean;

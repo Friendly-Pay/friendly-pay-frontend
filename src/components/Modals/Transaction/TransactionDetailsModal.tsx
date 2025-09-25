@@ -1,7 +1,7 @@
 import { TxAmount } from './TxAmount';
 import { TxHead } from './TxHead';
-import { TxProperty } from './TxProperty';
 import { BankCardPreview } from '@/components/Bank/BankCardPreview';
+import { PropertyRow } from '@/components/Property/PropertyRow';
 import { TxIcon } from '@/components/Transaction/TxIcon';
 import { languageCodeToLocale } from '@/localization/utils';
 import { CardTransactionType, PaymentSystem, useCardsStore, useCurrentBankCard } from '@/states/cards/store';
@@ -117,7 +117,7 @@ export function TransactionDetailsModal() {
                         />
                     </div>
                     <div className={styles.list}>
-                        {!!currentBankCard && <TxProperty
+                        {!!currentBankCard && <PropertyRow
                             label={cardLabel}
                             value={<div className={styles.bankAccount}>
                                 {cardPaymentSystem} <span>{formatCardLastFourDigits(currentBankCard.number!)}</span>
@@ -129,16 +129,16 @@ export function TransactionDetailsModal() {
                                 paymentSystem={currentBankCard.paymentSystem}
                                 className={styles.cardPreview}
                             />
-                        </TxProperty>}
-                        <TxProperty
+                        </PropertyRow>}
+                        <PropertyRow
                             label={t('Transaction amount')}
                             value={transactionAmount}
                         />
-                        <TxProperty
+                        <PropertyRow
                             label={t('Exchange rate')}
                             value={exchangeRate}
                         />
-                        <TxProperty
+                        <PropertyRow
                             label={t('Fee')}
                             value={formatCurrency(transaction.fee, transaction.currency, locale)}
                         />

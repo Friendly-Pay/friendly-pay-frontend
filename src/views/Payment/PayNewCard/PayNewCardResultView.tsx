@@ -23,7 +23,7 @@ export function PayNewCardResultView() {
     }, []);
 
     return (
-        <MainLayout>
+        <MainLayout fullHeight>
             <Confetti />
             <div className={styles.wrap}>
                 <CenteredContent className={styles.data}>

@@ -1,8 +1,8 @@
 import { TelegramMainButton } from '@/components/common/TelegramMainButton';
 import { useFriendsBonusesStore } from '@/states/friends/store';
-import { Input, Text } from '@/uikit';
+import { AmountInput, Text } from '@/uikit';
 import { formatCurrency } from '@/utils';
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import classNames from 'classnames';
@@ -22,38 +22,7 @@ export function TransferForm({ minAmount, availableAmount }: TransferFormProps) 
     const amountErrorTimeoutRef = useRef<number | null>(null);
 
     const inputRef = useRef<HTMLInputElement | null>(null);
-    const measureRef = useRef<HTMLSpanElement | null>(null);
-    const [suffixLeft, setSuffixLeft] = useState(0);
     const selectOpened = useFriendsBonusesStore(state => state.transferCardSelectOpened);
-
-    const copyTextStylesToMeasure = () => {
-        const input = inputRef.current;
-        const m = measureRef.current;
-        if (!input || !m) return;
-        const cs = getComputedStyle(input);
-        m.style.font = cs.font;
-        m.style.letterSpacing = cs.letterSpacing;
-        m.style.textTransform = cs.textTransform as any;
-        m.style.lineHeight = cs.lineHeight;
-    };
-
-    const updateSuffixPosition = () => {
-        const input = inputRef.current;
-        const m = measureRef.current;
-        if (!input || !m) return;
-        m.textContent = amount || '';
-        const paddingLeft = parseFloat(getComputedStyle(input).paddingLeft || '0');
-        setSuffixLeft(paddingLeft + m.offsetWidth);
-    };
-
-    useLayoutEffect(() => {
-        copyTextStylesToMeasure();
-        updateSuffixPosition();
-    }, []);
-
-    useEffect(() => {
-        updateSuffixPosition();
-    }, [amount]);
 
     useEffect(() => {
         return () => {
@@ -143,39 +112,25 @@ export function TransferForm({ minAmount, availableAmount }: TransferFormProps) 
     return (
         <>
             <div className={styles.field}>
-                <div className={styles.fieldInput}>
-                    <Input
-                        ref={inputRef}
-                        value={amount}
-                        onInput={handleAmountInput}
-                        className={styles.input}
-                        placeholder='Введите сумму пополнения'
-                        inputMode='decimal'
-                        pattern='[0-9.,]*'
-                        enterKeyHint='done'
-                        autoComplete='off'
-                        onContextMenu={(e) => e.preventDefault()}
-                        onPaste={(e) => e.preventDefault()}
-                        onCopy={(e) => e.preventDefault()}
-                        onCut={(e) => e.preventDefault()}
-                        minLength={1}
-                        maxLength={250}
-                        tabIndex={2}
-                    />
-                    <span
-                        ref={measureRef}
-                        className={styles.measure}
-                        aria-hidden
-                    >
-                        {amount}
-                    </span>
-                    {amount && (
-                        <span
-                            className={styles.currency}
-                            style={{ left: `${suffixLeft}px` }}
-                        >$</span>
-                    )}
-                </div>
+                <AmountInput
+                    ref={inputRef}
+                    value={amount}
+                    suffix='$'
+                    onInput={handleAmountInput}
+                    placeholder='Введите сумму пополнения'
+                    inputMode='decimal'
+                    pattern='[0-9.,]*'
+                    enterKeyHint='done'
+                    autoComplete='off'
+                    onContextMenu={(e) => e.preventDefault()}
+                    onPaste={(e) => e.preventDefault()}
+                    onCopy={(e) => e.preventDefault()}
+                    onCut={(e) => e.preventDefault()}
+                    minLength={1}
+                    maxLength={250}
+                    tabIndex={2}
+                    wrapperClassName={styles.fieldInput}
+                />
 
                 {amountError && (
                     <Text

@@ -1,13 +1,12 @@
 import { CardBalance } from './components/Balance/CardBalance';
 import { CardBalanceFixed } from './components/Balance/CardBalanceFixed';
 import { OrderCardBanner } from './components/Banners/OrderCardBanner';
-import { WalletBanner } from './components/Banners/WalletBanner';
 import { CardActivation } from './components/CardActivation';
 import { CardLimits } from './components/CardLimits';
 import { LastTransactions } from './components/LastTransactions';
-import { MainButton } from './components/MainButton';
 import { RefetchLoader } from './components/RefetchLoader';
 import { CardsSlider } from '@/components/Bank/CardsSlider';
+import { ActionButton } from '@/components/Button/ActionButton';
 import { MainLayout } from '@/components/common/MainLayout';
 import { CardDetails } from '@/components/Icons/CardDetailts';
 import { Topup } from '@/components/Icons/Topup';
@@ -30,8 +29,8 @@ const balanceAppearance = {
 const contentAppearance = {
     initial: { opacity: 0 },
     animate: { opacity: 1 },
-    exit: { opacity: 0, transition: { duration: 0.2 } },
-    transition: { duration: 0.25 }
+    exit: { opacity: 0, transition: { duration: 0.15 } },
+    transition: { duration: 0.2 }
 };
 
 export function HomeView() {
@@ -95,6 +94,7 @@ export function HomeView() {
                         <CardBalance
                             value={currentBankCard.balance}
                             currency={currentBankCard.currency}
+                            cardName={currentBankCard.name}
                             cardStatus={currentBankCard.status}
                             className={styles.balance}
                         />
@@ -126,29 +126,29 @@ export function HomeView() {
                         />}
 
                         <div className={styles.main}>
-                            <MainButton
+                            <ActionButton
                                 icon={<Topup />}
                                 disabled={!currentBankCard.canDeposit && !(isActivation || isNeedActivation || isActivationFailed)}
                                 onClick={openTopup}
                             >
                                 {t('Top up')}
-                            </MainButton>
+                            </ActionButton>
 
-                            <MainButton
+                            <ActionButton
                                 icon={<CardDetails />}
                                 onClick={openCardDetails}
                             >
                                 {t('Details')}
-                            </MainButton>
+                            </ActionButton>
                         </div>
 
                         <div className={styles.stack}>
                             <div className={styles.banners}>
-                                <WalletBanner
+                                {/* <WalletBanner
                                     hasGooglePay={currentBankCard.hasGooglePay}
                                     hasAppleWallet={currentBankCard.hasAppleWallet}
                                     className={styles.banner}
-                                />
+                                /> */}
                                 <OrderCardBanner className={styles.banner} />
                             </div>
 

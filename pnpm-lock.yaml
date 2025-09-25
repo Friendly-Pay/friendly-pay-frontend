@@ -23,6 +23,9 @@ importers:
       '@microsoft/signalr':
         specifier: ^8.0.7
         version: 8.0.7
+      '@sumsub/websdk':
+        specifier: ^2.4.1
+        version: 2.4.1
       '@tanstack/react-query':
         specifier: ^5.64.2
         version: 5.69.0(react@18.3.1)
@@ -1055,6 +1058,9 @@ packages:
   '@smithy/util-waiter@4.0.2':
     resolution: {integrity: sha512-piUTHyp2Axx3p/kc2CIJkYSv0BAaheBQmbACZgQSSfWUumWNW+R1lL+H9PDBxKJkvOeEX+hKYEFiwO8xagL8AQ==}
     engines: {node: '>=18.0.0'}
+
+  '@sumsub/websdk@2.4.1':
+    resolution: {integrity: sha512-vDuY+B4UcvBtsFzn7FRVzNmJBYRY4/t6dR5QeHxWK9TDtN4jASSe4wvHYZXFqtBLvdgMsVBgOSV7kDGINKLKmg==}
 
   '@swc/core-darwin-arm64@1.11.11':
     resolution: {integrity: sha512-vJcjGVDB8cZH7zyOkC0AfpFYI/7GHKG0NSsH3tpuKrmoAXJyCYspKPGid7FT53EAlWreN7+Pew+bukYf5j+Fmg==}
@@ -3894,6 +3900,8 @@ snapshots:
       '@smithy/abort-controller': 4.0.1
       '@smithy/types': 4.1.0
       tslib: 2.8.1
+
+  '@sumsub/websdk@2.4.1': {}
 
   '@swc/core-darwin-arm64@1.11.11':
     optional: true

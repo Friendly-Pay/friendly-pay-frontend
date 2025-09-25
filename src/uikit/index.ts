@@ -6,4 +6,5 @@ export * from './Line';
 export * from './Modal';
 export * from './Spinner';
 export * from './Switch';
+export * from './Tabs';
 export * from './Text';

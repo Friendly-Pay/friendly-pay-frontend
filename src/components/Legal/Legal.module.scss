@@ -1,0 +1,11 @@
+.root {
+    color: var(--color-typo-primary-40);
+    font-size: 12px;
+    line-height: 16px;
+
+    a {
+        color: inherit;
+        cursor: pointer;
+        text-decoration: underline;
+    }
+}

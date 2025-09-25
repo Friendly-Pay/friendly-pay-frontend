@@ -1,0 +1,89 @@
+.head {
+    min-height: 186px;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+}
+
+.account {
+    display: flex;
+    flex-direction: column;
+}
+
+.main {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-bottom: 32px;
+}
+
+.accountDetails {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 18px;
+    border-radius: 18px;
+    background: var(--color-fill-5);
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.detailsHead {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.detailsLabel {
+    display: flex;
+    align-items: center;
+}
+
+.detailsIcon {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    margin-right: 4px;
+    color: var(--color-typo-primary-25);
+
+    svg {
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.detailsText {
+    width: inherit;
+    color: var(--color-typo-primary-40);
+    text-transform: uppercase;
+}
+
+.bankAccount {
+    display: flex;
+    flex-direction: column;
+}
+
+.accountLabel,
+.accountValue {
+    white-space: nowrap;
+}
+
+.accountLabel {
+    line-height: 24px;
+    margin-bottom: 4px;
+}
+
+.accountValue {
+    color: var(--color-typo-primary-60);
+    line-height: 20px;
+}
+
+.detailsLink {
+    color: var(--color-primary);
+    margin-top: 32px;
+    line-height: 24px;
+}

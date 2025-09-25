@@ -1,0 +1,110 @@
+.root {
+    // display: inline-flex;
+    min-width: 100%;
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.root::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 1px;
+    height: 1px;
+    background-color: #D2D3D9;
+}
+
+.button {
+    align-items: center;
+    background: none;
+    border: 0;
+    box-shadow: none;
+    font-family: var(--font-family);
+    cursor: pointer;
+    display: flex;
+    height: 100%;
+    outline: none;
+    user-select: none;
+    white-space: nowrap;
+    padding: 12px 0 16px 0;
+
+    &>div {
+        color: var(--color-typo-primary-60);
+        transition: color .2s ease;
+    }
+
+    // &+.button {
+    //     margin-left: 24px;
+    // }
+
+    // @media (hover: hover),
+    // (min-width: 768px) {
+    //     &:hover {
+    //         color: var(--color-typo-primary);
+    //     }
+    // }
+
+    &.active {
+        &>div {
+            color: var(--color-typo-primary);
+        }
+    }
+}
+
+.indicator {
+    background-color: var(--color-primary);
+    bottom: 1px;
+    height: 2px;
+    left: 0;
+    position: absolute;
+    transition: transform .2s ease, width .2s ease;
+}
+
+// .tab {
+//     -webkit-appearance: none;
+//     appearance: none;
+//     border: 0;
+//     background: none;
+//     margin: 0;
+//     padding: 10px 12px 12px;
+//     height: 44px;
+//     display: flex;
+//     align-items: center;
+//     cursor: pointer;
+//     color: var(--tabs-color, var(--newclick-analytics-ui-primary-tablist-color, #475569));
+//     transition: color .2s ease;
+//     white-space: nowrap;
+//     outline: none;
+//     font: inherit;
+//     font-weight: 600;
+// }
+
+// .tab:hover {
+//     color: var(--tabs-color-hover, #0f172a);
+// }
+
+// .tabActive {
+//     color: var(--tabs-color-active, #0f172a);
+// }
+
+// .label {
+//     pointer-events: none;
+// }
+
+// .indicator {
+//     position: absolute;
+//     left: 0;
+//     bottom: 0;
+//     height: 3px;
+//     background-color: var(--tabs-indicator, var(--newclick-analytics-ui-primary-tablist-line-color, #2563eb));
+//     transition: transform .2s ease, width .2s ease;
+//     will-change: transform, width;
+//     border-radius: 2px 2px 0 0;
+// }
+
+// /* фокус */
+// .tab:focus-visible {
+//     outline: none;
+// }

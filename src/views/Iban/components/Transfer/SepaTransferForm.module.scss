@@ -1,0 +1,49 @@
+.root {
+    display: flex;
+    flex-direction: column;
+}
+
+.details {
+    display: flex;
+    flex-direction: column;
+
+    .field+.field {
+        margin-top: 20px;
+    }
+}
+
+.field {
+    display: flex;
+    flex-flow: column nowrap;
+
+    &Input {
+        position: relative;
+    }
+}
+
+.error {
+    color: var(--color-red);
+    font-size: 13px;
+    margin-top: 4px;
+
+    span {
+        font-weight: 500;
+    }
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+    padding-top: 66px;
+}
+
+.button {
+    margin-top: 36px;
+}
+
+
+@media screen and (max-height: 700px) {
+    .main {
+        padding-top: 42px;
+    }
+}
