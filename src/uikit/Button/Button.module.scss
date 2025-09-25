@@ -43,6 +43,12 @@
     background-color: var(--color-primary-second);
 }
 
+.smallSize {
+    height: 36px;
+    font-size: 14px;
+    border-radius: 10px;
+}
+
 .disabled {
     opacity: 0.5;
     pointer-events: none;

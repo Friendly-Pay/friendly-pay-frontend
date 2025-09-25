@@ -25,6 +25,8 @@ interface CardType {
     minDeposit: number;
     depositFee: number;
     depositTime: number;
+    referralAmount: number;
+    referralDepositPercent: number;
     hasGooglePay: boolean;
     hasAppleWallet: boolean;
     canWithdrawalAtm: boolean;
@@ -44,6 +46,7 @@ export enum CardStatus {
 
 export enum CardTransactionType {
     DEPOSIT = 'deposit',
+    DEPOSIT_BY_REFERRAL = 'deposit_by_referral',
     PAYMENT = 'payment',
     REFUND = 'refund', // Возврат покупки
     VOID = 'void' // Отмена покупки
@@ -282,7 +285,6 @@ export const useCardsStore = create<State & Actions>((set, get) => ({
         await activateCard(activateData);
     }
 }));
-
 
 export const useBankCard = (cardId: number | null) => {
     const myCards = useCardsStore(state => state.myCards);

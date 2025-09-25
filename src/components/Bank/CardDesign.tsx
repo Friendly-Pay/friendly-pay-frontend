@@ -31,9 +31,11 @@ export const cardDesign = {
     [100010]: {
         design: axtCard
     },
+    /** @deprecated */
     [111018]: {
         design: axtVirtual
     },
+    /** @deprecated */
     [111021]: {
         design: axtVirtual2
     },

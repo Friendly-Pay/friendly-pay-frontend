@@ -1,0 +1,28 @@
+.deposit {
+    background-color: var(--color-primary);
+    transform: translateZ(0);
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.title {
+    line-height: 26px;
+}
+
+.image {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 170px;
+    pointer-events: none;
+}
+
+.title,
+.reward {
+    color: var(--color-white);
+}

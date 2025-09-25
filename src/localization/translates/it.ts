@@ -325,6 +325,6 @@ export const it = {
         'Engineer': 'Ingegnere',
         'Customer Service': 'Addetto al servizio clienti',
         'Business Owner': 'Titolare d\'azienda',
-        'Retired': 'Pensionato'
+        'Retired': 'Pensionato',
     }
 } as const;
