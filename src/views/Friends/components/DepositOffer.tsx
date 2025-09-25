@@ -1,6 +1,7 @@
 import { OfferCard } from './OfferCard';
 import { Text } from '@/uikit';
 import image from 'assets/bonus/deposit.png';
+import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
 import styles from './DepositOffer.module.scss';
 
@@ -12,6 +13,7 @@ type DepositOfferProps = {
 export const BANNER_IMAGE = image;
 
 export function DepositOffer({ depositBonusPercent, className }: DepositOfferProps) {
+    const [t] = useTranslation();
     return (
         <OfferCard className={classNames(styles.deposit, className)}>
             <div
@@ -26,7 +28,7 @@ export function DepositOffer({ depositBonusPercent, className }: DepositOfferPro
                     weight='semibold'
                     className={styles.title}
                 >
-                    {depositBonusPercent}% за каждое<br /> пополнение
+                    {depositBonusPercent}% <span dangerouslySetInnerHTML={{ __html: t('for each<br /> deposit') }}></span>
                 </Text>
 
                 <Text
@@ -35,7 +37,7 @@ export function DepositOffer({ depositBonusPercent, className }: DepositOfferPro
                     weight='semibold'
                     className={styles.reward}
                 >
-                    Начисляем моментально
+                    {t('Credited instantly')}
                 </Text>
             </div>
         </OfferCard>

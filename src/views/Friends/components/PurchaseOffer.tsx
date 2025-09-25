@@ -81,7 +81,7 @@ export function PurchaseOffer({ cardTypeId, cardName, bonusAmount, bonusCurrency
                         style={{ color }}
                         className={styles.label}
                     >
-                        Вам
+                        {t('You')}
                     </Text>
 
                     <Text
@@ -91,7 +91,7 @@ export function PurchaseOffer({ cardTypeId, cardName, bonusAmount, bonusCurrency
                         style={{ color }}
                         className={styles.bonus}
                     >
-                        {formatCurrency(bonusAmount, bonusCurrency, locale, 0)} на баланс
+                        {formatCurrency(bonusAmount, bonusCurrency, locale, 0)} {t('to balance')}
                     </Text>
                 </div>
             </div>

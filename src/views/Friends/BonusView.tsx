@@ -8,11 +8,13 @@ import { useCardsStore } from '@/states/cards/store';
 import { useFriendsBonusesStore } from '@/states/friends/store';
 import { useUserStore } from '@/states/user/store';
 import { Button, Text } from '@/uikit';
-import { formatCurrency } from '@/utils';
+import { copyToClipboard, formatCurrency } from '@/utils';
 import { FetchStatus } from '@/utils/api';
 import { loadDomImage } from '@/utils/preload';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 import styles from './BonusView.module.scss';
 
 const cardsSortIds = [
@@ -22,6 +24,7 @@ const cardsSortIds = [
 ];
 
 export function BonusView() {
+    const [t] = useTranslation();
     const languageCode = useUserStore(state => state.languageCode);
     const locale = safeLanguageCode(languageCode);
 
@@ -54,6 +57,16 @@ export function BonusView() {
         }
     };
 
+    const referralId = useFriendsBonusesStore(state => state.referralId);
+    const referralLink = `https://t.me/arbi_wall_bot?start=r${referralId}`;
+
+    const handleCopyLink = useCallback(async () => {
+        const sanitized = String(referralLink).replace(/\s+/g, '');
+        await copyToClipboard(sanitized);
+        window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
+        toast.success(t('Link copied'));
+    }, [referralLink, t]);
+
     const fetchStatus = useFriendsBonusesStore(state => state.fetchStatus);
     const isLoading = balance === null && fetchStatus !== FetchStatus.Fulfilled;
 
@@ -82,10 +95,6 @@ export function BonusView() {
         preload();
     }, []);
 
-    const handleCopyLink = useCallback(() => {
-
-    }, []);
-
     if (isLoading) {
         return null;
     }
@@ -98,7 +107,7 @@ export function BonusView() {
                     align='left'
                     weight='medium'
                 >
-                    Вы заработали
+                    {t('You have earned')}
                 </Text>
 
                 <div className={styles.headBalance}>
@@ -112,7 +121,7 @@ export function BonusView() {
                         className={styles.transfer}
                         onClick={handleTransfer}
                     >
-                        Перевод
+                        {t('Transfer')}
                     </Button>
                 </div>
 
@@ -121,13 +130,16 @@ export function BonusView() {
                     weight='regular'
                     className={styles.text}
                 >
-                    Минимальная сумма для перевода на карту {formatCurrency(transferMinAmount!, balanceCurrency, locale, 0)}
+                    {t('Minimum amount to transfer to the card {{amount}}', { amount: formatCurrency(transferMinAmount!, balanceCurrency, locale, 0) })}
                 </Text>
             </div>
 
             <div className={styles.block}>
-                <Button view='primary'>
-                    Советовать
+                <Button
+                    view='primary'
+                    onClick={handleCopyLink}
+                >
+                    {t('Copy link')}
                 </Button>
             </div>
 
@@ -138,7 +150,7 @@ export function BonusView() {
                     weight='semibold'
                     className={styles.title}
                 >
-                    Рекомендуй виртуальную карту
+                    {t('Recommend the virtual card')}
                 </Text>
                 <OffersSlider>
                     {availableCards.map(card => <PurchaseOffer
@@ -160,7 +172,7 @@ export function BonusView() {
                     weight='semibold'
                     className={styles.title}
                 >
-                    Бонус за активного друга
+                    {t('Bonus for an active friend')}
                 </Text>
                 <DepositOffer depositBonusPercent={bonusDeposit} />
             </div>}

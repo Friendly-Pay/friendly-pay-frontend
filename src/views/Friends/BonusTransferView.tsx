@@ -32,7 +32,7 @@ export function BonusTransferView() {
                     align='center'
                     weight='semibold'
                 >
-                    Бонус на карту
+                    {t('Bonus to card')}
                 </Text>
             </div>
 

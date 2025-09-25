@@ -5,20 +5,15 @@ import { Payments } from '../Icons/Payments';
 import { Wallet } from '../Icons/Wallet';
 import { useCardsStore } from '@/states/cards/store';
 import { useDeviceStore } from '@/states/device/state';
-import { memo, useRef } from 'react';
+import { memo, useMemo, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { NavLink } from 'react-router-dom';
 import classNames from 'classnames';
 import styles from './Navbar.module.scss';
 
-const NAV = [
-    { id: 'home', label: 'Главная', icon: <Home /> },
-    { id: 'bank/account', label: 'Счет', icon: <Wallet /> },
-    { id: 'bank-transfer', label: 'Платежи', icon: <Payments /> },
-    { id: 'friends/bonus', label: 'Друзья', icon: <Gift /> },
-] as const;
-
 // @TODO пока нет никакой активной карты скрывать навбар
 export const Navbar = memo(function Navbar() {
+    const [t] = useTranslation();
     const iconRefs = useRef<Record<string, HTMLDivElement | null>>({});
     const platform = useDeviceStore(state => state.platform);
     const myCardsCount = useCardsStore(state => state.myCardsCount);
@@ -29,6 +24,15 @@ export const Navbar = memo(function Navbar() {
     } else if (platform === 'android') {
         safeBottom = 6;
     }
+
+    const nav = useMemo(() => {
+        return [
+            { id: 'home', label: t('Home'), icon: <Home /> },
+            { id: 'bank/account', label: t('Account'), icon: <Wallet /> },
+            { id: 'bank-transfer', label: t('Payments'), icon: <Payments /> },
+            { id: 'friends/bonus', label: t('Friends'), icon: <Gift /> },
+        ] as const;
+    }, [t]);
 
     const handlePress = (id: string) => {
         const el = iconRefs.current[id];
@@ -60,7 +64,7 @@ export const Navbar = memo(function Navbar() {
                 className={styles.nav}
                 style={{ paddingBottom: safeBottom }}
             >
-                {NAV.map(item => {
+                {nav.map(item => {
                     return <NavLink
                         key={item.id}
                         to={`/${item.id === 'home' ? '' : item.id}`}

@@ -117,7 +117,7 @@ export function TransferForm({ minAmount, availableAmount }: TransferFormProps) 
                     value={amount}
                     suffix='$'
                     onInput={handleAmountInput}
-                    placeholder='Введите сумму пополнения'
+                    placeholder={t('Enter the deposit amount')}
                     inputMode='decimal'
                     pattern='[0-9.,]*'
                     enterKeyHint='done'

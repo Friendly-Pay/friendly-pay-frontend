@@ -4,6 +4,7 @@ import { Modal, ModalBody, ModalProps } from '@/uikit';
 import { ModalClose } from '@/uikit/Modal/Close/ModalClose';
 import { ModalTitle } from '@/uikit/Modal/Title/ModalTitle';
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import styles from './CardSelectModal.module.scss';
 
 type CardSelectModalProps = {
@@ -12,6 +13,7 @@ type CardSelectModalProps = {
 }
 
 export function CardSelectModal({ isOpen, cards, onSelectCard, onClose, onAnimationCompleted }: CardSelectModalProps & ModalProps) {
+    const [t] = useTranslation();
     const items = useMemo(() => {
         return cards.map(card => <CardItem
             key={card.id}
@@ -28,7 +30,7 @@ export function CardSelectModal({ isOpen, cards, onSelectCard, onClose, onAnimat
             onAnimationCompleted={onAnimationCompleted}
         >
             <ModalClose />
-            <ModalTitle className={styles.title}>Куда</ModalTitle>
+            <ModalTitle className={styles.title}>{t('Where to')}</ModalTitle>
             <ModalBody className={styles.body}>
                 {items}
             </ModalBody>

@@ -381,6 +381,20 @@ export const it = {
         'Enter amount': 'Inserisci l\'importo',
         'Recipient full name': 'Nome completo del beneficiario',
         'Company name': 'Nome della società',
-        'Credited instantly, sometimes 1–2 days': 'Accreditato istantaneamente, a volte entro 1–2 giorni'
+        'Credited instantly, sometimes 1–2 days': 'Accreditato istantaneamente, a volte entro 1–2 giorni',
+        'You have earned': 'Hai guadagnato',
+        'Minimum amount to transfer to the card {{amount}}': 'Importo minimo per il trasferimento sulla carta {{amount}}',
+        'Copy link': 'Copia link',
+        'Recommend the virtual card': 'Consiglia la carta virtuale',
+        'Bonus for an active friend': 'Bonus per un amico attivo',
+        'Recent referrals': 'Referral recenti',
+        'Recommend': 'Consiglia',
+        'Bonus to card': 'Bonus sulla carta',
+        'You': 'A te',
+        'to balance': 'sul saldo',
+        'for each<br /> deposit': 'per ogni<br /> deposito',
+        'Credited instantly': 'Accreditato istantaneamente',
+        'Enter the deposit amount': 'Inserisci l\'importo del deposito',
+        'Where to': 'Dove trasferire'
     }
 } as const;
