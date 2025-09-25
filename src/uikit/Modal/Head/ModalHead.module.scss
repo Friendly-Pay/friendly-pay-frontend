@@ -1,0 +1,50 @@
+.head {
+    left: 0;
+    margin: 0;
+    padding: 12px var(--safe-area-left) 0 var(--safe-area-right);
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 1
+}
+
+.content {
+    display: grid;
+    background: var(--color-modal-background);
+    box-sizing: border-box;
+    grid-template-areas: "action-left content action-right";
+    grid-template-columns: minmax(var(--side-width), auto) minmax(0, 1fr) minmax(var(--side-width), auto);
+    height: 44px;
+    min-height: 44px;
+    overflow-y: hidden;
+    z-index: 200;
+}
+
+.title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    grid-area: content;
+    overflow: hidden;
+    padding-left: 16px;
+    padding-right: 16px;
+    position: relative;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.close {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-flow: row nowrap;
+    grid-area: action-left;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
+    color: var(--color-primary);
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}

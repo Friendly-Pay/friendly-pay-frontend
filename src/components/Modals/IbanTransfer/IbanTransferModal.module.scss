@@ -1,0 +1,45 @@
+d.title {
+    margin-bottom: 32px;
+}
+
+.body {
+    padding-bottom: calc(var(--safe-area-bottom) + 30px);
+}
+
+.option {
+    -webkit-tap-highlight-color: transparent;
+    align-items: center;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    padding: 16px 0px;
+    position: relative;
+    width: 100%;
+    cursor: pointer;
+    user-select: none;
+    margin-bottom: 4px;
+}
+
+.content {
+    display: flex;
+    align-items: center;
+}
+
+.icon {
+    display: flex;
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    color: var(--color-icons-secondary);
+    margin-right: 16px;
+
+    svg {
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.arrow {
+    color: var(--color-typo-primary-25);
+}

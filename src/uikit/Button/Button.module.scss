@@ -14,6 +14,7 @@
     user-zoom: none;
     padding: 0 16px;
     font-size: 16px;
+    letter-spacing: -0.3px;
     font-weight: 600;
     border-radius: 16px;
 }
@@ -41,6 +42,11 @@
 .primarySecond {
     color: var(--color-typo-primary);
     background-color: var(--color-primary-second);
+}
+
+.transparent {
+    color: var(--color-primary);
+    background-color: transparent;
 }
 
 .smallSize {

@@ -1,0 +1,17 @@
+.loader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    opacity: 0;
+
+    &.visible {
+        opacity: 1;
+    }
+}
+
+.spinner {
+    width: 42px;
+    height: 42px;
+    color: var(--color-primary);
+}

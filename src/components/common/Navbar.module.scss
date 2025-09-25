@@ -1,0 +1,97 @@
+.root {
+    background-color: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    bottom: 0;
+    max-width: 600px;
+    overflow: auto;
+    position: fixed;
+    border-top: 1px solid #EAEAEC;
+    transition: padding-bottom .3s ease-in-out;
+    width: 100%;
+    z-index: 99;
+}
+
+.nav {
+    box-sizing: border-box;
+    display: flex;
+    // height: 64px;
+    justify-content: center;
+    // max-height: 64px;
+    overflow: hidden;
+}
+
+.link {
+    -webkit-tap-highlight-color: transparent;
+    align-items: center;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    box-sizing: border-box;
+    cursor: pointer;
+    display: inline-flex;
+    flex: 1 0 0;
+    flex-direction: column;
+    margin: 0;
+    min-width: 0;
+    outline: none;
+    padding: 10px 8px 8px;
+    position: relative;
+    text-decoration: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    vertical-align: middle;
+}
+
+.iconWrap {
+    align-items: center;
+    display: flex;
+    flex-grow: 1;
+    justify-content: center;
+    width: 100%;
+}
+
+.icon {
+    display: flex;
+    position: relative;
+    color: #909095;
+    width: 34px;
+    height: 24px;
+    transition: color 0.15s linear;
+
+    svg {
+        width: 100%;
+        height: 100%;
+        content-visibility: visible;
+    }
+}
+
+.text {
+    transition: color 0.15s linear;
+    color: inherit;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    color: var(--color-navbar-secondary);
+    display: -webkit-box;
+    flex-shrink: 0;
+    overflow: hidden;
+    word-break: break-all;
+    font-weight: 500;
+    font-size: 11px;
+    line-height: 16px;
+    padding-top: 4px;
+}
+
+.link.active {
+    pointer-events: none;
+    cursor: default;
+
+    .icon,
+    .text {
+        color: var(--color-navbar-primary);
+    }
+}

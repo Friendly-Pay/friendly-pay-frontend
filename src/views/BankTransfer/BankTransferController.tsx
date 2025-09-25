@@ -42,8 +42,8 @@ export function BankTransferController() {
 
         const initialize = async () => {
             if (currencies) {
-                useBankTransferStore.getState().reset();
-                useBankTransferRequiredFields.getState().reset();
+                // useBankTransferStore.getState().reset();
+                // useBankTransferRequiredFields.getState().reset();
                 setControllerReady(true);
             }
             await Promise.all([

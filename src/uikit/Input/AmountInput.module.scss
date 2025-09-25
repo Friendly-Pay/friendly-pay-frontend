@@ -1,0 +1,31 @@
+.root {
+    position: relative;
+    width: 100%;
+}
+
+.input {
+    input {
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        user-select: none;
+    }
+}
+
+.suffix {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    padding-left: 4px;
+    color: var(--color-typo-primary-60);
+    pointer-events: none;
+    font-weight: 400;
+}
+
+.measure {
+    position: absolute;
+    visibility: hidden;
+    white-space: pre;
+    left: 0;
+    top: 0;
+    pointer-events: none;
+}

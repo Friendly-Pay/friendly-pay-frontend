@@ -13,7 +13,7 @@ export function TopupWaitingView() {
     const bankCard = useBankCard(cardId);
 
     return (
-        <MainLayout>
+        <MainLayout fullHeight>
             {import.meta.env.DEV && <button
                 style={{ position: 'absolute', top: 'var(--safe-area-top)', left: '44px', zIndex: '9999' }}
                 onClick={() => usePaymentStore.getState().completeTopup(

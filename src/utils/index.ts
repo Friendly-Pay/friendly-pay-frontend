@@ -34,17 +34,27 @@ export function formatPhoneNumber(phone: string | null | undefined): string {
 export const truncateText = (text: string, maxLength: number = 18, addEllipsis: boolean = true) =>
     !text || !text.slice ? text : text.slice(0, maxLength) + (text.length > maxLength && addEllipsis ? '...' : '');
 
+const currencyFormatterCache = new Map<string, Intl.NumberFormat>();
+const tokenFormatterCache = new Map<string, Intl.NumberFormat>();
+
 export const formatCurrency = (amount: string | number, currency: string, locale: string, minimumFractionDigits = 2) => {
     const number = typeof amount === 'string' ? parseFloat(amount) : amount;
     if (isNaN(number)) {
         return amount;
     }
-    return new Intl.NumberFormat(locale, {
-        style: 'currency',
-        currency,
-        minimumFractionDigits,
-        maximumFractionDigits: 2
-    }).format(number);
+    const key = `${locale}-${currency}-${minimumFractionDigits}`;
+    let formatter = currencyFormatterCache.get(key);
+    if (!formatter) {
+        formatter = new Intl.NumberFormat(locale, {
+            style: 'currency',
+            currency,
+            minimumFractionDigits,
+            maximumFractionDigits: 2
+        });
+        currencyFormatterCache.set(key, formatter);
+    }
+
+    return formatter.format(number);
 };
 
 export const formatTokenCurrency = (amount: string | number, locale: string, maximumFractionDigits = 6) => {
@@ -52,11 +62,18 @@ export const formatTokenCurrency = (amount: string | number, locale: string, max
     if (isNaN(number)) {
         return amount;
     }
-    return new Intl.NumberFormat(locale, {
-        style: 'decimal',
-        minimumFractionDigits: 2,
-        maximumFractionDigits
-    }).format(number);
+    const key = `${locale}-${maximumFractionDigits}`;
+    let formatter = tokenFormatterCache.get(key);
+    if (!formatter) {
+        formatter = new Intl.NumberFormat(locale, {
+            style: 'decimal',
+            minimumFractionDigits: 2,
+            maximumFractionDigits
+        });
+        tokenFormatterCache.set(key, formatter);
+    }
+
+    return formatter.format(number);
 };
 
 export const abbreviateNumber = (value: number, t: any, decimals = 0) => {

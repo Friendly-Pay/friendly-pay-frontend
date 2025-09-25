@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 export function PayNewCardWaitingView() {
     const [t] = useTranslation();
     return (
-        <MainLayout>
+        <MainLayout fullHeight>
             {import.meta.env.DEV && <button
                 style={{ position: 'absolute', top: 'var(--safe-area-top)', left: '44px', zIndex: '9999' }}
                 onClick={() => usePaymentStore.getState().completeCardPurchase(

@@ -1,0 +1,48 @@
+.root {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding-top: 52px - 32px;
+}
+
+.head {
+    padding-top: 34px;
+    margin-bottom: 32px;
+}
+
+.euro {
+    display: flex;
+    width: 80px;
+    height: 80px;
+    border-radius: 0;
+    margin: 0 auto;
+
+    img {
+        width: 100%;
+        height: 100%
+    }
+}
+
+.offer {
+    display: flex;
+    flex-direction: column;
+    padding-top: 24px;
+}
+
+.title {
+    margin-bottom: 10px;
+}
+
+.text {
+    color: var(--color-typo-primary-60);
+}
+
+.content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.banners {
+    margin-top: 32px;
+}

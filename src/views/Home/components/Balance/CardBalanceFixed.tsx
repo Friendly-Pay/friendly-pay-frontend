@@ -23,7 +23,7 @@ export function CardBalanceFixed({ value, currency }: CardBalanceFixedProps) {
     useLayoutEffect(() => {
         const balance = document.getElementById('balance');
         const pageHead = document.getElementById('pageHead');
-        const mainLayout = document.getElementById('mainLayout');
+        const mainLayout = document.getElementById('mainContent');
         if (!balance || !pageHead || !mainLayout) {
             return;
         }

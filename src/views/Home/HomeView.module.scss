@@ -1,28 +1,27 @@
 .page {
     display: flex;
     flex-direction: column;
-    padding-bottom: 80px;
 }
 
 .balance {
-    margin: 52px 0 16px;
+    margin: 52px 0 20px;
 }
 
 .content {
-    padding: 30px var(--safe-area-right) 20px var(--safe-area-left);
+    padding: 24px var(--safe-area-right) 20px var(--safe-area-left);
 }
 
 .main {
     display: grid;
-    gap: 10px;
+    gap: 12px;
     // grid-template-columns: repeat(3, minmax(0, 1fr));
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    margin-bottom: 16px;
+    margin-bottom: 20px;
 }
 
 .main,
 .stack {
-    transition: opacity 0.3s ease-in-out;
+    transition: opacity 0.2s ease-in-out;
 }
 
 .banners {

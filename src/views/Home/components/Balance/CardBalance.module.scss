@@ -5,22 +5,22 @@
 }
 
 .text {
+    line-height: 24px;
     margin-bottom: 6px;
 }
 
 .balance {
-    font-size: 38px;
     font-weight: 600;
+    font-size: 32px;
+    line-height: 38px;
     text-align: center;
-    line-height: 1;
-    padding: 4px 0;
 }
 
 .decimal,
 .literal,
 .fraction,
 .currency {
-    font-size: 34px;
+    // font-size: 34px;
     font-weight: 400;
 }
 

@@ -12,6 +12,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import styles from './TopupModal.module.scss';
 
+// @TODO вынести в отдельный компонент такого вида окна
 export function TopupModal() {
     const [t] = useTranslation();
     const isOpen = useCardsStore(state => state.topupModal.opened);

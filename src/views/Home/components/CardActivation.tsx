@@ -1,4 +1,4 @@
-import { ActivationProgress } from '@/components/Bank/Activation/ActivationProgress';
+import { CardActivationProgress } from '@/components/Activation/CardActivationProgress';
 import { CardStatus, useCardsStore } from '@/states/cards/store';
 import { useUserStore } from '@/states/user/store';
 import { useVerificationStore } from '@/states/verification/store';
@@ -77,7 +77,7 @@ export function CardActivation({ cardId, status }: CardActivationProps) {
                 >
                     {t('Activate card')}
                 </Button>
-                : <ActivationProgress status={status} />}
+                : <CardActivationProgress status={status} />}
         </div>
     );
 }

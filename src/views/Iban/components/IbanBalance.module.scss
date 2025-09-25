@@ -1,0 +1,72 @@
+.root {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 24px;
+}
+
+.head {
+    position: relative;
+    width: 100%;
+    height: 40px;
+}
+
+.euro {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 40px;
+    height: 40px;
+    padding: 4px;
+    margin-left: -4px;
+    border-radius: 0;
+
+    img {
+        width: 100%;
+        height: 100%
+    }
+}
+
+.text {
+    line-height: 24px;
+    margin-bottom: 6px;
+}
+
+.content {
+    padding-top: 14px;
+}
+
+.balance {
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 38px;
+    text-align: left;
+    margin-bottom: 12px;
+
+    &.pendingIban {
+        font-size: 24px;
+        font-weight: 600;
+        line-height: 30px;
+    }
+
+    .decimal,
+    .literal,
+    .fraction,
+    .currency {
+        // font-size: 34px;
+        font-weight: 400;
+    }
+}
+
+.amounts {
+    display: flex;
+    flex-direction: column;
+}
+
+.amount {
+    color: var(--color-typo-primary-60);
+    line-height: 20px;
+
+    &+.amount {
+        margin-top: 10px;
+    }
+}

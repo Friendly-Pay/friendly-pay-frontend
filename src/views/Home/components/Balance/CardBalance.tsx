@@ -9,7 +9,8 @@ import styles from './CardBalance.module.scss';
 type CardBalanceProps = {
     value: string | number
     currency: string
-    cardStatus: CardStatus,
+    cardName?: string
+    cardStatus: CardStatus
     className?: string
 }
 
@@ -17,7 +18,7 @@ type CardBalanceProps = {
 //     return current + (target - current) * factor;
 // }
 
-export function CardBalance({ value, currency, cardStatus, className }: CardBalanceProps) {
+export function CardBalance({ value, currency, cardName, cardStatus, className }: CardBalanceProps) {
     const [t] = useTranslation();
     const blurBalance = useUserStore(state => state.blurBalance);
     const languageCode = useUserStore(state => state.languageCode);
@@ -27,11 +28,15 @@ export function CardBalance({ value, currency, cardStatus, className }: CardBala
     const isActivationFailed = cardStatus === CardStatus.ActivationFailed || cardStatus === CardStatus.VerificationFailed;
     const isActivationProcessing = cardStatus === CardStatus.VerificationProcessing || cardStatus === CardStatus.ActivationProcessing;
 
-    let balanceLabel = t('Card balance');
+    let balanceLabel: string;
     if (isNeedActivation || isActivationProcessing) {
         balanceLabel = t('Not active');
     } else if (isActivationFailed) {
         balanceLabel = t('Activation error');
+    } else if (cardName) {
+        balanceLabel = `${t('Card')} ${cardName}`;
+    } else {
+        balanceLabel = t('Card balance');
     }
 
     const setBlurBalance = useUserStore(state => state.setBlurBalance);

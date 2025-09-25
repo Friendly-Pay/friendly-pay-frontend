@@ -1,5 +1,6 @@
 import { CardProduct } from './components/CardProduct';
 import { MainLayout } from '@/components/common/MainLayout';
+import { Legal } from '@/components/Legal/Legal';
 import { useCardsStore } from '@/states/cards/store';
 import { usePaymentStore } from '@/states/payment/store';
 import { useMemo } from 'react';
@@ -49,6 +50,7 @@ export function NewProductView() {
                     />
                 ))}
             </div>
+            <Legal className={styles.legal} />
         </MainLayout>
     );
 }

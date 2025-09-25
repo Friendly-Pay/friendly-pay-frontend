@@ -2,7 +2,7 @@
     --color-primary: #00BDB5;
     --color-primary-10: rgba(0, 189, 181, 0.10);
 
-    --color-icons-secondary: rgba(0, 0, 0, 0.3);
+    --color-icons-secondary: #8B8B93;
     --color-icons-filled: #D4D5D7;
 
     --color-background: #ffffff;
@@ -45,6 +45,12 @@
 
     --color-dialog-background: #ffffff;
     --color-dialog-overlay: rgba(0, 0, 0, 0.4);
+
+    --color-navbar-primary: #03bdb5;
+    --color-navbar-secondary: #909091;
+
+    --iban-deposit-banner-color: #D9F3F2;
+    --iban-payment-banner-color: #E2E5F4;
 
     --border-radius: 18px;
 
@@ -188,3 +194,30 @@ html::-webkit-scrollbar {
 #root::-webkit-scrollbar {
     display: none
 }
+
+// html,
+// body,
+// #root {
+//     height: 100%;
+// }
+
+// html,
+// body {
+//     margin: 0;
+//     padding: 0;
+//     height: 100%;
+//     overscroll-behavior-x: none
+// }
+
+// body {
+//     color: var(--color-typo-primary);
+//     font-family: var(--font-family);
+//     font-size: 16px;
+//     font-style: normal;
+//     font-weight: 400;
+//     letter-spacing: 0;
+//     background-color: var(--color-background);
+//     -webkit-font-smoothing: antialiased;
+//     -moz-osx-font-smoothing: grayscale;
+//     -ms-overflow-style: none;
+// }

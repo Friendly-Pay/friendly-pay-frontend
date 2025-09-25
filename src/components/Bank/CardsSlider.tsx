@@ -22,23 +22,25 @@ export function CardsSlider({ myCards, currentCardId }: CardsSliderProps) {
     const [activeIndex, setActiveIndex] = useState(cardsIds.indexOf(currentCardId));
 
     const computeLayout = () => {
+        const mainLayout = document.getElementById('mainContent');
         const slides = document.getElementsByClassName('swiper-slide');
-        if (!slides.length || !sliderRef.current) {
+        if (!mainLayout || !slides.length || !sliderRef.current) {
             return;
         }
 
         const cardRect = slides[0].getBoundingClientRect();
         const cardWidth = cardRect.width;
+        const mainLayoutWidth = mainLayout.getBoundingClientRect().width;
 
-        const availableSpace = window.innerWidth - cardWidth;
-        const nonActiveCardVisibleWidth = 50;
+        const availableSpace = mainLayoutWidth - cardWidth;
+        const nextVisibleCardWidth = 56;
 
-        let margin = availableSpace / 2 - nonActiveCardVisibleWidth;
-        if (margin < 16) {
+        let margin = availableSpace / 2 - nextVisibleCardWidth;
+        if (margin < 6) {
             margin = availableSpace / 2;
         }
 
-        const offset = window.innerWidth / 2 - cardWidth / 2;
+        const offset = mainLayoutWidth / 2 - cardWidth / 2;
 
         setMargin(margin);
         setOffsets({ offsetBefore: offset, offsetAfter: offset });
@@ -47,16 +49,21 @@ export function CardsSlider({ myCards, currentCardId }: CardsSliderProps) {
     const showPagination = myCardsCount > 1;
     useLayoutEffect(() => {
         computeLayout();
-        if (sliderRef.current?.swiper) {
-            sliderRef.current.swiper.slideTo(activeIndex, 0);
-        }
+        const frameId = requestAnimationFrame(() => {
+            if (sliderRef.current?.swiper) {
+                sliderRef.current.swiper.slideTo(activeIndex, 0);
+            }
+        });
+        return () => {
+            cancelAnimationFrame(frameId);
+        };
     }, []);
 
     const setSelectedCardId = useCardsStore(state => state.setSelectedCardId);
     const handleSlideChange = (swiper: SwiperClass) => {
         setActiveIndex(swiper.activeIndex);
         setSelectedCardId(cardsIds[swiper.activeIndex]);
-        window.Telegram.WebApp.HapticFeedback.impactOccurred('soft');
+        window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
     };
 
     const handleCardChange = (index: number) => {
@@ -69,7 +76,7 @@ export function CardsSlider({ myCards, currentCardId }: CardsSliderProps) {
         <div className={classNames(styles.root, showPagination && styles.hasPagination)}>
             <Swiper
                 ref={sliderRef}
-                speed={500}
+                speed={410}
                 className={styles.swiper}
                 slidesPerView='auto'
                 spaceBetween={margin}
