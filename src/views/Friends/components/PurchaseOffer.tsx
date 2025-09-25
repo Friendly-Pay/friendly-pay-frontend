@@ -5,7 +5,6 @@ import { Text } from '@/uikit';
 import { formatCurrency } from '@/utils';
 import basicCard from 'assets/bonus/basic_card.png';
 import gamingCard from 'assets/bonus/gaming_card.png';
-import premiumCardBackground from 'assets/bonus/premium_background.png';
 import premiumCard from 'assets/bonus/premium_card.png';
 import { useTranslation } from 'react-i18next';
 import styles from './PurchaseOffer.module.scss';
@@ -23,20 +22,18 @@ type PurchaseOfferProps = {
 export const OFFERS_CONFIG = {
     111018: {
         image: gamingCard,
-        color: '#FFF',
-        backgroundColor: '#1B2737',
+        color: 'var(--color-white)',
+        backgroundColor: '#131315',
     },
     111021: {
         image: basicCard,
         color: 'var(--color-white)',
-        backgroundColor: '#175AEA',
+        backgroundColor: '#131315',
     },
     111028: {
         image: premiumCard,
-        border: '2px solid var(--color-primary)',
-        color: 'var(--color-typo-primary)',
-        backgroundColor: 'var(--color-white)',
-        backgroundImage: premiumCardBackground
+        color: 'var(--color-white)',
+        backgroundColor: '#131315',
     }
 };
 
@@ -48,7 +45,6 @@ export function PurchaseOffer({ cardTypeId, cardName, bonusAmount, bonusCurrency
     const offerConfig = OFFERS_CONFIG[cardTypeId as keyof typeof OFFERS_CONFIG];
     const color = offerConfig.color;
     const image = offerConfig.image;
-    const border = 'border' in offerConfig ? offerConfig.border : undefined;
     const backgroundColor = offerConfig.backgroundColor;
     const backgroundImage = 'backgroundImage' in offerConfig ? `url(${offerConfig.backgroundImage})` : undefined;
 
@@ -59,14 +55,13 @@ export function PurchaseOffer({ cardTypeId, cardName, bonusAmount, bonusCurrency
     return (
         <OfferCard
             className={className}
-            style={{ width, backgroundImage, border, backgroundColor }}
+            style={{ width, backgroundImage, backgroundColor }}
             onClick={onClick}
         >
-            <img
-                src={image}
-                alt=''
+            <div
                 className={styles.image}
-            />
+                style={{ backgroundImage: `url(${image})` }}
+            ></div>
 
             <div className={styles.content}>
                 <Text

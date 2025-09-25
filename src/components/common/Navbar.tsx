@@ -1,3 +1,4 @@
+import { Gift } from '../Icons/Gift';
 import { Home } from '../Icons/Home';
 import { Payments } from '../Icons/Payments';
 // import { Payments } from '../Icons/Payments';
@@ -13,6 +14,7 @@ const NAV = [
     { id: 'home', label: 'Главная', icon: <Home /> },
     { id: 'bank/account', label: 'Счет', icon: <Wallet /> },
     { id: 'bank-transfer', label: 'Платежи', icon: <Payments /> },
+    { id: 'friends/bonus', label: 'Друзья', icon: <Gift /> },
 ] as const;
 
 // @TODO пока нет никакой активной карты скрывать навбар

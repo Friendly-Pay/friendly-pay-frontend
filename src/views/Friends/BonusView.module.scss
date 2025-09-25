@@ -1,3 +1,7 @@
+.layout {
+    padding-bottom: 24px;
+}
+
 .head {
     display: flex;
     flex-direction: column;
@@ -19,6 +23,9 @@
 }
 
 .block {
+    display: flex;
+    flex-direction: column;
+
     &+.block {
         margin-top: 40px;
     }

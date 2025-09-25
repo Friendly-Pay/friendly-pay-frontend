@@ -60,6 +60,10 @@ export function AppViews() {
                                     path='/bank/account'
                                     element={<IbanView />}
                                 />
+                                <Route
+                                    path='/friends/bonus'
+                                    element={<BonusView />}
+                                />
                                 <Route element={<BankTransferController />}>
                                     <Route
                                         path='/bank-transfer'
@@ -150,10 +154,6 @@ export function AppViews() {
                                     element={<VerificationErrorView />}
                                 />
 
-                                <Route
-                                    path='/friends/bonus'
-                                    element={<BonusView />}
-                                />
                                 <Route
                                     path='/friends/bonus/transfer'
                                     element={<BonusTransferView />}

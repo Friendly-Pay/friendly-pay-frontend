@@ -14,11 +14,10 @@ export const BANNER_IMAGE = image;
 export function DepositOffer({ depositBonusPercent, className }: DepositOfferProps) {
     return (
         <OfferCard className={classNames(styles.deposit, className)}>
-            <img
-                src={image}
-                alt=''
+            <div
                 className={styles.image}
-            />
+                style={{ backgroundImage: `url(${BANNER_IMAGE})` }}
+            ></div>
 
             <div className={styles.content}>
                 <Text

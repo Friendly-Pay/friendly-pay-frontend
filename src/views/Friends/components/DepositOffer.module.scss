@@ -1,10 +1,12 @@
 .deposit {
-    background-color: var(--color-primary);
+    background-color: #0F0F0F;
     transform: translateZ(0);
 }
 
 .content {
+    position: relative;
     display: flex;
+    align-items: flex-start;
     flex-direction: column;
     justify-content: space-between;
     height: 100%;
@@ -16,13 +18,27 @@
 
 .image {
     position: absolute;
+    top: 0;
     right: 0;
+    left: 0;
     bottom: 0;
-    width: 170px;
+    background-size: auto 100%;
+    background-position: top right;
+    background-repeat: no-repeat;
     pointer-events: none;
 }
 
 .title,
 .reward {
     color: var(--color-white);
+}
+
+.reward {
+    padding: 6px 10px;
+    font-size: 15px;
+    font-weight: 600;
+    width: auto;
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    border-radius: 12px;
 }

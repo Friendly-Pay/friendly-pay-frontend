@@ -3,7 +3,6 @@ import { BANNER_IMAGE, DepositOffer } from './components/DepositOffer';
 import { OffersSlider } from './components/OffersSlider';
 import { OFFERS_CONFIG, PurchaseOffer } from './components/PurchaseOffer';
 import { MainLayout } from '@/components/common/MainLayout';
-import { TelegramMainButton } from '@/components/common/TelegramMainButton';
 import { safeLanguageCode } from '@/localization/utils';
 import { useCardsStore } from '@/states/cards/store';
 import { useFriendsBonusesStore } from '@/states/friends/store';
@@ -18,8 +17,8 @@ import styles from './BonusView.module.scss';
 
 const cardsSortIds = [
     111018, // Gaming
-    111028, // Premium
     111021, // Basic
+    111028, // Premium
 ];
 
 export function BonusView() {
@@ -44,7 +43,6 @@ export function BonusView() {
 
     const balance = useFriendsBonusesStore(state => state.balance);
     const balanceCurrency = useFriendsBonusesStore(state => state.balanceCurrency);
-    const transactions = useFriendsBonusesStore(state => state.transactions);
     const transferMinAmount = useFriendsBonusesStore(state => state.transferMinAmount);
 
     const navigate = useNavigate();
@@ -69,9 +67,9 @@ export function BonusView() {
                 if (config.image) {
                     assets.push(config.image);
                 }
-                if ('backgroundImage' in config && config.backgroundImage) {
-                    assets.push(config.backgroundImage);
-                }
+                // if ('backgroundImage' in config && config.backgroundImage) {
+                //     assets.push(config.backgroundImage);
+                // }
             }
             const loadFriends = useFriendsBonusesStore.getState().load;
             await loadFriends();
@@ -84,7 +82,7 @@ export function BonusView() {
         preload();
     }, []);
 
-    const handleShare = useCallback(() => {
+    const handleCopyLink = useCallback(() => {
 
     }, []);
 
@@ -93,7 +91,7 @@ export function BonusView() {
     }
 
     return (
-        <MainLayout>
+        <MainLayout className={styles.layout}>
             <div className={styles.head}>
                 <Text
                     type='caption'
@@ -126,6 +124,13 @@ export function BonusView() {
                     Минимальная сумма для перевода на карту {formatCurrency(transferMinAmount!, balanceCurrency, locale, 0)}
                 </Text>
             </div>
+
+            <div className={styles.block}>
+                <Button view='primary'>
+                    Советовать
+                </Button>
+            </div>
+
             <div className={styles.block}>
                 <Text
                     type='bodyLarge'
@@ -160,7 +165,7 @@ export function BonusView() {
                 <DepositOffer depositBonusPercent={bonusDeposit} />
             </div>}
 
-            {transactions?.length && <div className={styles.block}>
+            {/* {transactions?.length && <div className={styles.block}>
                 <Text
                     type='bodyLarge'
                     align='left'
@@ -169,13 +174,13 @@ export function BonusView() {
                 >
                     Последние рекомендации
                 </Text>
-            </div>}
+            </div>} */}
 
-            <TelegramMainButton
+            {/* <TelegramMainButton
                 visible
                 text='Советовать'
                 onClick={handleShare}
-            />
+            /> */}
         </MainLayout>
     );
 }
