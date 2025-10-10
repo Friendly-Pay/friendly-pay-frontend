@@ -34,9 +34,26 @@ export function IbanController({ children }: PropsWithChildren) {
             }
             return loadAccount();
         },
-        staleTime: 120_000,
+        staleTime: 30_000,
         refetchOnMount: true,
+        refetchOnReconnect: true,
         refetchInterval: refetchInterval,
+        refetchOnWindowFocus: 'always',
+        refetchIntervalInBackground: false
+    });
+
+    const isAccountActivated = ibanStatus === IbanStatus.Activated;
+    useQuery({
+        enabled: location.pathname === '/bank/account' && isAccountActivated,
+        queryKey: ['state.iban.transactions'],
+        queryFn: async () => {
+            const { loadTransactions } = useIbanStore.getState();
+            return loadTransactions({ limit: 100, offset: 0 }); // @TODO пагинация
+        },
+        staleTime: 15_000,
+        refetchOnMount: true,
+        refetchOnReconnect: true,
+        refetchInterval: 15_000,
         refetchOnWindowFocus: 'always',
         refetchIntervalInBackground: false
     });

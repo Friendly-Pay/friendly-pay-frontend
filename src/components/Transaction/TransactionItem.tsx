@@ -15,6 +15,7 @@ type TransactionItemProps = {
     onClick?: () => void
 }
 
+// @TODO полный рефактор + подключить картинки
 export function TransactionItem({ transaction, className, onClick }: TransactionItemProps) {
     const [t] = useTranslation();
 
@@ -38,7 +39,9 @@ export function TransactionItem({ transaction, className, onClick }: Transaction
         >
             <div className={styles.iconWrap}>
                 <TxIcon
+                    size={48}
                     type={transaction.type}
+                    logo={transaction.merchantLogo}
                     className={styles.txIcon}
                 />
             </div>

@@ -1,3 +1,4 @@
+import { TxImage } from './UI/TxImage';
 import { CardTransactionType } from '@/states/cards/store';
 import { SVGProps } from 'react';
 import classNames from 'classnames';
@@ -5,7 +6,8 @@ import styles from './TxIcon.module.scss';
 
 type TxIconProps = {
     type: CardTransactionType
-    size?: 's' | 'm',
+    size?: 48 | 80;
+    logo?: string | null
     className?: string
 }
 
@@ -62,14 +64,28 @@ const Bonus = (props: SVGProps<SVGSVGElement>) => {
     );
 };
 
-export function TxIcon({ type, size = 's', className }: TxIconProps) {
+// @TODO рефактор
+export function TxIcon({ type, size = 48, logo, className }: TxIconProps) {
     switch (type) {
         case CardTransactionType.PAYMENT:
         case CardTransactionType.REFUND:
         case CardTransactionType.VOID:
-            return <div className={classNames(styles.icon, styles[size], styles.payment, className)}><Payment /></div>;
+            const icon = logo ? undefined : <Payment />;
+            const backgroundColor = logo ? 'var(--color-fill-5)' : 'var(--color-card-transaction-payment';
+            return <TxImage
+                size={size}
+                icon={icon}
+                logo={logo || undefined}
+                iconColor='var(--color-white)'
+                backgroundColor={backgroundColor}
+            />;
         case CardTransactionType.DEPOSIT:
-            return <div className={classNames(styles.icon, styles[size], styles.deposit, className)}><Deposit /></div>;
+            return <TxImage
+                size={size}
+                icon={<Deposit />}
+                iconColor='var(--color-white)'
+                backgroundColor='var(--color-card-transaction-deposit)'
+            />;
         case CardTransactionType.DEPOSIT_BY_REFERRAL:
             return <div className={classNames(styles.icon, styles[size], styles.bonus, className)}><Bonus /></div>;
         default:

@@ -256,7 +256,9 @@ export const translations = {
             'Enter amount': 'Введите сумму',
             'Recipient full name': 'Полное имя получателя',
             'Company name': 'Название компании',
-            'Credited instantly, sometimes 1–2 days': 'Поступление мгновенно, иногда в течение 1–2 дней'
+            'Credited instantly, sometimes 1–2 days': 'Поступление мгновенно, иногда в течение 1–2 дней',
+
+            'Transaction history': 'История операций'
         }
     }
 } as const;

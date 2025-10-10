@@ -1,6 +1,8 @@
 import { IbanBanners } from './components/Banners/IbanBanners';
 import { GuestScreen } from './components/GuestScreen';
 import { IbanBalance } from './components/IbanBalance';
+import { IbanHead } from './components/IbanHead';
+import { TransactionsList } from './components/TransactionsList';
 import { IbanController } from './IbanController';
 import { IbanActivationProgress } from '@/components/Activation/IbanActivationProgress';
 import { SlimActionButton } from '@/components/Button/SlimActionButton';
@@ -60,14 +62,31 @@ export function IbanView() {
         <IbanController>
             <MainLayout>
                 <div className={styles.head}>
-                    <IbanBalance
-                        balance={ibanAccount.balance}
-                        currency={ibanAccount.currency}
-                        balanceOnHold={ibanAccount.balanceOnHold}
-                        balanceFrozen={ibanAccount.balanceFrozen}
+                    {isActivated ? <IbanBalance
+                        balance={ibanAccount.balance || 0}
+                        currency={ibanAccount.currency!}
+                        balanceOnHold={ibanAccount.balanceOnHold || 0}
+                        balanceFrozen={ibanAccount.balanceFrozen || 0}
                         balanceText={balanceText || undefined}
                         isActivated={isActivated}
-                    />
+                    /> : <>
+                        <IbanHead />
+                        <div className={styles.balancePlaceholder}>
+                            <Text
+                                type='body'
+                                weight='regular'
+                                align='left'
+                                className={styles.balancePlaceholderText}
+                            >
+                                {t('EUR Account')}
+                            </Text>
+
+                            {balanceText && <div
+                                className={styles.balancePlaceholderValue}
+                                dangerouslySetInnerHTML={{ __html: balanceText }}
+                            />}
+                        </div>
+                    </>}
                 </div>
 
                 <div className={styles.content}>
@@ -139,6 +158,7 @@ export function IbanView() {
                     />}
 
                     {!isActivated && <IbanBanners className={styles.banners} />}
+                    {isActivated && <TransactionsList />}
                 </div>
             </MainLayout>
         </IbanController>

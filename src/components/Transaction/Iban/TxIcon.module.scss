@@ -1,0 +1,43 @@
+.icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-white);
+    border-radius: 50%;
+
+    svg {
+        display: block;
+    }
+
+    &.s {
+        width: 48px;
+        height: 48px;
+
+        svg {
+            width: 24px;
+            height: 24px;
+        }
+    }
+
+    &.m {
+        width: 78px;
+        height: 78px;
+
+        svg {
+            width: 48px;
+            height: 48px;
+        }
+    }
+}
+
+.deposit {
+    background-color: var(--color-card-transaction-deposit);
+}
+
+.payment {
+    background-color: var(--color-card-transaction-payment);
+}
+
+.bonus {
+    background-color: var(--color-card-transaction-bonus);
+}

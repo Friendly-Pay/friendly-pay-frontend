@@ -5,12 +5,10 @@ import { PropertyRow } from '@/components/Property/PropertyRow';
 import { useIbanStore } from '@/states/iban/store';
 import { Modal, ModalBody, ModalHead, Tabs } from '@/uikit';
 import { copyToClipboard } from '@/utils';
-// import { copyToClipboard } from '@/utils';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
-// import { toast } from 'sonner';
 import styles from './IbanAccountDetailsModal.module.scss';
 
 const appearance = {
@@ -37,9 +35,12 @@ export function IbanAccountDetailsModal() {
         { id: 'swift', label: t('Worldwide') },
     ];
 
-    const handleCopy = async (value: string, toastText: string) => {
+    const handleCopy = async (value: string, toastText: string, preserveSpaces = false) => {
         if (!value) return;
-        const sanitized = String(value).replace(/\s+/g, '');
+        let sanitized = String(value);
+        if (!preserveSpaces) {
+            sanitized = sanitized.replace(/\s+/g, '');
+        }
         await copyToClipboard(sanitized);
         window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
         toast.success(toastText);
@@ -72,17 +73,17 @@ export function IbanAccountDetailsModal() {
                 <PropertyRow
                     label={t('Recipient name')}
                     value={ibanAccount.recipient}
-                    onClick={() => handleCopy(ibanAccount.recipient, t('Recipient name copied'))}
+                    onClick={() => handleCopy(ibanAccount.recipient!, t('Recipient name copied'), true)}
                 />
                 <PropertyRow
                     label={t('IBAN')}
                     value={ibanAccount.iban}
-                    onClick={() => handleCopy(ibanAccount.iban, t('IBAN copied'))}
+                    onClick={() => handleCopy(ibanAccount.iban!, t('IBAN copied'), false)}
                 />
                 <PropertyRow
                     label={t('SWIFT/BIC')}
                     value={ibanAccount.swift}
-                    onClick={() => handleCopy(ibanAccount.swift, t('SWIFT/BIC copied'))}
+                    onClick={() => handleCopy(ibanAccount.swift!, t('SWIFT/BIC copied'), false)}
                 />
             </>
         );
@@ -94,27 +95,27 @@ export function IbanAccountDetailsModal() {
                 <PropertyRow
                     label={t('Recipient name')}
                     value={ibanAccount.recipient}
-                    onClick={() => handleCopy(ibanAccount.recipient, t('Recipient name copied'))}
+                    onClick={() => handleCopy(ibanAccount.recipient!, t('Recipient name copied'))}
                 />
                 <PropertyRow
                     label={t('IBAN')}
                     value={ibanAccount.iban}
-                    onClick={() => handleCopy(ibanAccount.iban, t('IBAN copied'))}
+                    onClick={() => handleCopy(ibanAccount.iban!, t('IBAN copied'))}
                 />
                 <PropertyRow
                     label={t('SWIFT/BIC')}
                     value={ibanAccount.swift}
-                    onClick={() => handleCopy(ibanAccount.swift, t('SWIFT/BIC copied'))}
+                    onClick={() => handleCopy(ibanAccount.swift!, t('SWIFT/BIC copied'))}
                 />
                 <PropertyRow
                     label={t('Recipient bank')}
                     value={ibanAccount.bankName}
-                    onClick={() => handleCopy(ibanAccount.bankName, t('Recipient bank copied'))}
+                    onClick={() => handleCopy(ibanAccount.bankName!, t('Recipient bank copied'))}
                 />
                 <PropertyRow
                     label={t('Bank address')}
                     value={ibanAccount.bankAddress}
-                    onClick={() => handleCopy(ibanAccount.bankAddress, t('Bank address copied'))}
+                    onClick={() => handleCopy(ibanAccount.bankAddress!, t('Bank address copied'))}
                 />
             </>
         );

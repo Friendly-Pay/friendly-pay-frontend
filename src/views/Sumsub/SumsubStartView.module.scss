@@ -1,4 +1,6 @@
 .layout {
+    display: flex;
+    flex-direction: column;
     padding-bottom: calc(var(--safe-area-bottom) + 16px);
 }
 

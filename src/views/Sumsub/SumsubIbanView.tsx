@@ -12,7 +12,7 @@ import { toast } from 'sonner';
 import classNames from 'classnames';
 import styles from './SumsubIbanView.module.scss';
 
-// @TODO когда нажал кнопку назад - возвращать на главную (не на /sumsub.start)
+// @TODO открывать kyc в обычном браузере???
 export function SumsubIbanView() {
     const [t] = useTranslation();
     const isMounted = useRef(false);
@@ -71,9 +71,16 @@ export function SumsubIbanView() {
                         })
                         .on('idCheck.onApplicantStatusChanged', (p: any) => {
                             // результат пришёл мгновенно (GREEN/RED/GRAY/PENDING/COMPLETED) → уводим туда же
+                            // if (!isMounted.current) return;
+                            // const status = p?.reviewResult?.reviewAnswer || p?.reviewStatus || 'unknown';
+                            // redirectAfterResult(status);
                             if (!isMounted.current) return;
-                            const status = p?.reviewResult?.reviewAnswer || p?.reviewStatus || 'unknown';
-                            redirectAfterResult(status);
+                            const raw = (p?.reviewResult?.reviewAnswer ?? p?.reviewStatus ?? 'unknown').toString();
+                            const status = raw.toUpperCase();
+                            if (status === 'COMPLETED' || status === 'GREEN') {
+                                redirectAfterResult(status);
+                                return;
+                            }
                         })
                         .build();
                 }

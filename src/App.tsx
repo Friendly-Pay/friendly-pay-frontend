@@ -3,6 +3,8 @@ import { AppHooks } from './AppHooks.tsx';
 import { AuthErrorFallback } from './components/Error/AuthErrorFallback.tsx';
 // import { useAuthStore } from './states/auth/store.ts';
 // import { useUserStore } from './states/user/store.ts';
+// import { useAuthStore } from './states/auth/store.ts';
+// import { useUserStore } from './states/user/store.ts';
 // import { loadEruda } from './utils/index.ts';
 import { AppViews } from './views/AppViews.tsx';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -31,7 +33,7 @@ export function App() {
                 }}
                 onClick={() => { const a = useUserStore.getState().blurBalance; useUserStore.getState().setBlurBalance(!a); }}
             >test</button> */}
-            {/* {user && user.id === '376181959' && <div
+            {/* {user && user.id === '436245133' && <div
                 style={{
                     position: 'absolute',
                     left: '0',

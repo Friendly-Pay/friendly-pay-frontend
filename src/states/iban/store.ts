@@ -1,4 +1,4 @@
-import { fetchIbanAccountStatus } from './fetch';
+import { fetchIbanAccountStatus, fetchIbanTransactions } from './fetch';
 import { FetchStatus } from '@/utils/api';
 import { toast } from 'sonner';
 import { create } from 'zustand';
@@ -14,44 +14,75 @@ export enum IbanVerificationStatus {
 export enum IbanStatus {
     Idle = 'Idle',
     InProgress = 'InProgress',
-    Activated = 'Activated',
+    Activated = 'Success',
     Failed = 'Failed'
 }
 
-interface BankAccount {
-    recipient: string;
+interface IbanAccount {
     status: IbanStatus;
     verificationStatus: IbanVerificationStatus;
-    balance: number;
+    balance: number | null;
+    currency: string | null;
+    balanceOnHold: number | null;
+    balanceFrozen: number | null;
+    bankName: string | null;
+    bankAddress: string | null;
+    iban: string | null;
+    swift: string | null;
+    recipient: string | null;
+}
+
+export enum IbanTransactionType {
+    DEPOSIT = 'DEPOSIT',
+    PAYMENT = 'PAYMENT'
+}
+
+export enum IbanTransactionStatus {
+    NEW = 'NEW',
+    PENDING = 'PENDING',
+    PENDING_EXTERNALLY = 'PENDING_EXTERNALLY',
+    PENDING_FX = 'PENDING_FX',
+    APPROVAL = 'APPROVAL',
+    EMAIL_APPROVAL = 'EMAIL_APPROVAL',
+    LEGAL_APPROVAL = 'LEGAL_APPROVAL',
+    LEGAL_APPROVED = 'LEGAL_APPROVED',
+    APPROVED = 'APPROVED',
+    APPROVED_BY_RISK_MANAGER = 'APPROVED_BY_RISK_MANAGER',
+    APPROVED_BY_COMPLIANCE_MANAGER = 'APPROVED_BY_COMPLIANCE_MANAGER',
+    REJECTED = 'REJECTED',
+    COMPLETED = 'COMPLETED',
+    CANCELED = 'CANCELED',
+    ERROR = 'ERROR',
+    FAILED = 'FAILED',
+    REVERTED = 'REVERTED'
+}
+
+export interface IbanTransaction {
+    id: number;
+    type: IbanTransactionType;
+    status: IbanTransactionStatus;
+    amount: number;
     currency: string;
-    balanceOnHold: number;
-    balanceFrozen: number;
-    bankName: string;
-    bankAddress: string;
-    iban: string;
-    swift: string;
-    // recipient: string | null;
-    // status: IbanStatus;
-    // verificationStatus: IbanVerificationStatus;
-    // balance: number | null;
-    // currency: string | null;
-    // balanceOnHold: number | null;
-    // balanceFrozen: number | null;
-    // bankName: string | null;
-    // bankAddress: string | null;
-    // iban: string | null;
-    // swift: string | null;
+    original_amount: number;
+    original_currency: string;
+    senderName: string;
+    receiverName: string;
+    details: string;
+    createdAt: number;
 }
 
 interface State {
-    account: BankAccount | null;
+    account: IbanAccount | null;
     accountFetchStatus: FetchStatus;
+    transactions: IbanTransaction[];
+    transactionsFetchStatus: FetchStatus;
     ibanAccountDetailsOpened: boolean;
     transferModalOpened: boolean;
 }
 
 interface Actions {
-    loadAccount: () => Promise<BankAccount | undefined>;
+    loadAccount: () => Promise<IbanAccount | undefined>;
+    loadTransactions: (params: { limit: number; offset: number }) => Promise<IbanTransaction[] | undefined>;
     openIbanAccountDetails: () => void;
     closeIbanAccountDetails: () => void;
     openTransferModal: () => void;
@@ -61,6 +92,8 @@ interface Actions {
 export const useIbanStore = create<State & Actions>((set) => ({
     account: null,
     accountFetchStatus: FetchStatus.Idle,
+    transactions: [],
+    transactionsFetchStatus: FetchStatus.Idle,
     ibanAccountDetailsOpened: false,
     transferModalOpened: false,
 
@@ -68,7 +101,7 @@ export const useIbanStore = create<State & Actions>((set) => ({
         set({ accountFetchStatus: FetchStatus.Pending });
         try {
             const res = await fetchIbanAccountStatus();
-            const account: BankAccount = {
+            const account: IbanAccount = {
                 ...res,
                 status: res.status as IbanStatus,
                 verificationStatus: res.verificationStatus as IbanVerificationStatus,
@@ -82,6 +115,24 @@ export const useIbanStore = create<State & Actions>((set) => ({
             console.error('[fetchBankAccount]', error);
             toast.error(error.message);
             set({ accountFetchStatus: FetchStatus.Rejected });
+        }
+    },
+
+    loadTransactions: async (params) => {
+        set({ transactionsFetchStatus: FetchStatus.Pending });
+        try {
+            const res = await fetchIbanTransactions(params);
+            const transactions = res as IbanTransaction[];
+
+            set({
+                transactions,
+                transactionsFetchStatus: FetchStatus.Fulfilled,
+            });
+            return transactions;
+        } catch (error: any) {
+            console.error('[fetchIbanTransactions]', error);
+            toast.error(error.message);
+            set({ transactionsFetchStatus: FetchStatus.Rejected });
         }
     },
 

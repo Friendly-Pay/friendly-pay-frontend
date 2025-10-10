@@ -96,8 +96,9 @@ export function TransactionDetailsModal() {
                 <ModalBody className={styles.body}>
                     <div className={styles.data}>
                         <TxIcon
-                            size='m'
+                            size={80}
                             type={transaction.type}
+                            logo={transaction.merchantLogo}
                             className={styles.icon}
                         />
                         <Text
