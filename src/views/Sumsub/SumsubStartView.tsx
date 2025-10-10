@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import styles from './SumsubStartView.module.scss';
 
+// @TODO тут по кнопке пройти верификацию открывать ссылку в обычном браузере
 export function SumsubStartView() {
     const [t] = useTranslation();
     const navigate = useNavigate();

@@ -1,0 +1,12 @@
+.amount {
+    width: auto;
+    position: relative;
+
+    &.topup {
+        color: var(--color-green);
+    }
+
+    &.failed {
+        color: var(--color-red);
+    }
+}

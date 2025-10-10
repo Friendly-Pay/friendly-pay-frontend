@@ -14,6 +14,7 @@ interface Actions {
     reset: () => void;
 }
 
+// @TODO вынести в отдельный стейт (sumsub будет также и для карт)
 export const useSumsubStore = create<State & Actions>((set) => ({
     sumsubReady: false,
     sumsubToken: null,
@@ -38,8 +39,3 @@ export const useSumsubStore = create<State & Actions>((set) => ({
         });
     },
 }));
-
-if (import.meta.env.DEV) {
-    // @ts-ignore
-    window.getIbanStore = () => useIbanStore.getState();
-}

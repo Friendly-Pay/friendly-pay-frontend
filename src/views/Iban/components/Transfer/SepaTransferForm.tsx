@@ -4,14 +4,18 @@ import { AmountInput, Button, Input, Text } from '@/uikit';
 import { formatCurrency } from '@/utils';
 import { KeyboardEventHandler, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import classNames from 'classnames';
 import styles from './SepaTransferForm.module.scss';
 
 const IBAN_MIN_LENGTH = 15;
 const IBAN_MAX_LENGTH = 34;
 
-const AMOUNT_MIN = 5;
+const AMOUNT_MIN = 1;
 
+// @TODO при выборе получателя чистить форму
+// @TODO добавить комиссию при переводе (0,10% мин 1 евро, макс 25 евро)
+// @TODO поправить скролл тут
 export function SepaTransferForm() {
     const [t] = useTranslation();
     const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
@@ -115,7 +119,7 @@ export function SepaTransferForm() {
         const newValue = evt.target.value;
         if (newValue.length > 100) return;
 
-        setDetails(details);
+        setDetails(newValue);
         setDetailsError(undefined);
 
         if (!newValue.length) {
@@ -143,8 +147,8 @@ export function SepaTransferForm() {
                 setAmountErrorType('min');
                 return;
             }
-            if (value > ibanAccount.balance) {
-                if (ibanAccount.balance < AMOUNT_MIN) {
+            if (value > ibanAccount.balance!) {
+                if (ibanAccount.balance! < AMOUNT_MIN) {
                     setAmountError(t('Insufficient balance'));
                     setAmountErrorType('min');
                     return;
@@ -161,7 +165,7 @@ export function SepaTransferForm() {
     // Обработчик клика по ошибке суммы (автозаполнение максимальной суммы)
     const handleClickAmountError = () => {
         if (amountErrorType !== 'max') return;
-        if (ibanAccount.balance <= AMOUNT_MIN) return;
+        if (ibanAccount.balance! <= AMOUNT_MIN) return;
         const maxAmount = String(ibanAccount.balance);
         setTransferData({ amount: maxAmount });
         setAmountError(undefined);
@@ -197,32 +201,36 @@ export function SepaTransferForm() {
         !!detailsError ||
         !!amountError ||
         parseAmount(amount) < AMOUNT_MIN ||
-        parseAmount(amount) > ibanAccount.balance;
+        parseAmount(amount) > ibanAccount.balance!;
 
 
+    const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const handleSubmit = async () => {
-        if (!isSubmitDisabled) {
+        if (isSubmitDisabled) {
             return;
         }
         setLoading(true);
         try {
             const parsedAmount = parseAmount(amount);
-            useIbanTransferStore.getState().sepaTransfer({
+            await useIbanTransferStore.getState().sepaTransfer({
                 recipient: recipientName,
                 iban: iban.replace(/\s/g, ''),
                 details,
                 amount: String(parsedAmount),
                 recipientType: transferRecipientType
             });
+            navigate('/bank/account');
         } catch (error) {
             console.error(error);
+        } finally {
+            setLoading(true);
         }
     };
 
     let buttonText = t('Transfer');
     if (!isNaN(parseAmount(amount))) {
-        buttonText = `${t('Transfer')} ${formatCurrency(amount, 'usd', 'ru', 0)}`;
+        buttonText = `${t('Transfer')} ${formatCurrency(amount, 'eur', 'ru', 0)}`;
     }
 
     let recipientPlaceholder: string;
@@ -354,6 +362,7 @@ export function SepaTransferForm() {
                     loading={loading}
                     disabled={isSubmitDisabled}
                     className={styles.button}
+                    onClick={handleSubmit}
                 >
                     {buttonText}
                 </Button>

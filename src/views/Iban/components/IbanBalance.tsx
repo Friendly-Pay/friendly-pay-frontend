@@ -1,8 +1,8 @@
+import { IbanHead } from './IbanHead';
 import { useFormattedCurrencyParts } from '@/hooks/useFormattedCurrencyParts';
 import { useUserStore } from '@/states/user/store';
 import { Text, TextBlur } from '@/uikit';
 import { formatCurrency } from '@/utils';
-import euro from 'assets/iban/eur.png?inline';
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
@@ -23,19 +23,30 @@ export function IbanBalance({
     currency,
     balanceOnHold,
     balanceFrozen,
-    balanceText,
-    isActivated,
     className
 }: IbanBalanceProps) {
     const [t] = useTranslation();
     const blurBalance = useUserStore(state => state.blurBalance);
     const languageCode = useUserStore(state => state.languageCode);
-    const formattedCurrencyParts = useFormattedCurrencyParts(balance, currency || 'eur', languageCode);
+
+    const getHoldAmount = () => Math.abs(balanceOnHold);
+    const getFrozenAmount = () => Math.abs(balanceFrozen);
+    const getAvailableBalance = () => balance - getHoldAmount() - getFrozenAmount();
+
+    const holdAmount = getHoldAmount();
+    const frozenAmount = getFrozenAmount();
+    const availableBalance = getAvailableBalance();
+    const hasAdditionalAmounts = holdAmount > 0 || frozenAmount > 0;
+
+    const formattedCurrencyParts = useFormattedCurrencyParts(
+        availableBalance,
+        currency || 'eur',
+        languageCode
+    );
 
     const tapCountRef = useRef(0);
     const tapTimeoutRef = useRef<any>(null);
     const handleBalanceTap = () => {
-        if (!isActivated) return;
         if (tapTimeoutRef.current) {
             clearTimeout(tapTimeoutRef.current);
         }
@@ -59,20 +70,58 @@ export function IbanBalance({
         };
     }, []);
 
+    const renderBalanceContent = () => {
+        if (blurBalance) {
+            return (
+                <TextBlur
+                    rows={3}
+                    cell={38 / 3}
+                    className={styles.balanceBlur}
+                />
+            );
+        }
+
+        return formattedCurrencyParts.map((part, index) => (
+            <span
+                key={index}
+                className={styles[part.type]}
+            >
+                {part.value}
+            </span>
+        ));
+    };
+
+    const renderAdditionalAmounts = () => {
+        if (!hasAdditionalAmounts) return null;
+
+        return (
+            <div className={styles.amounts}>
+                {holdAmount > 0 && (
+                    <Text
+                        type='caption'
+                        className={styles.amount}
+                    >
+                        {t('On hold')} {formatCurrency(holdAmount, currency, languageCode)}
+                    </Text>
+                )}
+                {frozenAmount > 0 && (
+                    <Text
+                        type='caption'
+                        className={styles.amount}
+                    >
+                        {t('Frozen')} {formatCurrency(frozenAmount, currency, languageCode)}
+                    </Text>
+                )}
+            </div>
+        );
+    };
+
     return (
         <div
             className={classNames(styles.root, blurBalance && styles.blur, className)}
             onClick={handleBalanceTap}
         >
-            <div className={styles.head}>
-                <div className={styles.euro}>
-                    <img
-                        src={euro}
-                        alt=''
-                        className={styles.eurImage}
-                    />
-                </div>
-            </div>
+            <IbanHead />
 
             <div className={styles.content}>
                 <Text
@@ -84,49 +133,11 @@ export function IbanBalance({
                     {t('EUR Account')}
                 </Text>
 
-                <div className={classNames(styles.balance, !isActivated && styles.pendingIban)}>
-                    {isActivated ? (
-                        blurBalance ? (
-                            <TextBlur
-                                rows={3}
-                                cell={38 / 3}
-                                className={styles.balanceBlur}
-                            />
-                        ) : (
-                            formattedCurrencyParts.map((part, index) => (
-                                <span
-                                    key={index}
-                                    className={styles[part.type]}
-                                >
-                                    {part.value}
-                                </span>
-                            ))
-                        )
-                    ) : balanceText && (
-                        <div dangerouslySetInnerHTML={{ __html: balanceText }}></div>
-                    )}
+                <div className={styles.balance}>
+                    {renderBalanceContent()}
                 </div>
 
-                {isActivated && (balanceOnHold > 0 || balanceFrozen > 0) && (
-                    <div className={styles.amounts}>
-                        {balanceOnHold > 0 && (
-                            <Text
-                                type='caption'
-                                className={styles.amount}
-                            >
-                                {t('On hold')} {formatCurrency(balanceOnHold, currency, languageCode)}
-                            </Text>
-                        )}
-                        {balanceFrozen > 0 && (
-                            <Text
-                                type='caption'
-                                className={styles.amount}
-                            >
-                                {t('Frozen')} {formatCurrency(balanceFrozen, currency, languageCode)}
-                            </Text>
-                        )}
-                    </div>
-                )}
+                {renderAdditionalAmounts()}
             </div>
         </div>
     );

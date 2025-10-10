@@ -1,4 +1,5 @@
 import { startSepaTransfer } from './fetch';
+import { useIbanStore } from './store';
 import { FetchStatus } from '@/utils/api';
 import { toast } from 'sonner';
 import { create } from 'zustand';
@@ -76,6 +77,7 @@ export const useIbanTransferStore = create<State & Actions>((set) => ({
                 transfer: payload,
                 transferFetchStatus: FetchStatus.Fulfilled
             });
+            await useIbanStore.getState().loadAccount();
         } catch (error: any) {
             console.error('[sepaTransfer]', error);
             toast.error(error.message);

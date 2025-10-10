@@ -7,6 +7,22 @@
     flex-direction: column;
 }
 
+.balancePlaceholder {
+    display: flex;
+    flex-direction: column;
+
+    &Text {
+        line-height: 24px;
+        margin-bottom: 6px;
+    }
+
+    &Value {
+        font-size: 24px;
+        font-weight: 600;
+        line-height: 30px;
+    }
+}
+
 .account {
     display: flex;
     flex-direction: column;

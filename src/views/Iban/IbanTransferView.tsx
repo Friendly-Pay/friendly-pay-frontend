@@ -9,12 +9,20 @@ import { useIbanTransferStore } from '@/states/iban/transfer';
 import { Line, Text } from '@/uikit';
 import euro from 'assets/iban/eur.png';
 import { useTranslation } from 'react-i18next';
+import { Navigate } from 'react-router-dom';
 import styles from './IbanTransferView.module.scss';
 
 export function IbanTransferView() {
     const [t] = useTranslation();
-    const ibanAccount = useIbanStore(state => state.account!);
+    const ibanAccount = useIbanStore(state => state.account);
     const transferRecipientType = useIbanTransferStore(state => state.transfer.recipientType);
+
+    if (!ibanAccount || ibanAccount.balance === null || ibanAccount.currency === null) {
+        return (<Navigate
+            to='/bank/account'
+            replace
+        />);
+    }
 
     return (
         <IbanController>

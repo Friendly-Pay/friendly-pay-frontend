@@ -69,6 +69,8 @@ export interface CardTransaction {
     fee: number;
     remark: string;
     createdAt: number; // unix timestamp
+    merchantName: string | null
+    merchantLogo: string | null
 }
 
 export interface MyCard extends Omit<CardType, 'id'> {
