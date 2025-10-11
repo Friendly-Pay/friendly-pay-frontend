@@ -58,7 +58,7 @@ export function BonusView() {
     };
 
     const referralId = useFriendsBonusesStore(state => state.referralId);
-    const referralLink = `https://t.me/arbi_wall_bot?start=r${referralId}`;
+    const referralLink = `https://t.me/axt_community_bot?start=r${referralId}`;
 
     const handleCopyLink = useCallback(async () => {
         const sanitized = String(referralLink).replace(/\s+/g, '');
