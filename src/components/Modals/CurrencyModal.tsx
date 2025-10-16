@@ -1,4 +1,4 @@
-import { TopupCurrency } from './TopupCurrency';
+import { CurrencyItem } from './CurrencyItem';
 import { TopupCurrencySoon } from './TopupCurrencySoon';
 import { useCardsStore } from '@/states/cards/store';
 import { usePaymentStore } from '@/states/payment/store';
@@ -9,23 +9,19 @@ import axtBsc from 'assets/coins/axt_bsc.png?inline';
 import iban from 'assets/coins/iban.png?inline';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
-import styles from './TopupModal.module.scss';
+import styles from './CurrencyModal.module.scss';
 
 // @TODO вынести в отдельный компонент такого вида окна
-export function TopupModal() {
+export function CurrencyModal() {
     const [t] = useTranslation();
-    const isOpen = useCardsStore(state => state.topupModal.opened);
-    const onClose = useCardsStore(state => state.closeTopupModal);
-    const cardId = useCardsStore(state => state.selectedCardId);
+    const isOpen = useCardsStore(state => state.currencyModal.opened);
+    const data = useCardsStore(state => state.currencyModal.data);
+    const onClose = useCardsStore(state => state.closeCurrencyModal);
     const currencies = usePaymentStore(state => state.currencies);
     const currenciesMap = useMemo(() => Object.values(currencies), [currencies]);
 
-    const navigate = useNavigate();
     const handleSelectCurrency = (currencyId: string) => {
-        if (!cardId) return;
-        usePaymentStore.getState().startTopup(cardId, currencyId);
-        navigate('/payments/topup');
+        data?.onSelectCurrency(currencyId);
     };
 
     return (
@@ -34,15 +30,14 @@ export function TopupModal() {
             onClose={onClose}
         >
             <ModalClose />
-            <ModalTitle className={styles.title}>{t('Choose currency')}</ModalTitle>
+            <ModalTitle className={styles.title}>{data?.title}</ModalTitle>
             <ModalBody className={styles.body}>
                 {currenciesMap.map(item => (
-                    <TopupCurrency
+                    <CurrencyItem
                         key={item.id}
                         name={item.name}
                         image={item.image}
                         network={item.network}
-                        approximateSeconds={item.approximateSeconds}
                         className={styles.item}
                         onClick={() => handleSelectCurrency(item.id)}
                     />
@@ -50,12 +45,12 @@ export function TopupModal() {
                 <TopupCurrencySoon
                     image={axtBsc}
                     name='Axiom Token'
-                    text={t('Cooming soon')}
+                    text={t('Coming soon')}
                 />
                 <TopupCurrencySoon
                     image={iban}
                     name='IBAN'
-                    text={t('Cooming soon')}
+                    text={t('Coming soon')}
                 />
             </ModalBody>
         </Modal>

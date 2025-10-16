@@ -13,14 +13,14 @@ import styles from './TopupResult.module.scss';
 type TopupResultProps = {
     isPending?: boolean
     cardNumber?: string | null
-    topupAmount: number
-    topupCurrency: string
+    cardCurrency?: string | null
+    receivedAmount: number
 }
 
-export function TopupResult({ isPending, cardNumber, topupAmount, topupCurrency }: TopupResultProps) {
+export function TopupResult({ isPending, cardNumber, cardCurrency, receivedAmount }: TopupResultProps) {
     const [t] = useTranslation();
     const languageCode = useUserStore(state => state.languageCode);
-    const formattedCurrencyParts = useFormattedCurrencyParts(topupAmount, topupCurrency, safeLanguageCode(languageCode));
+    const formattedCurrencyParts = useFormattedCurrencyParts(receivedAmount, cardCurrency || 'usd', safeLanguageCode(languageCode));
 
     return (
         <CenteredContent className={styles.content}>

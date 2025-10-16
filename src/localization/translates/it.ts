@@ -395,6 +395,7 @@ export const it = {
         'for each<br /> deposit': 'per ogni<br /> deposito',
         'Credited instantly': 'Accreditato istantaneamente',
         'Enter the deposit amount': 'Inserisci l\'importo del deposito',
-        'Where to': 'Dove trasferire'
+        'Where to': 'Dove trasferire',
+        'How to pay': 'Con cosa pagare'
     }
 } as const;

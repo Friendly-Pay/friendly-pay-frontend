@@ -1,7 +1,7 @@
 import { Image } from '../Image/Image';
 import { Text } from '@/uikit';
 import classNames from 'classnames';
-import styles from './TopupCurrency.module.scss';
+import styles from './CurrencyItem.module.scss';
 
 type TopupCurrencyProps = {
     name: string

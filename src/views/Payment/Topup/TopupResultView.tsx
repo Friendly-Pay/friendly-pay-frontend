@@ -1,7 +1,7 @@
 import { MainLayout } from '@/components/common/MainLayout';
 import { TopupResult } from '@/components/Payment/TopupResult';
 import { useBankCard } from '@/states/cards/store';
-import { PaymentStatus, usePaymentStore } from '@/states/payment/store';
+import { PaymentStatus, usePaymentStore, usePaymentTopupCurrency } from '@/states/payment/store';
 import { Button } from '@/uikit';
 import { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -12,6 +12,7 @@ export function TopupResultView() {
     const [t] = useTranslation();
     const cardId = usePaymentStore(state => state.topupSelectedCardId);
     const bankCard = useBankCard(cardId);
+    const topupCurrency = usePaymentTopupCurrency();
 
     const order = usePaymentStore(state => state.topupOrder!);
     const status = usePaymentStore(state => state.topupStatus);
@@ -29,11 +30,11 @@ export function TopupResultView() {
     return (
         <MainLayout fullHeight>
             <div className={styles.wrap}>
-                {Boolean(order.receivedAmount && order.receivedCurrency) && <TopupResult
+                {Boolean(order.receivedAmount && topupCurrency?.name) && <TopupResult
                     isPending={status === PaymentStatus.Processing}
                     cardNumber={bankCard?.number}
-                    topupAmount={order.receivedAmount!}
-                    topupCurrency={order.receivedCurrency!}
+                    cardCurrency={bankCard?.currency}
+                    receivedAmount={order.receivedAmount!}
                 />}
 
                 <Button

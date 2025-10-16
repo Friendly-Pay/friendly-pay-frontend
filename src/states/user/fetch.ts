@@ -41,6 +41,7 @@ export interface InitialTopupOrder {
     transactionId: number;
     address: string;
     expireAt: number;
+    currency: string;
 }
 
 export const fetchUser = async () => {

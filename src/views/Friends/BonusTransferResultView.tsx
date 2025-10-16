@@ -13,7 +13,6 @@ export function BonusTransferResultView() {
     const cardId = useFriendsBonusesStore(state => state.transferSelectedCardId);
     const bankCard = useBankCard(cardId);
     const topupAmount = useFriendsBonusesStore(state => state.transferAmount);
-    const topupCurrency = useFriendsBonusesStore(state => state.balanceCurrency);
 
     const navigate = useNavigate();
     const handleContinue = useCallback(() => {
@@ -37,9 +36,9 @@ export function BonusTransferResultView() {
             <div className={styles.wrap}>
                 <TopupResult
                     isPending
-                    cardNumber={bankCard?.number}
-                    topupAmount={topupAmount!}
-                    topupCurrency={topupCurrency!}
+                    cardNumber={bankCard.number}
+                    cardCurrency={bankCard.currency}
+                    receivedAmount={topupAmount}
                 />
 
                 <TelegramMainButton
