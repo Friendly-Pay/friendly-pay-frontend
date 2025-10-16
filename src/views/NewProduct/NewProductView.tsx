@@ -1,7 +1,7 @@
 import { CardProduct } from './components/CardProduct';
 import { MainLayout } from '@/components/common/MainLayout';
 import { useCardsStore } from '@/states/cards/store';
-import { usePaymentStore } from '@/states/payment/store';
+import { PaymentActions } from '@/states/payment/actions';
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './NewProductView.module.scss';
@@ -26,8 +26,7 @@ export function NewProductView() {
 
     const navigate = useNavigate();
     const handleCardSelect = async (cardTypeId: number) => {
-        navigate('/payments/pay-new-card');
-        usePaymentStore.getState().startCardPurchase(cardTypeId);
+        PaymentActions.purchaseCard(cardTypeId, navigate);
     };
 
     return (
