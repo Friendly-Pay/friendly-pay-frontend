@@ -210,7 +210,8 @@ export const translations = {
             'To you': 'Вам',
             '{{percent}}% for each<br/> top-up': '{{percent}}% за каждое<br/> пополнение',
             'Instantly credited': 'Начисляем моментально',
-            'Link copied': 'Ссылка скопирована'
+            'Link copied': 'Ссылка скопирована',
+            'How to pay': 'Чем оплатить'
         }
     }
 } as const;

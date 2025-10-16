@@ -17,7 +17,7 @@ export function TopupWaitingView() {
             {import.meta.env.DEV && <button
                 style={{ position: 'absolute', top: 'var(--safe-area-top)', left: '44px', zIndex: '9999' }}
                 onClick={() => usePaymentStore.getState().completeTopup(
-                    usePaymentStore.getState().topupOrder!.transactionId, 1000, 'usd'
+                    usePaymentStore.getState().topupOrder!.transactionId, 1000
                 )}
             >Confirm</button>}
 

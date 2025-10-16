@@ -13,10 +13,10 @@ import { CardDetails } from '@/components/Icons/CardDetailts';
 import { Topup } from '@/components/Icons/Topup';
 import { UserHead } from '@/components/User/UserHead';
 import { CardStatus, useCardsStore } from '@/states/cards/store';
-// import { useUserStore } from '@/states/user/store';
+import { PaymentActions } from '@/states/payment/actions';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import classNames from 'classnames';
 import styles from './HomeView.module.scss';
 
@@ -39,7 +39,6 @@ export function HomeView() {
     const myCards = useCardsStore(state => state.myCards);
     const currentCardId = useCardsStore(state => state.selectedCardId);
     const currentBankCard = myCards && currentCardId ? myCards[currentCardId] : null;
-    const openTopup = useCardsStore(state => state.openTopupModal);
     const openCardDetails = useCardsStore(state => state.openCardDetails);
 
     const isActivation = currentBankCard && (currentBankCard.status === CardStatus.ActivationProcessing || currentBankCard.status === CardStatus.VerificationProcessing);
@@ -48,6 +47,11 @@ export function HomeView() {
 
     // const skipIntro = useUserStore(state => state.skipIntro);
     const myCardsCount = useCardsStore(state => state.myCardsCount);
+
+    const navigate = useNavigate();
+    const openTopup = () => {
+        PaymentActions.topupCard(currentCardId!, navigate);
+    };
 
     // if (!skipIntro) {
     //     return <Navigate
