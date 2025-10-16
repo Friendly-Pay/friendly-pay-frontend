@@ -5,10 +5,8 @@ import { ClockFill } from '@/components/Icons/Clock';
 import { TopupBold } from '@/components/Icons/Topup';
 import { useFormattedCurrencyParts } from '@/hooks/useFormattedCurrencyParts';
 import { useBankCard } from '@/states/cards/store';
-import { PaymentStatus, usePaymentStore } from '@/states/payment/store';
-import { useUserStore } from '@/states/user/store';
-import { Button, Text } from '@/uikit';
-import { formatCardLastFourDigits } from '@/utils';
+import { PaymentStatus, usePaymentStore, usePaymentTopupCurrency } from '@/states/payment/store';
+import { Button } from '@/uikit';
 import { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -18,6 +16,7 @@ export function TopupResultView() {
     const [t] = useTranslation();
     const cardId = usePaymentStore(state => state.topupSelectedCardId);
     const bankCard = useBankCard(cardId);
+    const topupCurrency = usePaymentTopupCurrency();
 
     const order = usePaymentStore(state => state.topupOrder!);
     const status = usePaymentStore(state => state.topupStatus);
@@ -38,52 +37,12 @@ export function TopupResultView() {
     return (
         <MainLayout>
             <div className={styles.wrap}>
-                <CenteredContent className={styles.content}>
-                    {bankCard?.number && <Text
-                        type='caption'
-                        align='center'
-                        weight='medium'
-                        className={styles.bankAccount}
-                    >
-                        {t('Account')} <span>{formatCardLastFourDigits(bankCard.number)}</span>
-                    </Text>}
-
-                    <PaymentIcon className={styles.icon}>
-                        <TopupBold />
-                    </PaymentIcon>
-
-                    {Boolean(order.receivedAmount && order.receivedCurrency) && <Text
-                        type='headlineLarge'
-                        align='center'
-                        weight='semibold'
-                        className={styles.amount}
-                    >
-                        +{formattedCurrencyParts.map((part, index) => (
-                            <span
-                                key={index}
-                                className={styles[part.type]}
-                            >
-                                {part.value}
-                            </span>
-                        ))}
-                    </Text>}
-
-                    {status === PaymentStatus.Processing && <Text
-                        weight='regular'
-                        className={styles.status}
-                    >
-                        <ClockFill />
-                        <div>{t('Top-up in progress')}</div>
-                    </Text>}
-
-                    <Text
-                        align='center'
-                        weight='regular'
-                        className={styles.text}
-                    >
-                        {t('Funds will be credited to your account after processing is complete')}
-                    </Text>
-                </CenteredContent>
+                {Boolean(order.receivedAmount && topupCurrency?.name) && <TopupResult
+                    isPending={status === PaymentStatus.Processing}
+                    cardNumber={bankCard?.number}
+                    cardCurrency={bankCard?.currency}
+                    receivedAmount={order.receivedAmount!}
+                />}
 
                 <Button
                     view='primary'

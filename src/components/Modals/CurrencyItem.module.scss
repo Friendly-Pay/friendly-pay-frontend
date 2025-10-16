@@ -4,7 +4,7 @@
     align-items: center;
     justify-content: space-between;
     user-select: none;
-    padding: 8px 7px 8px 0;
+    padding: 12px 0;
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
 }
@@ -19,7 +19,7 @@
     width: 38px;
     height: 38px;
     flex-shrink: 0;
-    margin-right: 20px;
+    margin-right: 16px;
 }
 
 .data {
@@ -28,22 +28,17 @@
 }
 
 .name {
-    margin-bottom: 4px;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
+    letter-spacing: -2%;
 }
-
-.text {
-    color: var(--color-typo-primary-60);
-
-    span {
-        font-weight: 600;
-    }
-}
-
 
 .arrow {
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
     flex-shrink: 0;
+    color: var(--color-typo-primary-40);
 
     svg {
         width: 100%;

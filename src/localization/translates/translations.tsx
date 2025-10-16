@@ -189,7 +189,9 @@ export const translations = {
             'Refund to account': 'Возврат на счет',
             'Do you want to cancel?': 'Вы хотите отменить?',
             'The top-up will be cancelled.<br/>Do not send funds to this address': 'Пополнение будет отменено.<br/>Не отправляйте средства на этот адрес',
-            'The purchase will be cancelled.<br/>Do not send funds to this address': 'Покупка будет отменена.<br/>Не отправляйте средства на этот адрес'
+            'The purchase will be cancelled.<br/>Do not send funds to this address': 'Покупка будет отменена.<br/>Не отправляйте средства на этот адрес',
+            'Transaction history': 'История операций',
+            'How to pay': 'Чем оплатить'
         }
     }
 } as const;

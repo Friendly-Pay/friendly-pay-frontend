@@ -7,9 +7,10 @@ export interface CardDepositResponse {
     expireAt: number; // Unix timestamp
 }
 
-export const makeCardDeposit = async (cardId: number): Promise<CardDepositResponse> => {
+export const makeCardDeposit = async ({ cardId, currency }: { cardId: number, currency: string }): Promise<CardDepositResponse> => {
     const res = await apiClient.post<CardDepositResponse>('/card/deposit', {
-        cardId
+        cardId,
+        currency
     });
     return res.data;
 };
@@ -17,20 +18,22 @@ export const makeCardDeposit = async (cardId: number): Promise<CardDepositRespon
 export interface CardPurchaseResponse {
     transactionId: number;
     amount: number;
-    currency: string;
     address: string;
     expireAt: number;
 }
 
-export const purchaseCard = async (cardTypeId: number) => {
-    const res = await apiClient.post<CardPurchaseResponse>('/card/purchase', { cardTypeId });
+export const purchaseCard = async ({ cardTypeId, currency }: { cardTypeId: number, currency: string }) => {
+    const res = await apiClient.post<CardPurchaseResponse>('/card/purchase', {
+        cardTypeId,
+        currency
+    });
     return res.data;
 };
 
 export interface TopupStatusResponse {
     status: 'InProgress' | 'Success' | 'Failed' | 'Cancelled';
-    amount?: number,
-    currency?: string
+    amount: number | null,
+    currency: string
 }
 
 export const fetchTopupStatus = async (
@@ -51,6 +54,8 @@ export const cancelTopup = async (transactionId: number) => {
 
 export interface PurchaseStatusResponse {
     status: 'InProgress' | 'Success' | 'Failed' | 'Cancelled';
+    amount: number
+    currency: string
 }
 
 export const fetchPurchaseStatus = async (

@@ -86,6 +86,11 @@ export interface CardDetails {
     expireAt: number;
 }
 
+export interface CurrencyModalData {
+    title: string
+    onSelectCurrency: (currency: string) => void;
+}
+
 interface State {
     selectedCardId: number | null;
     myCards: Record<number, MyCard> | null;
@@ -96,9 +101,9 @@ interface State {
     myCardsFetchStatus: FetchStatus;
     cardsTypes: Record<number, CardType> | null;
     cardsTypesFetchStatus: FetchStatus;
-    topupModal: { opened: boolean };
     detailsModal: { data: CardDetails | null, opened: boolean };
     detailsFetchStatus: FetchStatus;
+    currencyModal: { opened: boolean, data: CurrencyModalData | null };
     transactionDetailsModal: { data: CardTransaction | null, opened: boolean };
 }
 
@@ -106,11 +111,11 @@ interface Actions {
     setSelectedCardId: (cardId: number | null) => void;
     loadMyCards: () => Promise<number[] | void>;
     loadCardsTypes: () => Promise<void>;
-    openTopupModal: () => void;
-    closeTopupModal: () => void;
     openCardDetails: () => void;
     closeCardDetails: () => void;
     fetchCardDetails: () => Promise<CardDetailsResponse | void>;
+    openCurrencyModal: (data: CurrencyModalData) => void;
+    closeCurrencyModal: () => void;
     openTransactionDetails: (data: CardTransaction) => void;
     closeTransactionDetails: () => void;
     resetTransactionDetails: () => void;
@@ -128,9 +133,9 @@ export const useCardsStore = create<State & Actions>((set, get) => ({
     myCardsTypesIds: null,
     myCardsUpdatedAt: null,
     myCardsFetchStatus: FetchStatus.Idle,
-    topupModal: { opened: false },
     detailsModal: { data: null, opened: false },
     detailsFetchStatus: FetchStatus.Idle,
+    currencyModal: { opened: false, data: null },
     transactionDetailsModal: { data: null, opened: false },
 
     setSelectedCardId: (cardId) => set({ selectedCardId: cardId }),
@@ -218,8 +223,8 @@ export const useCardsStore = create<State & Actions>((set, get) => ({
         }
     },
 
-    openTopupModal: () => set({ topupModal: { opened: true } }),
-    closeTopupModal: () => set({ topupModal: { opened: false } }),
+    openCurrencyModal: (data) => set({ currencyModal: { opened: true, data } }),
+    closeCurrencyModal: () => set({ currencyModal: { opened: false, data: null } }),
 
     openCardDetails: () => set({ detailsModal: { data: null, opened: true } }),
     closeCardDetails: () => set({ detailsModal: { data: null, opened: false } }),
