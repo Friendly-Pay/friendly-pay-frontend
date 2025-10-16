@@ -27,4 +27,5 @@ export const ACCESS_TO_FRIENDS_BONUS: string[] = [
     '81923346',
     '76135502',
     '138289808',
+    '1491755634'
 ] as const;
