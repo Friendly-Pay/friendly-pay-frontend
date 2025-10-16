@@ -258,7 +258,8 @@ export const translations = {
             'Company name': 'Название компании',
             'Credited instantly, sometimes 1–2 days': 'Поступление мгновенно, иногда в течение 1–2 дней',
 
-            'Transaction history': 'История операций'
+            'Transaction history': 'История операций',
+            'How to pay': 'Чем оплатить'
         }
     }
 } as const;

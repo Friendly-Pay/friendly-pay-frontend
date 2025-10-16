@@ -53,7 +53,7 @@ export const createSocketConnection = (accessToken: string) => {
 
     hubConnection.on('DepositProcessing', async (data: DepositProcessing) => {
         console.log('[socket] DepositProcessing event', data);
-        usePaymentStore.getState().completeTopup(data.transactionId, data.amount, data.currency);
+        usePaymentStore.getState().completeTopup(data.transactionId, data.amount);
     });
 };
 

@@ -2,7 +2,8 @@ import { useCardsStore } from '../cards/store';
 import { InitialPurchaseOrder, InitialTopupOrder } from '../user/fetch';
 import { cancelTopup, fetchPurchaseStatus, fetchTopupStatus, makeCardDeposit, purchaseCard } from './fetch';
 import { OrderStorage } from './storage';
-import usdtTrc20 from 'assets/coins/usdt_trc20.png';
+import usdtBep from 'assets/coins/usdt-bep.png?inline';
+import usdtTrc from 'assets/coins/usdt-trc.png?inline';
 import { create } from 'zustand';
 
 export enum PaymentStatus {
@@ -18,35 +19,37 @@ export enum PaymentStatus {
 }
 
 const currencies = {
-    'usdt-trc20': {
-        id: 'usdt-trc20',
+    'USDTTRC': {
+        id: 'USDTTRC',
         name: 'USDT',
-        image: usdtTrc20,
-        network: 'TRC20',
-        approximateSeconds: 60 * 10
-    }
-};
+        image: usdtTrc,
+        network: 'TRC20'
+    },
+    'USDTBSC': {
+        id: 'USDTBSC',
+        name: 'USDT',
+        image: usdtBep,
+        network: 'BEP20'
+    },
+} as const;
 
 export interface CurrencyItem {
     id: string;
     name: string;
     image: string;
     network: string;
-    approximateSeconds: number;
 };
 
 export interface TopupOrder {
     transactionId: number
-    address: string
     receivedAmount: number | null
-    receivedCurrency: string | null
+    address: string
     expireAt: number
 }
 
 export interface PurchaseOrder {
     transactionId: number
     amount: number
-    currency: string
     address: string
     expireAt: number
 }
@@ -65,9 +68,9 @@ interface State {
 }
 
 interface Actions {
-    startTopup: (cardId: number, currencyId: string) => Promise<void>;
-    startCardPurchase: (cardTypeId: number) => Promise<void>;
-    completeTopup: (transactionId: number, receivedAmount: number, receivedCurrency: string) => void;
+    startTopup: (cardId: number, currency: string) => Promise<void>;
+    startCardPurchase: (cardTypeId: number, currency: string) => Promise<void>;
+    completeTopup: (transactionId: number, receivedAmount: number) => void;
     completeCardPurchase: (transactionId: number) => void;
     userCompleteWaitingTopup: () => void;
     userCompleteWaitingCardPurchase: () => void;
@@ -98,23 +101,22 @@ export const usePaymentStore = create<State & Actions>((set, get) => ({
     topupOrder: null,
     poolingTransactionStatus: false,
 
-    startTopup: async (cardId, currencyId) => {
+    startTopup: async (cardId, currency) => {
         get().reset();
         set({
             topupSelectedCardId: cardId,
-            topupSelectedCurrencyId: currencyId,
+            topupSelectedCurrencyId: currency,
             topupStatus: PaymentStatus.Creating,
             topupOrder: null
         });
         try {
-            const res = await makeCardDeposit(cardId);
+            const res = await makeCardDeposit({ cardId, currency });
             set({
                 topupStatus: PaymentStatus.Waiting,
                 topupOrder: {
                     transactionId: res.transactionId,
-                    address: res.address,
                     receivedAmount: null,
-                    receivedCurrency: null,
+                    address: res.address,
                     expireAt: res.expireAt
                 },
             });
@@ -127,22 +129,21 @@ export const usePaymentStore = create<State & Actions>((set, get) => ({
             set({ topupStatus: PaymentStatus.Failed });
         }
     },
-    startCardPurchase: async (cardTypeId) => {
+    startCardPurchase: async (cardTypeId, currency) => {
         get().reset();
         set({
             purchaseSelectedCardTypeId: cardTypeId,
-            purchaseSelectedCurrencyId: 'usdt-trc20',
+            purchaseSelectedCurrencyId: currency,
             purchaseStatus: PaymentStatus.Creating,
             purchaseOrder: null
         });
         try {
-            const res = await purchaseCard(cardTypeId);
+            const res = await purchaseCard({ cardTypeId, currency });
             set({
                 purchaseStatus: PaymentStatus.Waiting,
                 purchaseOrder: {
                     transactionId: res.transactionId,
                     amount: res.amount,
-                    currency: res.currency,
                     address: res.address,
                     expireAt: res.expireAt,
                 },
@@ -158,7 +159,7 @@ export const usePaymentStore = create<State & Actions>((set, get) => ({
     },
 
     // @TODO refetch transactions
-    completeTopup: (transactionId, receivedAmount, receivedCurrency) => {
+    completeTopup: (transactionId, receivedAmount) => {
         const { topupOrder } = get();
         if (!topupOrder) return;
         if (topupOrder.transactionId !== transactionId) {
@@ -169,8 +170,7 @@ export const usePaymentStore = create<State & Actions>((set, get) => ({
             topupStatus: PaymentStatus.Processing,
             topupOrder: {
                 ...topupOrder,
-                receivedAmount: receivedAmount,
-                receivedCurrency: receivedCurrency
+                receivedAmount: receivedAmount
             }
         });
         OrderStorage.remove(transactionId);
@@ -183,14 +183,12 @@ export const usePaymentStore = create<State & Actions>((set, get) => ({
             console.warn(`[completeCardPurchase] wrong order id: state ${purchaseOrder.transactionId}, socket ${transactionId}`);
             return;
         }
-        set({
-            purchaseSelectedCurrencyId: null,
-            purchaseStatus: PaymentStatus.Success,
-        });
+        set({ purchaseStatus: PaymentStatus.Success });
         OrderStorage.remove(transactionId);
         useCardsStore.getState().loadMyCards();
     },
 
+    // Пользователь нажимает на кнопку "Готово"
     userCompleteWaitingTopup: () => {
         const { topupOrder } = get();
         if (!topupOrder) {
@@ -212,6 +210,7 @@ export const usePaymentStore = create<State & Actions>((set, get) => ({
         OrderStorage.update(purchaseOrder.transactionId, { status });
     },
 
+    // Пользователь скрывает ожидания пополнения (поиск транзакции)
     userHiddenWaitingTopup: () => {
         const { topupOrder } = get();
         if (!topupOrder) {
@@ -239,7 +238,7 @@ export const usePaymentStore = create<State & Actions>((set, get) => ({
         const storedOrder = OrderStorage.get(initialOrder.transactionId);
         const status = storedOrder ? storedOrder.status : PaymentStatus.Waiting;
         set({
-            topupSelectedCurrencyId: 'usdt-trc20',
+            topupSelectedCurrencyId: initialOrder.currency,
             topupSelectedCardId: initialOrder.cardId,
             topupStatus: status,
             topupOrder: {
@@ -247,7 +246,6 @@ export const usePaymentStore = create<State & Actions>((set, get) => ({
                 address: initialOrder.address,
                 expireAt: initialOrder.expireAt,
                 receivedAmount: null,
-                receivedCurrency: null
             }
         });
     },
@@ -258,12 +256,11 @@ export const usePaymentStore = create<State & Actions>((set, get) => ({
         const status = storedOrder ? storedOrder.status : PaymentStatus.Waiting;
         set({
             purchaseSelectedCardTypeId: initialOrder.cardTypeId,
-            purchaseSelectedCurrencyId: 'usdt-trc20',
+            purchaseSelectedCurrencyId: initialOrder.currency,
             purchaseStatus: status,
             purchaseOrder: {
                 transactionId: initialOrder.transactionId,
                 amount: initialOrder.amount,
-                currency: initialOrder.currency,
                 address: initialOrder.address,
                 expireAt: initialOrder.expireAt,
             },
@@ -313,6 +310,7 @@ export const usePaymentStore = create<State & Actions>((set, get) => ({
         const transactionId = get().topupOrder?.transactionId;
         if (transactionId) OrderStorage.remove(transactionId);
         set({
+            topupSelectedCardId: null,
             topupSelectedCurrencyId: null,
             topupStatus: PaymentStatus.Idle,
             topupOrder: null,
@@ -332,7 +330,7 @@ export const usePaymentStore = create<State & Actions>((set, get) => ({
         const { completeTopup, stopPoolingTransactionStatus } = get();
         const res = await fetchTopupStatus(transactionId);
         if (res.status === 'Success') {
-            completeTopup(transactionId, res.amount!, res.currency!);
+            completeTopup(transactionId, res.amount!);
             stopPoolingTransactionStatus();
         }
     },

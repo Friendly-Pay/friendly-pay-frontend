@@ -14,7 +14,6 @@ import { useTranslation } from 'react-i18next';
 import { Navigate, useNavigate } from 'react-router-dom';
 import styles from './TopupView.module.scss';
 
-
 export function TopupView() {
     const [t] = useTranslation();
     const cardId = usePaymentStore(state => state.topupSelectedCardId);
@@ -79,7 +78,6 @@ export function TopupView() {
                         />
                     </PaymentHead>
 
-                    {/* @TODO время пополнения */}
                     <Text
                         type='captionSmall'
                         align='left'
@@ -88,7 +86,7 @@ export function TopupView() {
                         dangerouslySetInnerHTML={{
                             __html: t('Commission <span>{{depositFee}}%</span>, minimum ≈ <span>{{minAmount}}</span>', {
                                 depositFee: bankCard.depositFee,
-                                minAmount: `${bankCard.minDeposit} USDT` // @TODO dynamic currency
+                                minAmount: `${bankCard.minDeposit} ${topupCurrency.name}` // @TODO dynamic currency (minDeposit)
                             })
                         }}
                     />
@@ -100,7 +98,7 @@ export function TopupView() {
                     weight='medium'
                     className={styles.title}
                 >
-                    {t('Send')} <span>USDT TRC20</span><br />
+                    {t('Send')} <span>{topupCurrency.name} {topupCurrency.network}</span><br />
                     {t('to the wallet:')}
                 </Text>
 

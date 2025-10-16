@@ -1,4 +1,4 @@
-import { TopupModal } from '../../components/Modals/TopupModal';
+import { CurrencyModal } from '../../components/Modals/CurrencyModal';
 import { CardDetailsModal } from '@/components/Modals/CardDetailsModal';
 import { TransactionDetailsModal } from '@/components/Modals/Transaction/TransactionDetailsModal';
 import { useCardsStore } from '@/states/cards/store';
@@ -30,9 +30,9 @@ export function CardController({ children }: PropsWithChildren) {
     });
 
     useEffect(() => {
-        const { topupModal, detailsModal, transactionDetailsModal, closeTopupModal, closeCardDetails, closeTransactionDetails } = useCardsStore.getState();
-        if (topupModal.opened) closeTopupModal();
+        const { currencyModal, detailsModal, transactionDetailsModal, closeCurrencyModal, closeCardDetails, closeTransactionDetails } = useCardsStore.getState();
         if (detailsModal.opened) closeCardDetails();
+        if (currencyModal.opened) closeCurrencyModal();
         if (transactionDetailsModal.opened) closeTransactionDetails();
     }, [location]);
 
@@ -40,7 +40,7 @@ export function CardController({ children }: PropsWithChildren) {
         {children}
 
         {selectedCardId && <>
-            <TopupModal />
+            <CurrencyModal />
             <CardDetailsModal />
             <TransactionDetailsModal />
         </>}
