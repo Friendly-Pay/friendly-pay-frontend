@@ -39,8 +39,9 @@ export function CardController({ children }: PropsWithChildren) {
     return (<>
         {children}
 
+        <CurrencyModal />
+
         {selectedCardId && <>
-            <CurrencyModal />
             <CardDetailsModal />
             <TransactionDetailsModal />
         </>}
