@@ -1,5 +1,5 @@
 import { ClickableBanner } from './ClickableBanner';
-import cardBanner from 'assets/banner/card_banner.png?inline';
+import cardBanner from 'assets/card_banner.png?inline';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
@@ -13,8 +13,8 @@ export function OrderCardBanner({ className }: OrderCardBannerProps) {
     return (
         <ClickableBanner
             image={cardBanner}
-            title={t('Order card')}
-            text={t('Virtual')}
+            title={t('Order new card')}
+            text={t('Plastic or virtual')}
             className={className}
             onClick={() => navigate('/new-product')}
         />

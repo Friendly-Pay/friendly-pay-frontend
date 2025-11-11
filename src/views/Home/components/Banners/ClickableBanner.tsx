@@ -17,13 +17,11 @@ export function ClickableBanner({ title, text, image, className, onClick }: Prop
             className={classNames(styles.banner, className)}
             onClick={onClick}
         >
-            <div className={styles.imageWrap}>
-                <img
-                    src={image}
-                    alt={title}
-                    className={styles.image}
-                />
-            </div>
+            <img
+                src={image}
+                alt={title}
+                className={styles.image}
+            />
 
             <div className={styles.content}>
                 <Text

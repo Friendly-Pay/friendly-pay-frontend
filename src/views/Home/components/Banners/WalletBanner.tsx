@@ -1,8 +1,8 @@
 import { ClickableBanner } from './ClickableBanner';
 import { WalletModal } from './WalletModal';
 import { useDeviceStore } from '@/states/device/state';
-import appleBanner from 'assets/banner/apple_pay_banner.png?inline';
-import googleBanner from 'assets/banner/google_pay_banner.png?inline';
+import appleBanner from 'assets/apple_banner.png?inline';
+import googleBanner from 'assets/google_banner.png?inline';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -30,7 +30,7 @@ export function WalletBanner({ hasAppleWallet, hasGooglePay, className }: Wallet
             <ClickableBanner
                 image={isIos ? appleBanner : googleBanner}
                 title={title}
-                text={t('Instruction')}
+                text={t('Add card to wallet')}
                 className={className}
                 onClick={() => setOpened(true)}
             />
