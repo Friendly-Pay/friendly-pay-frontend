@@ -1,4 +1,4 @@
-import { RepkaLogo } from '@/components/Icons/Repka';
+import { GptonLogo } from '@/components/Image/Gpton';
 import { useAuthStore } from '@/states/auth/store';
 import { useCardsStore } from '@/states/cards/store';
 import { useLoaderStore } from '@/states/loader';
@@ -77,7 +77,7 @@ export function AppLoader() {
             {...appearance}
             className={styles.loader}
         >
-            <RepkaLogo />
+            <GptonLogo className={styles.logo} />
         </motion.div>
     );
 }

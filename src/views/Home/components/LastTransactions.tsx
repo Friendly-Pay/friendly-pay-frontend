@@ -1,8 +1,8 @@
+import { GptonLogo } from '@/components/Image/Gpton';
 import { TransactionItem } from '@/components/Transaction/TransactionItem';
 import { CardTransaction, useCardsStore } from '@/states/cards/store';
 import { Text } from '@/uikit';
 import { formatCardLastFourDigits } from '@/utils';
-import wallet from 'assets/wallet.png?inline';
 import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
 import styles from './LastTransactions.module.scss';
@@ -29,10 +29,7 @@ export function LastTransactions({ list, lastFourDigits, className }: LastTransa
         </div>;
     } else {
         content = <div className={classNames(styles.placeholder, className)}>
-            <img
-                src={wallet}
-                alt='history'
-            />
+            <GptonLogo className={styles.logo} />
 
             <Text
                 type='body'

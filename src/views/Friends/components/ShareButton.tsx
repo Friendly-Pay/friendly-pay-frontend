@@ -8,7 +8,7 @@ import { toast } from 'sonner';
 export function ShareButton() {
     const [t] = useTranslation();
     const referralId = useFriendsBonusesStore(state => state.referralId);
-    const referralLink = `https://t.me/turbo_repka_pay_bot?start=r${referralId}`;
+    const referralLink = `https://t.me/gpton_pay_bot?start=r${referralId}`;
 
     const handleCopyLink = useCallback(async () => {
         const sanitized = String(referralLink).replace(/\s+/g, '');

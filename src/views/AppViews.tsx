@@ -1,9 +1,5 @@
 import { AppLoader } from './AppLoader';
-import { BonusTransferResultView } from './Friends/BonusTransferResultView';
-import { BonusTransferView } from './Friends/BonusTransferView';
-import { BonusView } from './Friends/BonusView';
 import { HomeView } from './Home/HomeView';
-import { IntroView } from './Intro/IntroView';
 import { NewProductView } from './NewProduct/NewProductView';
 import { PaymentController } from './Payment/PaymentController';
 import { PaymentRestore } from './Payment/PaymentRestore';
@@ -39,10 +35,6 @@ export function AppViews() {
                             <Route
                                 path='/'
                                 element={<HomeView />}
-                            />
-                            <Route
-                                path='/intro'
-                                element={<IntroView />}
                             />
                             <Route
                                 path='/new-product'
@@ -90,7 +82,7 @@ export function AppViews() {
                                 element={<VerificationErrorView />}
                             />
 
-                            <Route
+                            {/* <Route
                                 path='/friends/bonus'
                                 element={<BonusView />}
                             />
@@ -101,7 +93,7 @@ export function AppViews() {
                             <Route
                                 path='/friends/bonus/transfer/result'
                                 element={<BonusTransferResultView />}
-                            />
+                            /> */}
                         </Routes>
                     </CardController>
                 </PaymentRestore>

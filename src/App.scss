@@ -1,16 +1,18 @@
 :root {
-    --color-primary: #4972CF;
+    --color-primary: #096D33;
+
+    --color-link-primary: #C5D1FF;
 
     --color-icons-secondary: rgba(255, 255, 255, 0.3);
     --color-icons-filled: #D4D5D7;
 
-    --color-background: #10161F;
-    --color-background-primary: #10161F;
+    --color-background: #1A181C;
+    --color-background-primary: #1A181C;
 
-    --color-fill-5: #1D2633;
-    --color-fill-10: #1E2531;
-    --color-fill-15: #19212C;
-    --color-skeleton-fill: #161F2B;
+    --color-fill-5: rgba(244, 244, 244, 0.08);
+    --color-fill-10: rgba(244, 244, 244, 0.10);
+    --color-fill-15: rgba(244, 244, 244, 0.15);
+    --color-skeleton-fill: rgba(244, 244, 244, 0.02);
     --color-bottom-loading-fill: #E8EEFD;
 
     --color-typo-primary: rgba(255, 255, 255, 1);
@@ -20,25 +22,25 @@
     --color-typo-primary-20: rgba(255, 255, 255, 0.20);
     --color-typo-primary-15: rgba(255, 255, 255, 0.15);
 
-    --color-green: #39CC83;
+    --color-green: #31DE74;
 
     --color-red: #D44141;
     --color-white: #ffffff;
     --color-white-80: rgba(255, 255, 255, 0.8);
 
-    --color-card-transaction-deposit: #39CC83;
-    --color-card-transaction-payment: #27384F;
+    --color-card-transaction-deposit: #31DE74;
+    --color-card-transaction-payment: #202022;
     --color-card-transaction-bonus: #6B42BD;
 
     --color-button-primary: #4972CF;
     --color-button-primary-disabled: #C1C9DA;
 
-    --color-modal-background: #10161F;
-    --color-modal-overlay: rgba(0, 0, 0, 0.5);
+    --color-modal-background: #1A1C24;
+    --color-modal-overlay: rgba(0, 0, 0, 0.45);
 
 
-    --color-dialog-background: #10161F;
-    --color-dialog-overlay: rgba(0, 0, 0, 0.4);
+    --color-dialog-background: #1A1C24;
+    --color-dialog-overlay: rgba(0, 0, 0, 0.45);
 
     --border-radius: 18px;
 

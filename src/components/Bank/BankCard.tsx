@@ -1,6 +1,6 @@
 import { Cloud } from '../Icons/Cloud';
 import { Eye } from '../Icons/Eye';
-import { RepkaLogo } from '../Icons/Repka';
+import { GptonLogo } from '../Image/Gpton';
 import { CardDesign } from './CardDesign';
 import { PaymentSystemIcon } from './PaymentSystemIcon';
 import { CardStatus, PaymentSystem } from '@/states/cards/store';
@@ -43,9 +43,7 @@ export function BankCard({ typeId, lastFourDigits, hideDigits, paymentSystem, st
             onClick={onClick}
         >
             <div className={styles.top}>
-                <RepkaLogo />
 
-                {virtual && <div className={styles.cloud}><Cloud /></div>}
             </div>
 
             <div className={classNames(styles.bottom, !hideDigits && styles.withDigits)}>
