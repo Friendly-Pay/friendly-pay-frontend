@@ -7,8 +7,8 @@ import { useNavigate } from 'react-router-dom';
 import styles from './NewProductView.module.scss';
 
 const CARD_ID_SORT = [
-    111033,
-    111028
+    111039,
+    111038,
 ];
 
 export function NewProductView() {

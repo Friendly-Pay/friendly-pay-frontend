@@ -6,7 +6,7 @@ import { ShareButton } from './components/ShareButton';
 import { MainLayout } from '@/components/common/MainLayout';
 import { safeLanguageCode } from '@/localization/utils';
 import { useCardsStore } from '@/states/cards/store';
-import { ACCESS_TO_FRIENDS_BONUS } from '@/states/friends/access';
+// import { ACCESS_TO_FRIENDS_BONUS } from '@/states/friends/access';
 import { useFriendsBonusesStore } from '@/states/friends/store';
 import { useUserStore } from '@/states/user/store';
 import { Button, Text } from '@/uikit';
@@ -14,7 +14,7 @@ import { formatCurrency } from '@/utils';
 import { FetchStatus } from '@/utils/api';
 import { useEffect, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styles from './BonusView.module.scss';
 
 const cardsSortIds = [
@@ -85,14 +85,14 @@ export function BonusView() {
         preload();
     }, []);
 
-    const userId = useUserStore(state => state.user!.id);
-    const hasAccessToFriendsBonus = ACCESS_TO_FRIENDS_BONUS.includes(userId) || import.meta.env.DEV;
-    if (!hasAccessToFriendsBonus) {
-        return (<Navigate
-            to='/'
-            replace
-        />);
-    }
+    // const userId = useUserStore(state => state.user!.id);
+    // const hasAccessToFriendsBonus = ACCESS_TO_FRIENDS_BONUS.includes(userId) || import.meta.env.DEV;
+    // if (!hasAccessToFriendsBonus) {
+    //     return (<Navigate
+    //         to='/'
+    //         replace
+    //     />);
+    // }
 
     if (isLoading) {
         return null;

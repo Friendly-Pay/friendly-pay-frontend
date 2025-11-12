@@ -1,7 +1,7 @@
 import { CardBalance } from './components/Balance/CardBalance';
 import { CardBalanceFixed } from './components/Balance/CardBalanceFixed';
 import { OrderCardBanner } from './components/Banners/OrderCardBanner';
-import { WalletBanner } from './components/Banners/WalletBanner';
+// import { WalletBanner } from './components/Banners/WalletBanner';
 import { CardActivation } from './components/CardActivation';
 import { CardLimits } from './components/CardLimits';
 import { LastTransactions } from './components/LastTransactions';

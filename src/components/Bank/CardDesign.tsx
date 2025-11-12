@@ -24,13 +24,13 @@ export const cardDesign = {
         border: '1px solid #313133',
         previewBorder: '1px solid #313133'
     },
-    [111028]: {
+    [111038]: {
         // inverse: true,
         design: virtual2,
         border: '1px solid #313133',
         previewBorder: '1px solid #313133'
     },
-    [111033]: {
+    [111039]: {
         design: virtual1,
         border: '1px solid #313133',
         previewBorder: '1px solid #313133'

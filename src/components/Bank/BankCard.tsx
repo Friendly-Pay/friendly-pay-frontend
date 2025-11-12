@@ -1,6 +1,4 @@
-import { Cloud } from '../Icons/Cloud';
 import { Eye } from '../Icons/Eye';
-import { GptonLogo } from '../Image/Gpton';
 import { CardDesign } from './CardDesign';
 import { PaymentSystemIcon } from './PaymentSystemIcon';
 import { CardStatus, PaymentSystem } from '@/states/cards/store';
@@ -24,7 +22,7 @@ type BankCardProps = {
     onClickDigits?: () => void
 }
 
-export function BankCard({ typeId, lastFourDigits, hideDigits, paymentSystem, status, active, virtual, style, className, onClick, onClickDigits }: BankCardProps) {
+export function BankCard({ typeId, lastFourDigits, hideDigits, paymentSystem, status, active, style, className, onClick, onClickDigits }: BankCardProps) {
     const isDisabled = status === CardStatus.NeedActivation || status === CardStatus.ActivationFailed || status === CardStatus.VerificationFailed;
     const isActivation = status === CardStatus.ActivationProcessing || status === CardStatus.VerificationProcessing;
     const lastFourDigitsPlaceholder = '••••';

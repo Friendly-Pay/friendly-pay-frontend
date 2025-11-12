@@ -1,4 +1,3 @@
-import { AddFriend } from '../Icons/Friend';
 import { SupportMessage } from '../Icons/Support';
 // import { SupportMessage } from '../Icons/Support';
 import { Avatar } from './Avatar';
