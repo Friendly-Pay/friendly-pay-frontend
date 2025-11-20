@@ -53,7 +53,7 @@ export function CalculatorForm({ className }: CalculatorFormProps) {
         if (typedValue && typedValue.trim() !== '') hasUserTypedRef.current = true;
     }, [typedValue]);
 
-    const inputCurrency = usePaymentStore(state => state.currencies['usdt-trc20']);
+    const inputCurrency = usePaymentStore(state => state.currencies['USDTTRC']);
     const outputCurrency = useBankTransferStore(state => state.selectedCurrency!);
 
     const calc = useMemo(() => {

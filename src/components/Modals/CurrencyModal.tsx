@@ -2,6 +2,7 @@ import { CurrencyItem } from './CurrencyItem';
 import { TopupCurrencySoon } from './TopupCurrencySoon';
 import { useCardsStore } from '@/states/cards/store';
 import { usePaymentStore } from '@/states/payment/store';
+import { useUserStore } from '@/states/user/store';
 import { Modal, ModalBody } from '@/uikit';
 import { ModalClose } from '@/uikit/Modal/Close/ModalClose';
 import { ModalTitle } from '@/uikit/Modal/Title/ModalTitle';
@@ -19,6 +20,27 @@ export function CurrencyModal() {
     const onClose = useCardsStore(state => state.closeCurrencyModal);
     const currencies = usePaymentStore(state => state.currencies);
     const currenciesMap = useMemo(() => Object.values(currencies), [currencies]);
+    const user = useUserStore(state => state.user);
+
+    const isSpecialUser = useMemo(() => {
+        if (!user?.id) return false;
+        const specialUserIds = ['8493548474', '8493548382'];
+        return specialUserIds.includes(String(user.id));
+    }, [user?.id]);
+
+    const availableCurrencies = useMemo(() => {
+        if (location.pathname === '/new-product') {
+            return currenciesMap.filter(currency => currency.id !== 'AXT');
+        }
+
+        // В остальных случаях AXT доступен только для специальных пользователей
+        return currenciesMap.filter(currency => {
+            if (currency.id === 'AXT') {
+                return isSpecialUser;
+            }
+            return true;
+        });
+    }, [currenciesMap, location.pathname, isSpecialUser]);
 
     const handleSelectCurrency = (currencyId: string) => {
         data?.onSelectCurrency(currencyId);
@@ -32,7 +54,7 @@ export function CurrencyModal() {
             <ModalClose />
             <ModalTitle className={styles.title}>{data?.title}</ModalTitle>
             <ModalBody className={styles.body}>
-                {currenciesMap.map(item => (
+                {availableCurrencies.map(item => (
                     <CurrencyItem
                         key={item.id}
                         name={item.name}
@@ -42,11 +64,11 @@ export function CurrencyModal() {
                         onClick={() => handleSelectCurrency(item.id)}
                     />
                 ))}
-                <TopupCurrencySoon
+                {!isSpecialUser && <TopupCurrencySoon
                     image={axtBsc}
                     name='Axiom Token'
                     text={t('Coming soon')}
-                />
+                />}
                 <TopupCurrencySoon
                     image={iban}
                     name='IBAN'

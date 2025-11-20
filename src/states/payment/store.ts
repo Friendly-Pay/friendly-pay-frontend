@@ -2,6 +2,7 @@ import { useCardsStore } from '../cards/store';
 import { InitialPurchaseOrder, InitialTopupOrder } from '../user/fetch';
 import { cancelTopup, fetchPurchaseStatus, fetchTopupStatus, makeCardDeposit, purchaseCard } from './fetch';
 import { OrderStorage } from './storage';
+import axtBsc from 'assets/coins/axt_bsc.png?inline';
 import usdtBep from 'assets/coins/usdt-bep.png?inline';
 import usdtTrc from 'assets/coins/usdt-trc.png?inline';
 import { create } from 'zustand';
@@ -29,6 +30,12 @@ const currencies = {
         id: 'USDTBSC',
         name: 'USDT',
         image: usdtBep,
+        network: 'BEP20'
+    },
+    'AXT': {
+        id: 'AXT',
+        name: 'Axioma',
+        image: axtBsc,
         network: 'BEP20'
     },
 } as const;

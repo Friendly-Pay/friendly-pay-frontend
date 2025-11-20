@@ -73,3 +73,12 @@ export const fetchPurchaseStatus = async (
 export const cancelPurchase = async (transactionId: number) => {
     await apiClient.post<void>('/card/purchase/cancel', { transactionId });
 };
+
+export interface RatesResponse {
+    rate: number;
+}
+
+export const fetchRate = async (): Promise<RatesResponse> => {
+    const res = await apiClient.get<RatesResponse>('/rate');
+    return res.data;
+};
