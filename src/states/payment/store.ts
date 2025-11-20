@@ -2,6 +2,7 @@ import { useCardsStore } from '../cards/store';
 import { InitialPurchaseOrder, InitialTopupOrder } from '../user/fetch';
 import { cancelTopup, fetchPurchaseStatus, fetchTopupStatus, makeCardDeposit, purchaseCard } from './fetch';
 import { OrderStorage } from './storage';
+import gpton from 'assets/coins/gpton.png?inline';
 import usdtBep from 'assets/coins/usdt-bep.png?inline';
 import usdtTrc from 'assets/coins/usdt-trc.png?inline';
 import { create } from 'zustand';
@@ -30,6 +31,12 @@ const currencies = {
         name: 'USDT',
         image: usdtBep,
         network: 'BEP20'
+    },
+    'GPTON': {
+        id: 'GPTON',
+        name: 'GPTON',
+        image: gpton,
+        network: 'Solana'
     },
 } as const;
 

@@ -211,7 +211,8 @@ export const translations = {
             '{{percent}}% for each<br/> top-up': '{{percent}}% за каждое<br/> пополнение',
             'Instantly credited': 'Начисляем моментально',
             'Link copied': 'Ссылка скопирована',
-            'How to pay': 'Чем оплатить'
+            'How to pay': 'Чем оплатить',
+            'Current rate: 1$ = {{amount}} GPTON': 'Текущий курс: 1$ = {{amount}} GPTON'
         }
     }
 } as const;
