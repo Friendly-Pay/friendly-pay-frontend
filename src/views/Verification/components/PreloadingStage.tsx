@@ -1,4 +1,4 @@
-import { StageRoot } from './Common/StageRoot';
+import { StageRoot } from './Сommon/StageRoot';
 import { Spinner, Text } from '@/uikit';
 import { useTranslation } from 'react-i18next';
 import styles from './PreloadingStage.module.scss';

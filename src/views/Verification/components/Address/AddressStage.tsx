@@ -1,4 +1,4 @@
-import { StageRoot } from '../Common/StageRoot';
+import { StageRoot } from '../Сommon/StageRoot';
 import { CitySelect } from './CitySelect';
 import { CountrySelect } from './CountrySelect';
 import { TelegramMainButton } from '@/components/common/TelegramMainButton';

@@ -1,4 +1,4 @@
-import { StageRoot } from './Common/StageRoot';
+import { StageRoot } from './Сommon/StageRoot';
 import { TelegramMainButton } from '@/components/common/TelegramMainButton';
 import { useCardsStore } from '@/states/cards/store';
 import { useVerificationStore } from '@/states/verification/store';
