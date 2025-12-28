@@ -32,7 +32,7 @@
 
     --color-green: #39CC83;
 
-    --color-red: #F52222;
+    --color-red: #D44141;
     --color-white: #ffffff;
     --color-white-80: rgba(255, 255, 255, 0.8);
 
@@ -55,12 +55,16 @@
 
     --color-button-primary: #4972CF;
     --color-button-primary-typo: #FFFFFF;
-    --color-button-primary-disabled: #8BACF5;
-    --color-button-primary-disabled-typo: #FFFFFF;
+    --color-button-primary-disabled: #F2F3F5;
+    --color-button-primary-typo-disabled: #BABABA;
+
+    --color-button-secondary: #1D2633;
+    --color-button-secondary-typo: #FFFFFF;
+    --color-button-secondary-disabled: #151B23;
+    --color-button-secondary-typo-disabled: #3B3D3F;
 
     --color-modal-background: #10161F;
     --color-modal-overlay: rgba(0, 0, 0, 0.5);
-
 
     --color-dialog-background: #10161F;
     --color-dialog-overlay: rgba(0, 0, 0, 0.4);
