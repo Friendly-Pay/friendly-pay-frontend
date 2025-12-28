@@ -1,8 +1,10 @@
 import { CardProduct } from './components/CardProduct';
 import { MainLayout } from '@/components/common/MainLayout';
 import { Legal } from '@/components/Legal/Legal';
+import { Routes } from '@/routes';
 import { useCardsStore } from '@/states/cards/store';
-import { PaymentActions } from '@/states/payment/actions';
+import { usePaymentStore } from '@/states/payment/store';
+import { isSumsubNotCompleted, useSumsubStore } from '@/states/sumsub/store';
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './NewProductView.module.scss';
@@ -26,8 +28,17 @@ export function NewProductView() {
     }, [cardsTypes]);
 
     const navigate = useNavigate();
+
+    // @TODO вынести в класс BankCardActions (логика с картой будет в одном месте)
     const handleCardSelect = async (cardTypeId: number) => {
-        PaymentActions.purchaseCard(cardTypeId, navigate);
+        if (isSumsubNotCompleted()) {
+            useSumsubStore.getState().setSelectedCardTypeId(cardTypeId);
+            navigate(Routes.SUMSUB_START);
+            return;
+        }
+
+        usePaymentStore.getState().startCardPurchase(cardTypeId);
+        navigate(Routes.CARD_PURCHASE);
     };
 
     return (

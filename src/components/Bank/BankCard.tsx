@@ -4,68 +4,136 @@ import { Eye } from '../Icons/Eye';
 // import { FriendlyPaySign } from '../Icons/FriendlyPay';
 import { CardDesign } from './CardDesign';
 import { PaymentSystemIcon } from './PaymentSystemIcon';
-import { CardStatus, PaymentSystem } from '@/states/cards/store';
+import { PaymentSystem, useCardsStore } from '@/states/cards/store';
 import { Spinner } from '@/uikit';
 import { formatCardLastFourDigits } from '@/utils';
-import { CSSProperties } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import classNames from 'classnames';
 import styles from './BankCard.module.scss';
 
 type BankCardProps = {
-    typeId: number
+    cardTypeId: number
+
+    /** Последние 4 цифры карты */
     lastFourDigits?: string | null
-    hideDigits?: boolean
+    hideLastFourDigits?: boolean
+
+    /** Платежная система VISA / MIR / MASTERCARD */
     paymentSystem: PaymentSystem
-    status?: CardStatus
-    active?: boolean
-    virtual?: boolean;
-    style?: CSSProperties
+
+    /** Стейт обработки */
+    isPending?: boolean;
+
+    /** Стейт недоступна */
+    isDisabled?: boolean;
+
     className?: string
+
     onClick?: () => void
-    onClickDigits?: () => void
 }
 
-export function BankCard({ typeId, lastFourDigits, hideDigits, paymentSystem, status, active, virtual, style, className, onClick, onClickDigits }: BankCardProps) {
-    const isDisabled = status === CardStatus.NeedActivation || status === CardStatus.ActivationFailed || status === CardStatus.VerificationFailed;
-    const isActivation = status === CardStatus.ActivationProcessing || status === CardStatus.VerificationProcessing;
-    const lastFourDigitsPlaceholder = '••••';
+const spinnerAppearance = {
+    initial: { opacity: 0 },
+    animate: {
+        opacity: 1,
+        transition: {
+            duration: 0.2
+        }
+    },
+};
 
-    const handleClickDigits = (event: any) => {
-        event.preventDefault();
-        onClickDigits?.();
+const logoAppearance = {
+    initial: {
+        opacity: 0,
+        scale: 0.86
+    },
+    animate: {
+        opacity: 1,
+        scale: 1,
+    },
+    exit: {
+        opacity: 0
+    },
+    transition: {
+        duration: 0.2
+    }
+};
+
+const lastFourDigitsPlaceholder = '••••';
+
+const componentStyles = {
+    width: '251px',
+    height: '165px',
+};
+
+export function BankCard({ cardTypeId, lastFourDigits, hideLastFourDigits, paymentSystem, isPending, isDisabled, className, onClick }: BankCardProps) {
+    const openCardDetails = useCardsStore(state => state.openCardDetails);
+
+    const handleOpenCardDetails = () => {
+        if (!lastFourDigits || hideLastFourDigits) {
+            return;
+        }
+        openCardDetails();
     };
 
     return (
         <CardDesign
-            typeId={typeId}
-            style={{ width: '251px', height: '165px', ...style }}
-            className={classNames(styles.card, active && styles.active, className)}
+            cardTypeId={cardTypeId}
+            className={classNames(styles.card, isPending && styles.pending, className)}
             backgroundClassName={styles.background}
+            style={componentStyles}
             onClick={onClick}
         >
             <div className={styles.top}>
-                <AxtSign />
-
-                {virtual && <div className={styles.cloud}><Cloud /></div>}
+                <AnimatePresence
+                    mode='wait'
+                    initial={false}
+                >
+                    {isPending ? (
+                        <motion.div
+                            key='spinner'
+                            {...spinnerAppearance}
+                            className={styles.spinnerWrap}
+                        >
+                            <Spinner className={styles.spinner} />
+                        </motion.div>
+                    ) : (
+                        <motion.div
+                            key='logo'
+                            {...logoAppearance}
+                            className={styles.logo}
+                        >
+                            <AxtSign />
+                        </motion.div>
+                    )}
+                </AnimatePresence>
             </div>
 
-            <div className={classNames(styles.bottom, !hideDigits && styles.withDigits)}>
-                {!hideDigits && <div
+            <div className={classNames(styles.bottom, !hideLastFourDigits && styles.withDigits)}>
+
+                <div
                     className={styles.lastFourDigits}
-                    onClick={handleClickDigits}
+                    onClick={handleOpenCardDetails}
                 >
-                    <div>{formatCardLastFourDigits(lastFourDigits || lastFourDigitsPlaceholder)}</div>
-                    {lastFourDigits && <div className={styles.eye}><Eye /></div>}
-                </div>}
+                    {!hideLastFourDigits && (
+                        <>
+                            <div>{formatCardLastFourDigits(lastFourDigits || lastFourDigitsPlaceholder)}</div>
+                            {lastFourDigits && (
+                                <div className={styles.eye}><Eye /></div>
+                            )}
+                        </>
+                    )}
+                </div>
+
 
                 <div className={styles.paymentSystem}>
                     <PaymentSystemIcon paymentSystem={paymentSystem} />
                 </div>
             </div>
 
-            {(isActivation || isDisabled) && <div className={styles.overlay}>
-                {isActivation && <Spinner />}
-            </div>}
-        </CardDesign>
+            {isDisabled && (
+                <div className={styles.overlay} />
+            )}
+        </CardDesign >
     );
 }

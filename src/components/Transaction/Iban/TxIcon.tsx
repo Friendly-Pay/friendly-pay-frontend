@@ -58,6 +58,6 @@ export function TxIcon({ type, size = 's', className }: TxIconProps) {
         case IbanTransactionType.DEPOSIT:
             return <div className={classNames(styles.icon, styles[size], styles.deposit, className)}><Deposit /></div>;
         default:
-            return null;
+            return <div className={classNames(styles.icon, styles[size], styles.payment, className)}></div>;
     }
 }

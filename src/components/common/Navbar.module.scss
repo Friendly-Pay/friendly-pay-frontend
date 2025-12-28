@@ -61,7 +61,8 @@
     color: #909095;
     width: 34px;
     height: 24px;
-    transition: color 0.15s linear;
+    transition: color 0.15s linear, transform 200ms cubic-bezier(.2, 0, 0, 1);
+
 
     svg {
         width: 100%;

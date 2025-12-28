@@ -22,7 +22,7 @@ export function CardItem({ card, className, onClick }: CardItemProps) {
             onClick={onClick}
         >
             <BankCardPreview
-                typeId={card.typeId}
+                cardTypeId={card.typeId}
                 virtual={card.isVirtual}
                 lastFourDigits={card.number!}
                 className={styles.cardPreview}

@@ -4,8 +4,8 @@ import styles from './TxImage.module.scss';
 
 type TxImageProps = {
     size?: 48 | 80
-    logo?: string
     icon?: ReactNode
+    image?: string
     iconColor?: string
     backgroundColor?: string
     className?: string
@@ -17,7 +17,7 @@ type TxImageProps = {
 const backgroundPath = 'M0 24C0 10.7452 10.7452 0 24 0C37.2548 0 48 10.7452 48 24C48 37.2548 37.2548 48 24 48C10.7452 48 0 37.2548 0 24Z';
 const borderPath = 'M0.5 24C0.5 11.0213 11.0213 0.5 24 0.5C36.9787 0.5 47.5 11.0213 47.5 24C47.5 36.9787 36.9787 47.5 24 47.5C11.0213 47.5 0.5 36.9787 0.5 24Z';
 
-export function TxImage({ icon, logo, size = 48, iconColor, backgroundColor, className }: TxImageProps) {
+export function TxImage({ icon, image, size = 48, iconColor, backgroundColor, className }: TxImageProps) {
     const clipId = useId();
     const bigIcon = size === 80;
 
@@ -45,10 +45,10 @@ export function TxImage({ icon, logo, size = 48, iconColor, backgroundColor, cla
                 >
                     <path
                         d={backgroundPath}
-                        className={classNames(styles.background, logo && styles.backgroundWithImage)}
+                        className={classNames(styles.background, image && styles.backgroundWithImage)}
                         fill={backgroundColor}
                     />
-                    {logo && (
+                    {image && (
                         <>
                             <defs>
                                 <clipPath id={clipId}>
@@ -56,7 +56,7 @@ export function TxImage({ icon, logo, size = 48, iconColor, backgroundColor, cla
                                 </clipPath>
                             </defs>
                             <image
-                                href={logo}
+                                href={image}
                                 width="100%"
                                 height="100%"
                                 clipPath={`url(#${clipId})`}

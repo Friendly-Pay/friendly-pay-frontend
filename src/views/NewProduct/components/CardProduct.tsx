@@ -58,8 +58,8 @@ export function CardProduct({ name, price, depositFee, limits, typeId, paymentSy
 
             <div className={styles.content}>
                 <BankCard
-                    typeId={typeId}
-                    hideDigits
+                    cardTypeId={typeId}
+                    hideLastFourDigits
                     paymentSystem={paymentSystem}
                     className={styles.card}
                     onClick={onCardSelect}

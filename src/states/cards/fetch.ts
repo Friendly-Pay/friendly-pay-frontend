@@ -1,3 +1,4 @@
+// import { CardStatus } from './store';
 import { urlSearchParams } from '@/utils';
 import { apiClient } from '@/utils/api';
 
@@ -82,20 +83,14 @@ export interface UserCardResponse {
 export const fetchMyCards = async () => {
     const res = await apiClient.get<UserCardResponse[]>('/card/user/list');
     return res.data;
-    // return [];
     // return [
     //     {
-    //         'id': 3,
+    //         'id': 81,
     //         'typeId': 111028,
-    //         'number': '2781',
-    //         // 'number': null,
+    //         'number': '3616',
     //         'canDeposit': true,
-    //         // 'status': 'NeedActivation',
-    //         // 'status': 'VerificationProcessing',
-    //         // 'status': 'ActivationProcessing',
-    //         // 'status': 'VerificationFailed',
-    //         'status': 'Active',
-    //         'balance': 0,
+    //         'status': CardStatus.NeedActivation,
+    //         'balance': 65.15,
     //         'currency': 'USD',
     //         'transactions': []
     //     }
@@ -111,7 +106,7 @@ export const fetchMyCards = async () => {
     //         currency: 'usd',
     //         transactions: []
     //     }
-    // ] as UserCardResponse[];
+    // ];
 };
 
 export interface CardDetailsResponse {
@@ -131,19 +126,6 @@ export const fetchCardDetails = async (cardId: number) => {
     // };
 };
 
-export interface ActivateCardData {
-    cardId: number;
-    email: string;
-    phoneNumber: string;
-    firstName: string;
-    lastName: string;
-    birthday: string;
-    country: string; // iso-2
-    town: string;
-    address: string;
-    postCode: string;
-}
-
-export const activateCard = async (data: ActivateCardData) => {
-    await apiClient.post('/card/activate', data);
+export const activateCard = async (cardId: number) => {
+    await apiClient.post('/card/activate', { cardId });
 };

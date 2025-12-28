@@ -1,7 +1,8 @@
 import { BankCard } from './BankCard';
 import { SliderPagination } from './SliderPagination';
+import { isCardActivationInProgress, isCardDisabled } from '@/states/cards/helpers';
 import { MyCard, useCardsStore } from '@/states/cards/store';
-import { useLayoutEffect, useRef, useState } from 'react';
+import { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { Swiper, SwiperClass, SwiperRef, SwiperSlide } from 'swiper/react';
 import classNames from 'classnames';
 import styles from './CardsSlider.module.scss';
@@ -12,9 +13,10 @@ type CardsSliderProps = {
 }
 
 export function CardsSlider({ myCards, currentCardId }: CardsSliderProps) {
+    const componentRef = useRef<HTMLDivElement>(null);
+
     const cardsIds = useCardsStore(state => state.myCardsIds!);
     const myCardsCount = useCardsStore(state => state.myCardsCount);
-    const openCardDetails = useCardsStore(state => state.openCardDetails);
 
     const sliderRef = useRef<SwiperRef | null>(null);
     const [margin, setMargin] = useState(0);
@@ -22,17 +24,20 @@ export function CardsSlider({ myCards, currentCardId }: CardsSliderProps) {
     const [activeIndex, setActiveIndex] = useState(cardsIds.indexOf(currentCardId));
 
     const computeLayout = () => {
-        const mainLayout = document.getElementById('mainContent');
-        const slides = document.getElementsByClassName('swiper-slide');
-        if (!mainLayout || !slides.length || !sliderRef.current) {
+        if (!componentRef.current) {
+            return;
+        }
+
+        const slides = componentRef.current.getElementsByClassName('swiper-slide');
+        if (!slides.length || !sliderRef.current) {
             return;
         }
 
         const cardRect = slides[0].getBoundingClientRect();
         const cardWidth = cardRect.width;
-        const mainLayoutWidth = mainLayout.getBoundingClientRect().width;
+        const screenWidth = window.innerWidth;
 
-        const availableSpace = mainLayoutWidth - cardWidth;
+        const availableSpace = screenWidth - cardWidth;
         const nextVisibleCardWidth = 56;
 
         let margin = availableSpace / 2 - nextVisibleCardWidth;
@@ -40,53 +45,76 @@ export function CardsSlider({ myCards, currentCardId }: CardsSliderProps) {
             margin = availableSpace / 2;
         }
 
-        const offset = mainLayoutWidth / 2 - cardWidth / 2;
+        const offset = screenWidth / 2 - cardWidth / 2;
 
         setMargin(margin);
         setOffsets({ offsetBefore: offset, offsetAfter: offset });
     };
 
     const showPagination = myCardsCount > 1;
+
+    const timerId = useRef(0);
+
+    const clearTimer = useCallback(() => {
+        if (timerId.current) {
+            clearTimeout(timerId.current);
+        }
+    }, []);
+
     useLayoutEffect(() => {
         computeLayout();
         const frameId = requestAnimationFrame(() => {
             if (sliderRef.current?.swiper) {
-                sliderRef.current.swiper.slideTo(activeIndex, 0);
+                sliderRef.current.swiper.slideTo(activeIndex, 0, false);
             }
         });
         return () => {
             cancelAnimationFrame(frameId);
+            clearTimer();
         };
     }, []);
 
-    const setSelectedCardId = useCardsStore(state => state.setSelectedCardId);
+    const handleSlideTransitionStart = () => {
+        clearTimer();
+        timerId.current = setTimeout(() => {
+            window.Telegram.WebApp.HapticFeedback.selectionChanged();
+        }, 200);
+    };
+
     const handleSlideChange = (swiper: SwiperClass) => {
         setActiveIndex(swiper.activeIndex);
-        setSelectedCardId(cardsIds[swiper.activeIndex]);
-        window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
+        useCardsStore.getState().setSelectedCardId(cardsIds[swiper.activeIndex]);
     };
 
     const handleCardChange = (index: number) => {
-        if (sliderRef.current && sliderRef.current.swiper) {
-            sliderRef.current.swiper.slideTo(index);
+        const swiper = sliderRef.current?.swiper;
+        if (!swiper || swiper.activeIndex === index) {
+            return;
         }
+        swiper.slideTo(index);
     };
 
     return (
-        <div className={classNames(styles.root, showPagination && styles.hasPagination)}>
+        <div
+            ref={componentRef}
+            className={classNames(styles.root, showPagination && styles.hasPagination)}
+        >
             <Swiper
                 ref={sliderRef}
-                speed={410}
+                speed={370}
                 className={styles.swiper}
                 slidesPerView='auto'
                 spaceBetween={margin}
                 slidesOffsetBefore={offsets.offsetBefore}
                 slidesOffsetAfter={offsets.offsetAfter}
                 onSlideChange={handleSlideChange}
+                onSlideChangeTransitionStart={handleSlideTransitionStart}
                 onResize={computeLayout}
+                cssMode={false}
             >
                 {cardsIds.map((card, index) => {
                     const cardData = myCards[card];
+                    const isPending = isCardActivationInProgress(cardData.status);
                     return (
                         <SwiperSlide
                             key={card}
@@ -94,14 +122,12 @@ export function CardsSlider({ myCards, currentCardId }: CardsSliderProps) {
                             onClick={() => handleCardChange(index)}
                         >
                             <BankCard
-                                typeId={cardData.typeId}
+                                cardTypeId={cardData.typeId}
                                 lastFourDigits={cardData.number}
                                 paymentSystem={cardData.paymentSystem}
-                                status={cardData.status}
-                                active={index === activeIndex}
-                                virtual={cardData.isVirtual}
-                                className={classNames(styles.card, activeIndex === index && styles.activeCard)}
-                                onClickDigits={openCardDetails}
+                                isPending={isPending}
+                                isDisabled={isCardDisabled(cardData.status)}
+                                className={classNames(styles.card, activeIndex === index && styles.activeCard, isPending && styles.pending)}
                             />
                         </SwiperSlide>
                     );

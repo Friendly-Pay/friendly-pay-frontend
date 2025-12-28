@@ -7,9 +7,10 @@ import styles from './ModalHead.module.scss';
 
 type ModalHeadProps = {
     className?: string
+    closeButtonClassName?: string
 }
 
-export function ModalHead({ children, className }: PropsWithChildren<ModalHeadProps>) {
+export function ModalHead({ children, className, closeButtonClassName }: PropsWithChildren<ModalHeadProps>) {
     const [t] = useTranslation();
     const context = useContext(ModalContext);
     const handleClose = () => {
@@ -37,7 +38,7 @@ export function ModalHead({ children, className }: PropsWithChildren<ModalHeadPr
             <div className={styles.content}>
                 <div
                     ref={closeRef}
-                    className={styles.close}
+                    className={classNames(styles.close, closeButtonClassName)}
                     onClick={handleClose}
                 >
 

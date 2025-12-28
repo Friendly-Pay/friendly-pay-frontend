@@ -1,0 +1,55 @@
+// @import '@alfalab/core-components-vars/src/no-typography-index.css';
+// @import '../../input/src/vars.css';
+
+.suffixContainer {
+    // @mixin paragraph_component;
+
+    position: absolute;
+    left: var(--gap-0);
+    top: var(--gap-0);
+    bottom: var(--gap-0);
+    align-items: center;
+    display: none;
+    pointer-events: none;
+
+    &.size-40 {
+        // @mixin paragraph_component_secondary;
+        padding: var(--gap-0) var(--gap-8);
+    }
+}
+
+input:focus:not(:read-only)+.suffixContainer,
+.suffixVisible .suffixContainer {
+    display: inline-flex;
+}
+
+.hasSuffix input:focus::placeholder {
+    color: transparent;
+    transition: none;
+}
+
+.spacer {
+    visibility: hidden;
+    flex-shrink: 0;
+    white-space: pre;
+}
+
+.suffix {
+    white-space: pre;
+}
+
+.disabled {
+    color: var(--input-disabled-color);
+
+    &.inverted {
+        color: var(--input-inverted-disabled-color);
+    }
+}
+
+.readOnly {
+    color: var(--input-read-only-color);
+
+    &.inverted {
+        color: var(--input-inverted-read-only-color);
+    }
+}

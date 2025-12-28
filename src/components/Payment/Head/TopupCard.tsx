@@ -28,7 +28,7 @@ export function TopupCard({ typeId, balance, currency, virtual, lastFourDigits, 
             onClick={onClick}
         >
             <BankCardPreview
-                typeId={typeId}
+                cardTypeId={typeId}
                 virtual={virtual}
                 lastFourDigits={lastFourDigits}
                 className={styles.card}
