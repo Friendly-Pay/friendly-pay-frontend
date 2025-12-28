@@ -7,7 +7,7 @@ import { formatAmount, getCurrencySymbol } from '@/utils/format';
  * @param currency валюта
  * @param minority количество минорных единиц
  */
-export function getFormattedValue(enteredValue: string, currency: string, minority: number, locale: string) {
+export function getFormattedValue(enteredValue: string, currency: string, minority: number) {
     if (!enteredValue || enteredValue === '-') {
         return enteredValue;
     }
@@ -24,7 +24,7 @@ export function getFormattedValue(enteredValue: string, currency: string, minori
         currency,
         minority,
         negativeSymbol: 'hyphen-minus',
-        locale
+        locale: 'ru'
     });
 
     // Так как -0 === 0, formatAmount возвращает положительное значение. Исправляем это здесь
