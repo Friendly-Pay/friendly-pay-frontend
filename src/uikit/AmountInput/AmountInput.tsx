@@ -102,11 +102,6 @@ export type AmountInputProps = Omit<InputProps, 'value' | 'onChange' | 'type'> &
     transparentMinor?: boolean;
 
     /**
-     * Локализация
-     */
-    locale: string;
-
-    /**
      * Добавляет компонент "Stepper" в правый аддон
      */
     // stepper?: {
@@ -160,7 +155,6 @@ export const AmountInput = forwardRef<HTMLInputElement, AmountInputProps>(
             onFocus,
             onBlur,
             onKeyDown,
-            locale,
             // breakpoint,
             // client,
             transparentMinor = true,
@@ -185,10 +179,10 @@ export const AmountInput = forwardRef<HTMLInputElement, AmountInputProps>(
                     minority,
                     view,
                     negativeSymbol: 'hyphen-minus',
-                    locale,
+                    locale: 'ru',
                 }).formatted;
             },
-            [currency, minority, view, locale],
+            [currency, minority, view],
         );
 
         const [inputValue, setInputValue] = useState<string>(() => getFormattedAmount(value));
@@ -236,7 +230,7 @@ export const AmountInput = forwardRef<HTMLInputElement, AmountInputProps>(
                     caret -= 1;
                 }
 
-                const newFormattedValue = getFormattedValue(enteredValue, currency, minority, locale);
+                const newFormattedValue = getFormattedValue(enteredValue, currency, minority);
 
                 if (newFormattedValue === inputValue) {
                     window.requestAnimationFrame(() => {
