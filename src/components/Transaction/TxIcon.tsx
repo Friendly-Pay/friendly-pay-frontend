@@ -4,12 +4,95 @@ import { SVGProps } from 'react';
 import classNames from 'classnames';
 import styles from './TxIcon.module.scss';
 
-type TxIconProps = {
+interface TxIconProps {
     type: CardTransactionType
     size?: 48 | 80;
-    logo?: string | null
+    image?: string | null
+    currencyImage: string
     className?: string
 }
+
+const getDepositIcon = (
+    size: TxIconProps['size'],
+    className: string | undefined,
+    currencyImage?: string
+) => {
+    if (currencyImage) {
+        return (
+            <TxImage
+                size={size}
+                image={currencyImage}
+                iconColor="var(--color-white)"
+                backgroundColor='rgba(0, 0, 0, 0)'
+                className={className}
+            />
+        );
+    }
+
+    return (
+        <TxImage
+            size={size}
+            icon={<Deposit />}
+            iconColor="var(--color-white)"
+            backgroundColor="var(--color-card-transaction-deposit)"
+            className={className}
+        />
+    );
+};
+
+const getPaymentIcon = (
+    size: TxIconProps['size'],
+    className: string | undefined,
+    image?: string
+) => {
+    const hasImage = !!image;
+
+    return (
+        <TxImage
+            size={size}
+            icon={hasImage ? undefined : <Payment />}
+            image={image}
+            iconColor="var(--color-white)"
+            backgroundColor={
+                hasImage
+                    ? 'var(--color-fill-5)'
+                    : 'var(--color-card-transaction-payment)'
+            }
+            className={className}
+        />
+    );
+};
+
+const getBonusIcon = (size: number, className: string | undefined) => (
+    <div className={classNames(styles.icon, styles[size], styles.bonus, className)}>
+        <Bonus />
+    </div>
+);
+
+export const TxIcon: React.FC<TxIconProps> = ({
+    type,
+    size = 48,
+    image,
+    currencyImage,
+    className
+}) => {
+    switch (type) {
+        case CardTransactionType.PAYMENT:
+        case CardTransactionType.REFUND:
+        case CardTransactionType.VOID:
+            return getPaymentIcon(size, className, image || undefined);
+
+        case CardTransactionType.DEPOSIT:
+        case CardTransactionType.DEPOSIT_BY_SBP:
+            return getDepositIcon(size, className, currencyImage);
+
+        case CardTransactionType.DEPOSIT_BY_REFERRAL:
+            return getBonusIcon(size, className);
+
+        default:
+            return null;
+    }
+};
 
 const Deposit = (props: SVGProps<SVGSVGElement>) => {
     return (
@@ -63,32 +146,3 @@ const Bonus = (props: SVGProps<SVGSVGElement>) => {
         </svg>
     );
 };
-
-// @TODO рефактор
-export function TxIcon({ type, size = 48, logo, className }: TxIconProps) {
-    switch (type) {
-        case CardTransactionType.PAYMENT:
-        case CardTransactionType.REFUND:
-        case CardTransactionType.VOID:
-            const icon = logo ? undefined : <Payment />;
-            const backgroundColor = logo ? 'var(--color-fill-5)' : 'var(--color-card-transaction-payment';
-            return <TxImage
-                size={size}
-                icon={icon}
-                logo={logo || undefined}
-                iconColor='var(--color-white)'
-                backgroundColor={backgroundColor}
-            />;
-        case CardTransactionType.DEPOSIT:
-            return <TxImage
-                size={size}
-                icon={<Deposit />}
-                iconColor='var(--color-white)'
-                backgroundColor='var(--color-card-transaction-deposit)'
-            />;
-        case CardTransactionType.DEPOSIT_BY_REFERRAL:
-            return <div className={classNames(styles.icon, styles[size], styles.bonus, className)}><Bonus /></div>;
-        default:
-            return null;
-    }
-}

@@ -12,18 +12,16 @@ type ImageProps = {
 export function Image({ src, alt, loading, className }: ImageProps) {
     const [loaded, setLoaded] = useState(false);
     return (
-        <div className={classNames(styles.root, className)}>
-            <img
-                src={src}
-                alt={alt}
-                loading={loading}
-                className={classNames(styles.image, className)}
-                onLoad={() => setLoaded(true)}
-                style={{
-                    opacity: loaded ? 1 : 0,
-                    transition: 'opacity 0.15s ease-in-out',
-                }}
-            />
-        </div>
+        <img
+            src={src}
+            alt={alt}
+            loading={loading}
+            className={classNames(styles.image, className)}
+            onLoad={() => setLoaded(true)}
+            style={{
+                opacity: loaded ? 1 : 0,
+                transition: 'opacity 0.2s',
+            }}
+        />
     );
 }

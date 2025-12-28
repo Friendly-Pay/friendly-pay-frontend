@@ -1,13 +1,15 @@
-import { TxAmount } from './TxAmount';
 import { TxHead } from './TxHead';
 import { BankCardPreview } from '@/components/Bank/BankCardPreview';
 import { PropertyRow } from '@/components/Property/PropertyRow';
+import { TxAmount } from '@/components/Transaction/TxAmount';
 import { TxIcon } from '@/components/Transaction/TxIcon';
 import { languageCodeToLocale } from '@/localization/utils';
 import { CardTransactionType, PaymentSystem, useCardsStore, useCurrentBankCard } from '@/states/cards/store';
+import { useCurrency } from '@/states/currency/hooks';
 import { useUserStore } from '@/states/user/store';
 import { Modal, ModalBody, Text } from '@/uikit';
 import { formatCardLastFourDigits, formatCurrency } from '@/utils';
+import commonUsdt from 'assets/currency/usdt.png';
 import { useTranslation } from 'react-i18next';
 import styles from './TransactionDetailsModal.module.scss';
 
@@ -20,20 +22,50 @@ export function TransactionDetailsModal() {
     const languageCode = useUserStore(state => state.languageCode);
     const locale = languageCodeToLocale(languageCode);
 
-    let name: string = '';
-    if (transaction) {
-        if (transaction.type === CardTransactionType.DEPOSIT) {
-            name = t('Deposit');
-        } else if (transaction.type === CardTransactionType.PAYMENT) {
-            name = transaction.remark || t('Payment');
-        } else if (transaction.type === CardTransactionType.REFUND) {
-            name = `${t('Refund')} ${transaction.remark}`;
-        } else if (transaction.type === CardTransactionType.VOID) {
-            name = `${t('Cancel operation')} ${transaction.remark}`;
-        } else if (transaction.type === CardTransactionType.DEPOSIT_BY_REFERRAL) {
-            name = `${t('Bonus from friends')}`;
+    const originalCurrency = useCurrency(transaction?.originalCurrency);
+
+    // Позже бурать после рефактора
+    const originalCurrencyImage = transaction?.originalCurrency.startsWith('USDT')
+        ? commonUsdt
+        : (originalCurrency?.image || '');
+
+
+    const getTitle = (): string => {
+        if (!transaction) {
+            return '';
         }
-    }
+
+        switch (transaction.type) {
+            case CardTransactionType.DEPOSIT:
+                if (originalCurrency) {
+                    const network = 'network' in originalCurrency ? ` ${originalCurrency.network}` : '';
+                    return `${t('Deposit')}. ${originalCurrency.name} ${network}`;
+                }
+                return t('Deposit');
+
+            case CardTransactionType.DEPOSIT_BY_SBP:
+                return `${t('Deposit')}. ${t('SBP Rubles')}`;
+
+            case CardTransactionType.PAYMENT:
+                return transaction.remark || t('Payment');
+
+            case CardTransactionType.REFUND:
+                return transaction.remark
+                    ? `${t('Refund')} ${transaction.remark}`
+                    : t('Refund');
+
+            case CardTransactionType.VOID:
+                return transaction.remark
+                    ? `${t('Cancel operation')} ${transaction.remark}`
+                    : t('Cancel operation');
+
+            case CardTransactionType.DEPOSIT_BY_REFERRAL:
+                return t('Bonus from friends');
+
+            default:
+                return '';
+        }
+    };
 
     let cardLabel = t('Account');
     if (transaction) {
@@ -55,6 +87,8 @@ export function TransactionDetailsModal() {
             const total = transaction.amount + transaction.fee;
             transactionAmount = `${formatCurrency(total, transaction.currency, locale, 2)}`;
         } else if (transaction.type === CardTransactionType.PAYMENT || transaction.type === CardTransactionType.REFUND || transaction.type === CardTransactionType.VOID) {
+            transactionAmount = `${formatCurrency(transaction.originalAmount, transaction.originalCurrency, locale, 2)}`;
+        } else if (transaction.type === CardTransactionType.DEPOSIT_BY_SBP) {
             transactionAmount = `${formatCurrency(transaction.originalAmount, transaction.originalCurrency, locale, 2)}`;
         }
     }
@@ -98,7 +132,8 @@ export function TransactionDetailsModal() {
                         <TxIcon
                             size={80}
                             type={transaction.type}
-                            logo={transaction.merchantLogo}
+                            image={transaction.merchantLogo}
+                            currencyImage={originalCurrencyImage}
                             className={styles.icon}
                         />
                         <Text
@@ -106,7 +141,7 @@ export function TransactionDetailsModal() {
                             align='center'
                             className={styles.name}
                         >
-                            {name}
+                            {getTitle()}
                         </Text>
                         <TxAmount
                             type={transaction.type}
@@ -125,7 +160,7 @@ export function TransactionDetailsModal() {
                             </div>}
                         >
                             <BankCardPreview
-                                typeId={currentBankCard.typeId}
+                                cardTypeId={currentBankCard.typeId}
                                 virtual={currentBankCard.isVirtual}
                                 paymentSystem={currentBankCard.paymentSystem}
                                 className={styles.cardPreview}

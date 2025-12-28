@@ -1,10 +1,11 @@
 import { Spinner } from '@/uikit';
-import { PropsWithChildren, ReactNode } from 'react';
+import { ButtonHTMLAttributes, forwardRef, ReactNode, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import { mergeRefs } from 'react-merge-refs';
 import classNames from 'classnames';
 import styles from './ActionButton.module.scss';
 
-type ActionButtonProps = {
+type ComponentProps = {
     icon: ReactNode
     loading?: boolean
     disabled?: boolean
@@ -12,26 +13,72 @@ type ActionButtonProps = {
     onClick?: () => void
 }
 
+type ActionButtonProps = ComponentProps & ButtonHTMLAttributes<HTMLButtonElement>;
+
 // @TODO touch анимация и задержка обработки клика (для воспроизведения анимации)
 // Можно сделать такой компонент обертку для всех кликабельных кнопок / элементов
-export function ActionButton({ icon, className, loading, disabled, children, onClick }: PropsWithChildren<ActionButtonProps>) {
-    const [t] = useTranslation();
-    return (
-        <div
-            className={classNames(styles.button, loading && styles.loading, disabled && styles.disabled, className)}
-            onClick={onClick}
-        >
-            <div className={styles.icon}>
-                {loading
-                    ? <div className={styles.spinner}><Spinner /></div>
-                    : icon}
-            </div>
+export const ActionButton = forwardRef<HTMLButtonElement, ActionButtonProps>(
+    (
+        {
+            className,
+            icon,
+            children,
+            type = 'button',
+            disabled,
+            loading,
+            onClick,
+            ...rest
+        },
+        ref,
+    ) => {
+        const [t] = useTranslation();
+        const componentRef = useRef<HTMLButtonElement>(null);
 
-            <div className={styles.text}>
-                {loading
-                    ? t('Loading...')
-                    : children}
-            </div>
-        </div>
-    );
-}
+        const framerId = useRef(0);
+
+        useEffect(() => {
+            return () => {
+                framerId.current && cancelAnimationFrame(framerId.current);
+            };
+        }, []);
+
+        const handleClick = () => {
+            framerId.current = requestAnimationFrame(() => onClick?.());
+        };
+
+        const buttonChildren = (
+            <>
+                <span
+                    role='img'
+                    className={styles.icon}
+                >
+                    {loading ? (
+                        <Spinner className={styles.spinner} />
+                    ) : (
+                        icon
+                    )}
+                </span>
+
+                <span className={styles.text}>
+                    {loading
+                        ? t('Loading...')
+                        : children}
+                </span>
+            </>
+        );
+
+        return (
+            <button
+                ref={mergeRefs([componentRef, ref])}
+                type={type as ButtonHTMLAttributes<HTMLButtonElement>['type']}
+                onClick={handleClick}
+
+                disabled={disabled || loading}
+                className={classNames(styles.button, loading && styles.loading, disabled && styles.disabled, className)}
+                {...(rest as ButtonHTMLAttributes<HTMLButtonElement>)}
+            >
+                {buttonChildren}
+            </button>
+        );
+    }
+);

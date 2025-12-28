@@ -6,7 +6,7 @@ import classNames from 'classnames';
 import styles from './BankCardPreview.module.scss';
 
 type BankCardPreviewProps = {
-    typeId: number
+    cardTypeId: number
     lastFourDigits?: string,
     paymentSystem?: PaymentSystem
     virtual?: boolean;
@@ -14,11 +14,11 @@ type BankCardPreviewProps = {
     onClick?: () => void
 }
 
-export function BankCardPreview({ typeId, lastFourDigits, paymentSystem, virtual, className, onClick }: BankCardPreviewProps) {
+export function BankCardPreview({ cardTypeId, lastFourDigits, paymentSystem, virtual, className, onClick }: BankCardPreviewProps) {
     return (
         <CardDesign
             preview
-            typeId={typeId}
+            cardTypeId={cardTypeId}
             className={classNames(styles.card, className)}
             backgroundClassName={styles.background}
             onClick={onClick}

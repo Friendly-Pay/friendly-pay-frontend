@@ -18,7 +18,7 @@ export function PurchaseCard({ name, typeId, paymentSystem, className }: Purchas
     return (
         <div className={classNames(styles.root, className)}>
             <BankCardPreview
-                typeId={typeId}
+                cardTypeId={typeId}
                 paymentSystem={paymentSystem}
                 className={styles.card}
             />

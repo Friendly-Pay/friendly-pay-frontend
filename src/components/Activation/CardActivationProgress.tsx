@@ -15,6 +15,9 @@ type CardActivationProgressProps = {
     className?: string
 }
 
+/**
+ * @deprecated
+ */
 export function CardActivationProgress({ status, className }: CardActivationProgressProps) {
     const [t] = useTranslation();
 

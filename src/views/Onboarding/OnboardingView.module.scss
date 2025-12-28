@@ -1,0 +1,39 @@
+.root {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    flex-shrink: 0;
+    height: 100%;
+    width: 100%;
+    color: var(--color-white);
+    background-color: #000;
+}
+
+.slider {
+    display: flex;
+    flex-grow: 1;
+    flex-shrink: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.closeButton {
+    position: absolute;
+    top: calc(var(--safe-area-top) + 24px);
+    right: var(--safe-area-right);
+    z-index: 10000;
+
+    svg {
+        color: rgba(255, 255, 255, 0.35)
+    }
+}
+
+:global(.onboarding-dark) {
+    background-color: #000 !important;
+}
+
+.button {
+    width: 100%;
+    margin-top: 24px;
+    margin-bottom: 12px;
+}

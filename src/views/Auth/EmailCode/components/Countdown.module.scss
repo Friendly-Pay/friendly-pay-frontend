@@ -1,0 +1,29 @@
+.countdownContainer {
+    display: flex;
+    align-items: center;
+    color: var(--color-typo-primary-60);
+    margin-bottom: 24px;
+    min-height: 40px;
+}
+
+.getCodeButton {
+    position: relative;
+}
+
+.timeCounter {
+    display: inline-block;
+    min-width: 47px;
+    text-align: left;
+    font-variant-numeric: lining-nums tabular-nums;
+}
+
+.loaderWrap,
+.buttonWrap {
+    display: flex;
+}
+
+.spinner {
+    width: 24px;
+    height: 24px;
+    color: var(--color-typo-primary)
+}
