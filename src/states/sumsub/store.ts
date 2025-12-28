@@ -11,7 +11,7 @@ interface State {
 }
 
 interface Actions {
-    loadSumsubLink: (cardTypeId: number) => Promise<void>;
+    loadSumsubLink: (cardTypeId: number | null) => Promise<void>;
     setSelectedCardTypeId: (cardTypeId: number | null) => void;
     clearSumsubLink: () => void;
     clearError: () => void;
