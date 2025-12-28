@@ -1,5 +1,6 @@
 import { ArrowRight } from '@/components/Icons/Arrow';
 import { Bank } from '@/components/Icons/Bank';
+import { Routes } from '@/routes';
 // import { Globe } from '@/components/Icons/Globe';
 import { useIbanStore } from '@/states/iban/store';
 import { IbanTransferType, useIbanTransferStore } from '@/states/iban/transfer';
@@ -18,7 +19,7 @@ export function IbanTransferModal() {
 
     const onStart = (transferType: IbanTransferType) => {
         useIbanTransferStore.getState().setTransferType(transferType);
-        navigate('/bank/account/transfer');
+        navigate(Routes.TRANSFER_FROM_IBAN_ACCOUNT);
     };
 
     const onClose = () => {

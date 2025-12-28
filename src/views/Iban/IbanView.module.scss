@@ -7,22 +7,6 @@
     flex-direction: column;
 }
 
-.balancePlaceholder {
-    display: flex;
-    flex-direction: column;
-
-    &Text {
-        line-height: 24px;
-        margin-bottom: 6px;
-    }
-
-    &Value {
-        font-size: 24px;
-        font-weight: 600;
-        line-height: 30px;
-    }
-}
-
 .account {
     display: flex;
     flex-direction: column;
@@ -102,4 +86,25 @@
     color: var(--color-primary);
     margin-top: 32px;
     line-height: 24px;
+}
+
+.loaderWrap {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.spinner {
+    width: 72px;
+    height: 72px;
+    color: var(--color-primary);
+}
+
+.loaderLayout {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    height: 100%;
 }

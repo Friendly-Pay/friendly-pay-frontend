@@ -6,6 +6,9 @@ type IbanHeadProps = {
     className?: string
 }
 
+/**
+ * @deprecated
+ */
 export function IbanHead({ className }: IbanHeadProps) {
     return (
         <div className={classNames(styles.head, className)}>

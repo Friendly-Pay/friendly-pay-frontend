@@ -2,7 +2,8 @@
 import { IbanAccountDetailsModal } from '@/components/Modals/IbanDetails/IbanAccountDetailsModal';
 import { IbanRecipientModal } from '@/components/Modals/IbanRecipient/IbanRecipientModal';
 import { IbanTransferModal } from '@/components/Modals/IbanTransfer/IbanTransferModal';
-import { IbanStatus, IbanVerificationStatus, useIbanStore } from '@/states/iban/store';
+import { Routes } from '@/routes';
+import { IbanStatus, useIbanStore } from '@/states/iban/store';
 import { useIbanTransferStore } from '@/states/iban/transfer';
 import { useQuery } from '@tanstack/react-query';
 import { PropsWithChildren, useEffect } from 'react';
@@ -10,32 +11,25 @@ import { useLocation } from 'react-router-dom';
 
 export function IbanController({ children }: PropsWithChildren) {
     const location = useLocation();
-    const ibanStatus = useIbanStore(state => state.account!.status!);
-    const ibanVerificationStatus = useIbanStore(state => state.account!.verificationStatus!);
+    const ibanStatus = useIbanStore(state => state.account?.status);
 
     const isAccountOpening = ibanStatus === IbanStatus.InProgress;
-    const isVerificationInProgress = ibanVerificationStatus === IbanVerificationStatus.InProgress;
+    const isAccountReady = ibanStatus === IbanStatus.Activated;
 
     let refetchInterval = 30_000;
-    if (isAccountOpening || isVerificationInProgress) {
+    if (isAccountOpening) {
         refetchInterval = 5_000;
     }
 
     useQuery({
-        enabled: location.pathname === '/bank/account',
+        enabled: location.pathname.startsWith(Routes.IBAN_ACCOUNT),
         queryKey: ['state.iban'],
         queryFn: async () => {
-            const { account, accountFetchStatus, ibanAccountDetailsOpened, transferModalOpened, loadAccount } = useIbanStore.getState();
-            if (ibanAccountDetailsOpened || transferModalOpened) {
-                return account;
-            }
-            if (accountFetchStatus === 'pending') {
-                return account;
-            }
+            const { loadAccount } = useIbanStore.getState();
             return loadAccount();
         },
         staleTime: 30_000,
-        refetchOnMount: true,
+        refetchOnMount: 'always',
         refetchOnReconnect: true,
         refetchInterval: refetchInterval,
         refetchOnWindowFocus: 'always',
@@ -43,16 +37,17 @@ export function IbanController({ children }: PropsWithChildren) {
     });
 
     const isAccountActivated = ibanStatus === IbanStatus.Activated;
+
     useQuery({
-        enabled: location.pathname === '/bank/account' && isAccountActivated,
+        enabled: location.pathname.startsWith(Routes.IBAN_ACCOUNT) && isAccountActivated,
         queryKey: ['state.iban.transactions'],
         queryFn: async () => {
             const { loadTransactions } = useIbanStore.getState();
             return loadTransactions({ limit: 100, offset: 0 }); // @TODO пагинация
         },
         staleTime: 15_000,
-        refetchOnMount: true,
-        refetchOnReconnect: true,
+        refetchOnMount: 'always',
+        refetchOnReconnect: 'always',
         refetchInterval: 15_000,
         refetchOnWindowFocus: 'always',
         refetchIntervalInBackground: false
@@ -74,8 +69,12 @@ export function IbanController({ children }: PropsWithChildren) {
     return (<>
         {children}
 
-        <IbanAccountDetailsModal />
-        <IbanTransferModal />
-        <IbanRecipientModal />
+        {isAccountReady && (
+            <>
+                <IbanAccountDetailsModal />
+                <IbanTransferModal />
+                <IbanRecipientModal />
+            </>
+        )}
     </>);
 }
