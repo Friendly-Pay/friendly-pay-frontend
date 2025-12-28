@@ -50,13 +50,6 @@ export function SumsubView() {
     }, [verificationStatus]);
 
     useEffect(() => {
-        if (!cardTypeId) {
-            navigate(Routes.NEW_PRODUCT);
-            return;
-        }
-    }, [cardTypeId]);
-
-    useEffect(() => {
         if (serverError) {
             const toastId = toast.error(serverError);
             return () => {
@@ -66,10 +59,6 @@ export function SumsubView() {
     }, [serverError]);
 
     const handleOpenSumsub = async () => {
-        if (!cardTypeId) {
-            return;
-        }
-
         const { sumsubLink, loadSumsubLink } = useSumsubStore.getState();
         let openLink = sumsubLink;
 
@@ -100,7 +89,7 @@ export function SumsubView() {
     };
 
     const handleCancel = () => {
-        navigate(Routes.NEW_PRODUCT, { replace: true });
+        navigate(-1);
     };
 
     const sumsubTexts: SumsubTexts = useMemo(() => {
