@@ -1,9 +1,8 @@
-import { Image } from '@/components/Image/Image';
+import { RepkaLogo } from '@/components/Icons/Repka';
 import { TransactionItem } from '@/components/Transaction/TransactionItem';
 import { CardTransaction, useCardsStore } from '@/states/cards/store';
 import { Text } from '@/uikit';
 import { formatCardLastFourDigits } from '@/utils';
-import wallet from 'assets/wallet.png';
 import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
 import styles from './LastTransactions.module.scss';
@@ -30,10 +29,7 @@ export function LastTransactions({ list, lastFourDigits, className }: LastTransa
         </div>;
     } else {
         content = <div className={classNames(styles.placeholder, className)}>
-            <Image
-                src={wallet}
-                alt='history'
-            />
+            <RepkaLogo />
 
             <Text
                 type='body'
