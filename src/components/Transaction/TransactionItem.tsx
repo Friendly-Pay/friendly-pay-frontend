@@ -3,8 +3,10 @@ import { TxAmount } from './TxAmount';
 import { TxIcon } from './TxIcon';
 import { TxStatus } from './TxStatus';
 import { CardTransaction, CardTransactionType } from '@/states/cards/store';
+import { useCurrency } from '@/states/currency/hooks';
 import { Text } from '@/uikit';
 import { formatDateWithLabel } from '@/utils/date';
+import commonUsdt from 'assets/currency/usdt.png';
 import { useTranslation } from 'react-i18next';
 import classNames from 'classnames';
 import styles from './TransactionItem.module.scss';
@@ -15,21 +17,48 @@ type TransactionItemProps = {
     onClick?: () => void
 }
 
+// @TODO полный рефактор
 export function TransactionItem({ transaction, className, onClick }: TransactionItemProps) {
     const [t] = useTranslation();
+    const originalCurrency = useCurrency(transaction.originalCurrency);
 
-    let title: string = '';
-    if (transaction.type === CardTransactionType.DEPOSIT) {
-        title = t('Deposit');
-    } else if (transaction.type === CardTransactionType.PAYMENT) {
-        title = transaction.remark || t('Payment');
-    } else if (transaction.type === CardTransactionType.REFUND) {
-        title = `${t('Refund')} ${transaction.remark}`;
-    } else if (transaction.type === CardTransactionType.VOID) {
-        title = `${t('Cancel operation')} ${transaction.remark}`;
-    } else if (transaction.type === CardTransactionType.DEPOSIT_BY_REFERRAL) {
-        title = `${t('Bonus from friends')}`;
-    }
+    // Позже бурать после рефактора
+    const originalCurrencyImage = transaction.originalCurrency.startsWith('USDT')
+        ? commonUsdt
+        : (originalCurrency?.image || '');
+
+    const getTitle = (): string => {
+        switch (transaction.type) {
+            case CardTransactionType.DEPOSIT:
+                if (originalCurrency) {
+                    const network = 'network' in originalCurrency ? ` ${originalCurrency.network}` : '';
+                    return `${t('Deposit')}. ${originalCurrency.name} ${network}`;
+                }
+                return t('Deposit');
+
+            case CardTransactionType.DEPOSIT_BY_SBP:
+                return `${t('Deposit')}. ${t('SBP Rubles')}`;
+
+            case CardTransactionType.PAYMENT:
+                return transaction.remark || t('Payment');
+
+            case CardTransactionType.REFUND:
+                return transaction.remark
+                    ? `${t('Refund')} ${transaction.remark}`
+                    : t('Refund');
+
+            case CardTransactionType.VOID:
+                return transaction.remark
+                    ? `${t('Cancel operation')} ${transaction.remark}`
+                    : t('Cancel operation');
+
+            case CardTransactionType.DEPOSIT_BY_REFERRAL:
+                return t('Bonus from friends');
+
+            default:
+                return '';
+        }
+    };
 
     return (
         <div
@@ -38,7 +67,10 @@ export function TransactionItem({ transaction, className, onClick }: Transaction
         >
             <div className={styles.iconWrap}>
                 <TxIcon
+                    size={48}
                     type={transaction.type}
+                    image={transaction.merchantLogo}
+                    currencyImage={originalCurrencyImage}
                     className={styles.txIcon}
                 />
             </div>
@@ -50,7 +82,7 @@ export function TransactionItem({ transaction, className, onClick }: Transaction
                         align='left'
                         weight='regular'
                         className={styles.title}
-                    >{title}</Text>
+                    >{getTitle()}</Text>
 
                     <TxAmount
                         type={transaction.type}

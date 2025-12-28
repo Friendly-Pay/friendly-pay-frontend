@@ -147,19 +147,6 @@ export const fetchCardDetails = async (cardId: number) => {
     // };
 };
 
-export interface ActivateCardData {
-    cardId: number;
-    email: string;
-    phoneNumber: string;
-    firstName: string;
-    lastName: string;
-    birthday: string;
-    country: string; // iso-2
-    town: string;
-    address: string;
-    postCode: string;
-}
-
-export const activateCard = async (data: ActivateCardData) => {
-    await apiClient.post('/card/activate', data);
+export const activateCard = async (cardId: number) => {
+    await apiClient.post('/card/activate', { cardId });
 };

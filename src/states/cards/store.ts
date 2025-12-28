@@ -1,4 +1,4 @@
-import { activateCard, ActivateCardData, CardDetailsResponse, fetchCardDetails, fetchCardTypes, fetchMyCards } from './fetch';
+import { activateCard, CardDetailsResponse, fetchCardDetails, fetchCardTypes, fetchMyCards } from './fetch';
 import { FetchStatus } from '@/utils/api';
 import i18next from 'i18next';
 import { toast } from 'sonner';
@@ -37,8 +37,8 @@ interface CardType {
 export enum CardStatus {
     Active = 'Active',
     NeedActivation = 'NeedActivation',
-    ActivationProcessing = 'ActivationProcessing',
-    VerificationProcessing = 'VerificationProcessing',
+    ActivationProcessing = 'ActivationProcessing', // Активация карты
+    VerificationProcessing = 'VerificationProcessing', // Активация карты
     VerificationFailed = 'VerificationFailed',
     ActivationFailed = 'ActivationFailed',
     Frozen = 'Frozen'
@@ -46,6 +46,7 @@ export enum CardStatus {
 
 export enum CardTransactionType {
     DEPOSIT = 'deposit',
+    DEPOSIT_BY_SBP = 'deposit_by_sbp',
     DEPOSIT_BY_REFERRAL = 'deposit_by_referral',
     PAYMENT = 'payment',
     REFUND = 'refund', // Возврат покупки
@@ -69,6 +70,8 @@ export interface CardTransaction {
     fee: number;
     remark: string;
     createdAt: number; // unix timestamp
+    merchantName: string | null
+    merchantLogo: string | null
 }
 
 export interface MyCard extends Omit<CardType, 'id'> {
@@ -89,11 +92,6 @@ export interface CardDetails {
     expireAt: number;
 }
 
-export interface CurrencyModalData {
-    title: string
-    onSelectCurrency: (currency: string) => void;
-}
-
 interface State {
     selectedCardId: number | null;
     myCards: Record<number, MyCard> | null;
@@ -106,7 +104,6 @@ interface State {
     cardsTypesFetchStatus: FetchStatus;
     detailsModal: { data: CardDetails | null, opened: boolean };
     detailsFetchStatus: FetchStatus;
-    currencyModal: { opened: boolean, data: CurrencyModalData | null };
     transactionDetailsModal: { data: CardTransaction | null, opened: boolean };
 }
 
@@ -117,12 +114,12 @@ interface Actions {
     openCardDetails: () => void;
     closeCardDetails: () => void;
     fetchCardDetails: () => Promise<CardDetailsResponse | void>;
-    openCurrencyModal: (data: CurrencyModalData) => void;
-    closeCurrencyModal: () => void;
     openTransactionDetails: (data: CardTransaction) => void;
     closeTransactionDetails: () => void;
     resetTransactionDetails: () => void;
-    activateCard: (data: ActivateCardData) => Promise<void>;
+    activateCard: (cardId: number) => Promise<void>;
+    updateCardStatus: (cardId: number, status: CardStatus) => void;
+    refetchCards: () => Promise<void>;
 }
 
 // @TODO завести класс CardActions (тут оставить только логику работы с данными) а в него вынести все ручки (в том числе и загрузку)
@@ -138,7 +135,6 @@ export const useCardsStore = create<State & Actions>((set, get) => ({
     myCardsFetchStatus: FetchStatus.Idle,
     detailsModal: { data: null, opened: false },
     detailsFetchStatus: FetchStatus.Idle,
-    currencyModal: { opened: false, data: null },
     transactionDetailsModal: { data: null, opened: false },
 
     setSelectedCardId: (cardId) => set({ selectedCardId: cardId }),
@@ -226,9 +222,6 @@ export const useCardsStore = create<State & Actions>((set, get) => ({
         }
     },
 
-    openCurrencyModal: (data) => set({ currencyModal: { opened: true, data } }),
-    closeCurrencyModal: () => set({ currencyModal: { opened: false, data: null } }),
-
     openCardDetails: () => set({ detailsModal: { data: null, opened: true } }),
     closeCardDetails: () => set({ detailsModal: { data: null, opened: false } }),
 
@@ -276,18 +269,54 @@ export const useCardsStore = create<State & Actions>((set, get) => ({
         }));
     },
 
-    activateCard: async (activateData) => {
-        const myCards = get().myCards;
-        if (!myCards) {
-            console.warn('[activateCard] myCards is null');
+    activateCard: async (cardId) => {
+        const { myCards, loadMyCards, updateCardStatus } = get();
+
+        const cardForActivation = myCards?.[cardId];
+        if (!cardForActivation) {
+            console.warn(`[activateCard] card id ${cardId} undefined`);
             return;
         }
-        const cardData = myCards[activateData.cardId];
-        if (!cardData) throw new Error(`[activateCard] card ${activateData.cardId} undefined`);
-        if (cardData.status !== CardStatus.NeedActivation) {
-            return;
+
+        try {
+            if (cardForActivation.status === CardStatus.NeedActivation) {
+                updateCardStatus(cardId, CardStatus.VerificationProcessing);
+                await activateCard(cardId);
+            }
+        } catch (error) {
+            // @TODO toast
+            console.error(error);
+            toast.error(i18next.t('Failed to activate the card. Please try again later or contact support'));
+            updateCardStatus(cardId, CardStatus.NeedActivation);
+        } finally {
+            loadMyCards();
         }
-        await activateCard(activateData);
+    },
+
+    updateCardStatus: (cardId: number, newStatus: CardStatus) => {
+        set(state => {
+            if (!state.myCards || !state.myCards[cardId]) {
+                console.warn(`[updateCardStatus] card id ${cardId} not found`);
+                return state;
+            }
+
+            const updatedCards = {
+                ...state.myCards,
+                [cardId]: {
+                    ...state.myCards[cardId],
+                    status: newStatus
+                }
+            };
+
+            return {
+                ...state,
+                myCards: updatedCards
+            };
+        });
+    },
+
+    refetchCards: async () => {
+        await get().loadMyCards();
     }
 }));
 

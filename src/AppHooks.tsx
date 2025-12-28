@@ -4,10 +4,10 @@ import { useDetectDevice } from './states/device/hooks';
 import { useUserAuth } from './states/user/hooks';
 import { PropsWithChildren } from 'react';
 
-export function AppHooks({ children }: PropsWithChildren) {
+export const AppHooks: React.FC<PropsWithChildren> = ({ children }) => {
     useTelegramFixScroll();
     useDetectDevice();
     useAuthData();
     useUserAuth();
     return (<>{children}</>);
-}
+};

@@ -1,0 +1,124 @@
+import { InputProps } from '../InputV2/Input';
+import { Portal } from '../Portal/Portal';
+import {
+    type FC,
+    forwardRef,
+    Fragment,
+    type ReactNode,
+    type RefAttributes,
+    useCallback,
+    useState,
+} from 'react';
+import { mergeRefs } from 'react-merge-refs';
+import cn from 'classnames';
+import styles from './WithSuffix.module.scss';
+
+export type withSuffixProps = InputProps & {
+    /**
+     * Дополнительный закрепленный текст справа от основного значения.
+     * Например: value='85' suffix=' мес' -> 85 мес
+     */
+    suffix?: ReactNode;
+
+    /**
+     * Дополнительный класс для контейнера с суффиксом
+     */
+    suffixContainerClassName?: string;
+};
+
+export const withSuffix = (Input: FC<InputProps & RefAttributes<HTMLInputElement>>) =>
+    forwardRef<HTMLInputElement, withSuffixProps>(
+        (
+            {
+                value,
+                defaultValue,
+                onChange,
+                onClear,
+                suffix = '',
+                placeholder,
+                className,
+                disabled,
+                readOnly,
+                suffixContainerClassName,
+                ...restProps
+            },
+            ref,
+        ) => {
+            const uncontrolled = value === undefined;
+
+            const [inputNode, setInputNode] = useState<HTMLInputElement | null>(null);
+
+            const [stateValue, setStateValue] = useState(defaultValue || '');
+
+            const handleInputChange = useCallback<Required<InputProps>['onChange']>(
+                (event, payload) => {
+                    if (onChange) {
+                        onChange(event, payload);
+                    }
+
+                    if (uncontrolled) {
+                        setStateValue(payload.value);
+                    }
+                },
+                [onChange, uncontrolled],
+            );
+
+            const handleClear = useCallback<Required<InputProps>['onClear']>(
+                (event) => {
+                    if (uncontrolled) {
+                        setStateValue('');
+                    }
+
+                    if (onClear) {
+                        onClear(event);
+                    }
+                },
+                [onClear, uncontrolled],
+            );
+
+            const getPortalContainer = useCallback(
+                // TODO: Изменить сигнатуру getPortalContainer в Portal
+                () => (inputNode?.parentElement || null) as HTMLElement,
+                [inputNode],
+            );
+
+            const visibleValue = uncontrolled ? stateValue : value;
+
+            return (
+                <Fragment>
+                    <Input
+                        ref={mergeRefs([ref, setInputNode])}
+                        value={visibleValue}
+                        disabled={disabled}
+                        readOnly={readOnly}
+                        onChange={handleInputChange}
+                        onClear={handleClear}
+                        placeholder={placeholder}
+                        className={cn(className, {
+                            [styles.suffixVisible]: Boolean(visibleValue),
+                            [styles.hasSuffix]: suffix,
+                        })}
+                        {...restProps}
+                    />
+                    <Portal getPortalContainer={getPortalContainer}>
+                        <div
+                            translate='no'
+                            className={cn(styles.suffixContainer, suffixContainerClassName)}
+                        >
+                            <span className={styles.spacer}>{visibleValue}</span>
+                            {suffix && (
+                                <div
+                                    className={cn(styles.suffix, {
+                                        [styles.disabled]: disabled,
+                                        [styles.readOnly]: readOnly,
+                                    })}
+                                >
+                                    {suffix}
+                                </div>
+                            )}
+                        </div>
+                    </Portal>
+                </Fragment>
+            );
+        },
+    );

@@ -1,3 +1,4 @@
+import { useDeviceStore } from '@/states/device/state';
 import parsePhoneNumberFromString from 'libphonenumber-js';
 
 export const getRandomInt = (min: number, max: number) => Math.floor(Math.random() * (max - min + 1) + min);
@@ -34,7 +35,7 @@ export function formatPhoneNumber(phone: string | null | undefined): string {
 export const truncateText = (text: string, maxLength: number = 18, addEllipsis: boolean = true) =>
     !text || !text.slice ? text : text.slice(0, maxLength) + (text.length > maxLength && addEllipsis ? '...' : '');
 
-// @TODO не создавать каждый раз new Intl.NumberFormat
+/** @deprecated */
 export const formatCurrency = (amount: string | number, currency: string, locale: string, minimumFractionDigits = 2) => {
     const number = typeof amount === 'string' ? parseFloat(amount) : amount;
     if (isNaN(number)) {
@@ -48,6 +49,7 @@ export const formatCurrency = (amount: string | number, currency: string, locale
     }).format(number);
 };
 
+/** @deprecated */
 export const formatTokenCurrency = (amount: string | number, locale: string, maximumFractionDigits = 6) => {
     const number = typeof amount === 'string' ? parseFloat(amount) : amount;
     if (isNaN(number)) {
@@ -77,6 +79,11 @@ export const abbreviateNumber = (value: number, t: any, decimals = 0) => {
 };
 
 export const openWebviewLink = (url: string, options: { try_instant_view?: boolean } = {}) => {
+    const platform = useDeviceStore.getState().platform;
+    if (platform === 'unknown') {
+        window.open(url, '_blank', 'noopener,noreferrer');
+        return;
+    }
     window.Telegram.WebApp.openLink(url, options);
 };
 
@@ -173,4 +180,81 @@ export const isLocalStorageAvailable = (): boolean => {
     } catch {
         return false;
     }
+};
+
+/**
+ * Возвращает слово в необходимой форме, зависимой от значения count
+ * @example
+ * pluralize(1, 'день', 'дня', 'дней'); // день
+ * pluralize(2, 'день', 'дня', 'дней'); // дня
+ * pluralize(5, 'день', 'дня', 'дней'); // дней
+ */
+export const pluralize = (
+    count: number,
+    nominative: string,
+    genitive: string,
+    plural: string
+): string => {
+    const normalizedNumber = count % 100;
+
+    if (normalizedNumber >= 11 && normalizedNumber <= 19) {
+        return plural;
+    }
+
+    const remainder = normalizedNumber % 10;
+
+    switch (remainder) {
+        case 1:
+            return nominative;
+        case 2:
+        case 3:
+        case 4:
+            return genitive;
+        default:
+            return plural;
+    }
+};
+
+/**
+ * Возвращает true, если значение равно null или undefined
+ */
+export function isNullable<T>(value: T): value is T & (null | undefined) {
+    return !isNonNullable(value);
+}
+
+export function isNonNullable<T>(value: T): value is NonNullable<T> {
+    return value != null;
+}
+
+/**
+ * Выбор значения между min max границами
+ */
+function clamp<T extends Date | number>(value: T, min: T, max: T): T {
+    const clampedValue = Math.min(Number(max), Math.max(Number(min), Number(value)));
+
+    return (value instanceof Date ? new Date(clampedValue) : clampedValue) as T;
+}
+
+export function noop() { }
+
+export const fnUtils = {
+    clamp,
+    noop,
+    isNil: isNullable,
+};
+
+
+export const showAlert = (message: string) => {
+    const platform = useDeviceStore.getState().platform;
+    if (platform === 'unknown') {
+        window.alert(message);
+        return;
+    }
+    window.Telegram.WebApp.showAlert(message);
+};
+
+export const isRussianPhoneNumber = (phone: string) => {
+    const trimNumber = phone.trim();
+    const cutNumber = trimNumber.replace(/[^\d]/g, '');
+    return cutNumber[0] === '7' || cutNumber[0] === '8' || cutNumber.substring(0, 2) === '+7';
 };

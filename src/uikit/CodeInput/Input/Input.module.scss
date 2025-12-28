@@ -1,0 +1,44 @@
+.input {
+    flex-shrink: 0;
+    width: 42px;
+    height: 52px;
+    margin-right: 12px;
+    padding: 0;
+    border: none;
+    background-color: var(--color-input-bg);
+    border-radius: 8px;
+    box-sizing: border-box;
+    outline: none;
+    color: var(--color-input-typo);
+    text-align: center;
+    font-size: 28px;
+    font-weight: 700;
+    font-family: var(--font-family);
+
+    &:last-child {
+        margin-right: 0px;
+    }
+
+    &.hasError {
+        color: var(--color-input-error-typo);
+        caret-color: var(--color-input-typo);
+        background-color: var(--color-input-error-bg);
+    }
+
+    &.disabled {
+        color: var(--color-typo-system);
+        opacity: 1;
+    }
+
+    &:-webkit-autofill {
+        -webkit-text-fill-color: var(--color-input-typo);
+    }
+
+    &:-webkit-autofill,
+    &:-webkit-autofill:hover,
+    &:-webkit-autofill:focus,
+    &:-webkit-autofill:active {
+        /* Hack from http://stackoverflow.com/a/29350537 */
+        transition: background-color 999999s ease-in-out 0s;
+    }
+}

@@ -1,0 +1,11 @@
+.close {
+    position: fixed;
+    top: calc(var(--safe-area-top) + 16px);
+    right: var(--safe-area-right);
+    z-index: 10;
+}
+
+.layout {
+    min-height: 0;
+    max-height: 100%;
+}

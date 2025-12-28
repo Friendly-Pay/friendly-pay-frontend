@@ -1,0 +1,22 @@
+.content {
+    position: absolute;
+    left: var(--safe-area-left);
+    right: var(--safe-area-right);
+    bottom: calc(var(--safe-area-bottom) + 26px);
+    min-height: 192px;
+}
+
+.title {
+    color: var(--color-white);
+    font-size: 30px;
+    line-height: 38px;
+    letter-spacing: -0.28px;
+    margin-bottom: 16px;
+}
+
+.text {
+    color: var(--color-white);
+    font-size: 18px;
+    line-height: 22px;
+    letter-spacing: -0.28px;
+}
