@@ -1,19 +1,20 @@
+import { authUser } from '../auth/fetch';
 import { useAuthStore } from '../auth/store';
-import { authUser } from './fetch';
+import { useLoginStore } from '../login/store';
 import { useUserStore } from './store';
 import { createSocketConnection } from '@/socket';
 import { useSocketStore } from '@/socket/store';
 import { FetchStatus } from '@/utils/api';
+import { AxiosError } from 'axios';
 import { useEffect } from 'react';
 
-export function useUserAuth() {
+export const useUserAuth = () => {
     const urlParams = new URLSearchParams(window.location.search);
     const authData = useAuthStore(state => state.authData);
-    const [setIsAuth, setAccessToken, setAuthFetchStatus] = useAuthStore(state => [
-        state.setIsAuth,
-        state.setAccessToken,
-        state.setAuthFetchStatus
-    ]);
+    const accessToken = useAuthStore(state => state.accessToken);
+    const setIsAuth = useAuthStore(state => state.setIsAuth);
+    const setAccessToken = useAuthStore(state => state.setAccessToken);
+    const setAuthFetchStatus = useAuthStore(state => state.setAuthFetchStatus);
 
     const authSession = async () => {
         setAuthFetchStatus(FetchStatus.Pending);
@@ -21,10 +22,15 @@ export function useUserAuth() {
             const referralId = urlParams.get('referral_id');
             const res = await authUser({ webAppData: authData!, referralId });
             setAuthFetchStatus(FetchStatus.Fulfilled);
-            setAccessToken(res.accessToken);
-            return res.accessToken;
-        } catch (error) {
-            console.error('[error] ошибка авторизации', error);
+            setAccessToken(res.token);
+            setIsAuth(true);
+            return res.token;
+        } catch (error: any) {
+            if (error instanceof AxiosError && error.code === '401' || error.response?.status === 401) {
+                useLoginStore.getState().setShouldLogin(true);
+            } else {
+                console.error('[error] ошибка авторизации', error);
+            }
             setAuthFetchStatus(FetchStatus.Rejected);
             return null;
         }
@@ -36,18 +42,16 @@ export function useUserAuth() {
         setSocketReady(true);
     };
 
-    const auth = async () => {
-        const accessToken = await authSession();
-        if (accessToken) {
-            await useUserStore.getState().loadUser();
-            initSocket(accessToken);
-            setIsAuth(true);
-        }
-    };
-
     useEffect(() => {
         if (authData) {
-            auth();
+            authSession();
         }
     }, [authData]);
-}
+
+    useEffect(() => {
+        if (accessToken) {
+            useUserStore.getState().loadUser();
+            initSocket(accessToken);
+        }
+    }, [accessToken]);
+};

@@ -1,68 +1,62 @@
+import { Routes } from '@/routes';
 import { useCardsStore } from '@/states/cards/store';
-import { PropsWithChildren, useEffect } from 'react';
+import { PropsWithChildren, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-let previousRoute: any = '';
+type RouteVisibility =
+    | boolean
+    | (() => boolean);
+
+const VISIBILITY_ROUTES: Record<string, RouteVisibility> = {
+    [Routes.EMAIL_CONFIRMATION]: true,
+    [Routes.NEW_PRODUCT]: () => useCardsStore.getState().myCardsCount > 0,
+    [Routes.USER_PROFILE]: true
+};
 
 export function TelegramBackButton({ children }: PropsWithChildren) {
     const location = useLocation();
     const navigate = useNavigate();
+    const previousRoute = useRef(location.pathname);
 
-    const handleBackButtonClick = () => {
-        // Верификация сменяем сцены
-        // @TODO доделать (нужно сохранять значения в форме)
-        // if (location.pathname === '/verification/user') {
-        //     const { stage, setStage, resetVerification } = useVerificationStore.getState();
-        //     if (stage !== VerificationStage.PersonalData) {
-        //         const stagesOrder: VerificationStage[] = [
-        //             VerificationStage.Preloading,
-        //             VerificationStage.PersonalData,
-        //             VerificationStage.Address,
-        //             VerificationStage.Email,
-        //             VerificationStage.PhoneNumber,
-        //         ];
-        //         const currentIdx = stagesOrder.indexOf(stage);
-        //         if (currentIdx > 0) {
-        //             setStage(stagesOrder[currentIdx - 1]);
-        //             return;
-        //         }
-        //     }
-        //     resetVerification();
-        // }
-        if (location.pathname.startsWith('/verification/user')) {
-            navigate('/');
-            return;
-        }
+    const currentRoute = location.pathname;
+    const visibilityRule = VISIBILITY_ROUTES[currentRoute];
+    const backButtonVisible = typeof visibilityRule === 'function' ? visibilityRule() : visibilityRule;
+
+    const handleButtonClick = () => {
         navigate(-1);
     };
 
     useEffect(() => {
-        window.Telegram.WebApp.onEvent('backButtonClicked', handleBackButtonClick);
-
-        if (location.pathname !== previousRoute) {
-            const onHomePage = location.pathname === '/';
-            const onResultPage = location.pathname.startsWith('/payments');
-            const onHomeNewProductPage = useCardsStore.getState().myCardsCount === 0 && location.pathname === '/new-product';
-
-            if (onHomePage || onHomeNewProductPage || onResultPage) {
-                window.Telegram.WebApp.BackButton.hide();
-            } else {
-                window.Telegram.WebApp.BackButton.show();
-            }
-
-            previousRoute = location.pathname;
-        }
-
+        window.Telegram.WebApp.onEvent('backButtonClicked', handleButtonClick);
         return () => {
-            window.Telegram.WebApp.offEvent('backButtonClicked', handleBackButtonClick);
+            window.Telegram.WebApp.offEvent('backButtonClicked', handleButtonClick);
         };
-    }, [location, navigate]);
+    }, []);
+
+    useEffect(() => {
+        const currentRoute = location.pathname;
+        const showButton = backButtonVisible;
+        if (showButton) {
+            window.Telegram.WebApp.BackButton.show();
+        } else {
+            window.Telegram.WebApp.BackButton.hide();
+        }
+        previousRoute.current = currentRoute;
+    }, [backButtonVisible]);
+
+    useEffect(() => {
+        return () => {
+            window.Telegram.WebApp.BackButton.hide();
+        };
+    }, []);
 
     return <>
-        {import.meta.env.DEV && location.pathname !== '/' && <div
-            style={{ position: 'absolute', top: 'var(--safe-are-top)', left: '0', zIndex: '9999' }}
-            onClick={handleBackButtonClick}
-        >back</div>}
+        {import.meta.env.DEV && backButtonVisible && (
+            <div
+                style={{ position: 'absolute', top: 'var(--safe-are-top)', left: '0', zIndex: '9999' }}
+                onClick={handleButtonClick}
+            >back</div>
+        )}
         {children}
     </>;
 }

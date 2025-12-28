@@ -1,0 +1,19 @@
+.amount {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.majorPart,
+.positiveSymbol {
+    font-weight: 600;
+}
+
+.currency,
+.currencySeparator,
+.minorPart,
+.decimalSeparator {
+    font-weight: 400;
+}

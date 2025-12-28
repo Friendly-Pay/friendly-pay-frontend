@@ -1,0 +1,72 @@
+.button {
+    position: relative;
+    display: inline-flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: center;
+    vertical-align: top;
+    padding: 12px 0;
+    margin: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    text-align: center;
+    text-decoration: none;
+    text-transform: none;
+    transition: background-color 0.2s linear;
+    user-select: none;
+    font-family: inherit;
+    appearance: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.button {
+    color: var(--color-action-button-typo);
+    background-color: var(--color-action-button);
+    border-radius: 18px;
+
+    &:active {
+        background-color: var(--color-action-button-active);
+        transition: background-color 0.07s linear;
+    }
+}
+
+.disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.loading {
+    cursor: auto;
+    pointer-events: none;
+}
+
+.icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    line-height: 0;
+
+    svg {
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+
+    .spinner {
+        width: 24px;
+        height: 24px;
+    }
+}
+
+.text {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 18px;
+    letter-spacing: -0.16px;
+}

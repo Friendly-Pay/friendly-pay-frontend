@@ -1,0 +1,45 @@
+.loader {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-background-loader);
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+    z-index: 999999;
+    padding-bottom: var(--safe-area-bottom);
+}
+
+.logo {
+    display: flex;
+
+
+    svg {
+        width: 128px;
+        height: 128px;
+        transform: translateY(-25%);
+    }
+}
+
+.spinner {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: calc(var(--safe-area-bottom) + 32px);
+    color: var(--color-typo-primary);
+
+    svg {
+        display: block;
+        width: 24px;
+        height: 24px;
+        margin: 0 auto;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .loader svg {
+        animation: none;
+    }
+}

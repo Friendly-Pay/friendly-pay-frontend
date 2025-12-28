@@ -1,4 +1,4 @@
-import { TelegramMainButton } from '@/components/common/TelegramMainButton';
+import { TelegramButtons } from '@/components/Telegram';
 import { useFriendsBonusesStore } from '@/states/friends/store';
 import { copyToClipboard } from '@/utils';
 import { useCallback } from 'react';
@@ -18,7 +18,7 @@ export function ShareButton() {
     }, [referralLink, t]);
 
     return (
-        <TelegramMainButton
+        <TelegramButtons.MainButton
             visible
             text='Скопировать ссылку'
             onClick={handleCopyLink}

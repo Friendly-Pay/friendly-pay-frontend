@@ -17,10 +17,11 @@ export type TextProps = {
     align?: 'left' | 'center' | 'right';
     noWrap?: boolean;
     uppercase?: boolean;
+    role?: string;
     style?: CSSProperties;
     className?: string;
     children?: React.ReactNode;
-    onClick?: () => void;
+    onClick?: (e: any) => void;
     dangerouslySetInnerHTML?: {
         __html: string | TrustedHTML;
     } | undefined

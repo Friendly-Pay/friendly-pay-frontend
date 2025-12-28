@@ -1,9 +1,10 @@
 import { MainLayout } from '@/components/common/MainLayout';
-import { TelegramMainButton } from '@/components/common/TelegramMainButton';
 import { TopupResult } from '@/components/Payment/TopupResult';
+import { TelegramButtons } from '@/components/Telegram';
 import { useBankCard } from '@/states/cards/store';
+import { useCurrency } from '@/states/currency/hooks';
 import { useFriendsBonusesStore } from '@/states/friends/store';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Navigate, useNavigate } from 'react-router-dom';
 import styles from './BonusTransferResultView.module.scss';
@@ -13,6 +14,7 @@ export function BonusTransferResultView() {
     const cardId = useFriendsBonusesStore(state => state.transferSelectedCardId);
     const bankCard = useBankCard(cardId);
     const topupAmount = useFriendsBonusesStore(state => state.transferAmount);
+    const currency = useCurrency(bankCard?.currency);
 
     const navigate = useNavigate();
     const handleContinue = useCallback(() => {
@@ -24,7 +26,9 @@ export function BonusTransferResultView() {
         window.Telegram.WebApp.HapticFeedback.notificationOccurred('success');
     }, []);
 
-    if (!bankCard || !topupAmount) {
+    const [buttonVisible, setButtonVisible] = useState(false);
+
+    if (!bankCard || !topupAmount || !currency) {
         return <Navigate
             to='/friends/bonus'
             replace
@@ -35,14 +39,19 @@ export function BonusTransferResultView() {
         <MainLayout>
             <div className={styles.wrap}>
                 <TopupResult
-                    isPending
-                    cardNumber={bankCard.number}
-                    cardCurrency={bankCard.currency}
+                    cardNumber={bankCard.number!}
+                    currencyId={currency.id}
+                    currencyCode={currency.mnemonicCode}
+                    currencyImage={currency.image}
+                    currencyMinority={currency.minorUnits}
                     receivedAmount={topupAmount}
+                    receivedAmountFee={0}
+                    onShowMainButton={() => setButtonVisible(true)}
                 />
 
-                <TelegramMainButton
+                <TelegramButtons.MainButton
                     text={t('Back to home')}
+                    visible={buttonVisible}
                     onClick={handleContinue}
                 />
             </div>

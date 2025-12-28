@@ -1,38 +1,43 @@
 import confetti from 'canvas-confetti';
-import { useEffect, useRef } from 'react';
+import { useCallback, useLayoutEffect, useRef } from 'react';
 
-type ConfettiProps = {
-    onAnimationCompleted?: () => void
-}
-
-export function Confetti({ }: ConfettiProps) {
+export const Confetti: React.FC = () => {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const confettiRef = useRef<any>(null);
 
-    const launchConfetti = () => {
+    const launchConfetti = useCallback(() => {
+        window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
         confettiRef.current({
-            particleCount: 60,
+            particleCount: 70,
             origin: { x: 0, y: 0.8 },
             angle: 60,
             spread: 50,
-            startVelocity: 50,
+            startVelocity: 60,
             scalar: 1.5
         });
         confettiRef.current({
-            particleCount: 60,
+            particleCount: 70,
             origin: { x: 1, y: 0.8 },
             angle: 120,
             spread: 50,
-            startVelocity: 50,
+            startVelocity: 60,
             scalar: 1.5
         });
-    };
+    }, []);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (canvasRef.current && !confettiRef.current) {
             confettiRef.current = confetti.create(canvasRef.current, { resize: true });
         }
-        launchConfetti();
+
+        const frameId = requestAnimationFrame(() => {
+            launchConfetti();
+        });
+
+        return () => {
+            cancelAnimationFrame(frameId);
+            confetti.reset();
+        };
     }, []);
 
     return (
@@ -49,4 +54,4 @@ export function Confetti({ }: ConfettiProps) {
             }}
         />
     );
-}
+};

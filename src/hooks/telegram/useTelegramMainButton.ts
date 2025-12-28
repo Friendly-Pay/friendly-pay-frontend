@@ -1,82 +1,103 @@
 import { useDeviceStore } from '@/states/device/state';
+import { useCallback, useEffect, useRef } from 'react';
 
-export function useTelegramMainButton(): [boolean, {
+interface UseTelegramButtonReturn {
+    isAvailable: boolean;
     show: () => void;
     hide: () => void;
     enable: () => void;
     disable: () => void;
-    setParams: (params: globalThis.MainButtonParams) => void;
-    subscribeClick: (handler: () => void) => void;
-    unsubscribeClick: (handler: () => void) => void;
-    showProgress: () => void;
+    setParams: (params: any) => void;
+    setClickListener: (handler: () => void) => void;
+    showProgress: (leaveActive?: boolean) => void;
     hideProgress: () => void;
-}] {
-    const webAppButton = window.Telegram?.WebApp.MainButton;
-    const button = webAppButton;
+}
+
+type ButtonType = 'main' | 'secondary';
+
+const MIN_TELEGRAM_VERSION_SUPPORTED = '7.10';
+
+export const isTelegramVersionSupported = () => {
+    const webApp = window.Telegram?.WebApp;
+    return webApp?.isVersionAtLeast(MIN_TELEGRAM_VERSION_SUPPORTED);
+};
+
+export function useTelegramButton(buttonType: ButtonType): UseTelegramButtonReturn {
+    const webApp = window.Telegram?.WebApp;
+    const button = buttonType === 'main' ? webApp?.MainButton : webApp?.SecondaryButton;
     const platform = useDeviceStore(state => state.platform);
-    const isAvailable = Boolean(button) && window.Telegram?.WebApp.isVersionAtLeast('6.1') && platform !== 'unknown';
 
-    const hide = () => {
-        if (isAvailable) button.hide();
-    };
+    const minVersion = buttonType === 'main' ? '6.1' : '7.10';
+    const isAvailable = Boolean(button) && webApp?.isVersionAtLeast(minVersion) && platform !== 'unknown';
 
-    const show = () => {
-        if (isAvailable) button.show();
-    };
+    const hide = useCallback(() => {
+        if (isAvailable) button!.hide();
+    }, [isAvailable, button]);
 
-    const setParams = (params: globalThis.MainButtonParams) => {
+    const show = useCallback(() => {
+        if (isAvailable) button!.show();
+    }, [isAvailable, button]);
+
+    const setParams = useCallback((params: any) => {
         if (!isAvailable || !params) return;
-        if (webAppButton) {
-            webAppButton.setParams({
-                text: params.text,
-                color: params.color,
-                text_color: params.text_color,
-                is_active: params.is_active,
-                is_visible: params.is_visible,
-                has_shine_effect: params.has_shine_effect
-            });
+        button!.setParams(params);
+    }, [isAvailable, button]);
+
+    const currentHandlerRef = useRef<(() => void) | null>(null);
+
+    // Единый обработчик, который вызывает текущий обработчик из ref
+    const handleClick = useCallback(() => {
+        if (currentHandlerRef.current) {
+            currentHandlerRef.current();
         }
-    };
+    }, []);
 
-    const subscribeClick = (handler: () => void) => {
-        if (!isAvailable || typeof handler !== 'function') return;
-        button.onClick(handler);
-    };
-
-    const unsubscribeClick = (handler: () => void) => {
-        if (!isAvailable || typeof handler !== 'function') return;
-        button.offClick(handler);
-    };
-
-    const showProgress = () => {
-        if (isAvailable) button.showProgress();
-    };
-
-    const hideProgress = () => {
-        if (isAvailable) button.hideProgress();
-    };
-
-    const enable = () => {
+    // Подписываемся на событие один раз при монтировании
+    useEffect(() => {
         if (!isAvailable) return;
-        webAppButton?.enable();
-    };
+        button!.onClick(handleClick);
+        return () => {
+            button!.offClick(handleClick);
+        };
+    }, [isAvailable, buttonType, webApp, handleClick]);
 
-    const disable = () => {
-        if (!isAvailable) return;
-        webAppButton?.disable();
-    };
+    const setClickListener = useCallback((handler: (() => void) | null) => {
+        currentHandlerRef.current = handler;
+    }, []);
 
-    const actions = {
+    const showProgress = useCallback((leaveActive?: boolean) => {
+        if (isAvailable) {
+            button!.showProgress(leaveActive);
+        }
+    }, [isAvailable, button]);
+
+    const hideProgress = useCallback(() => {
+        if (isAvailable) {
+            button!.hideProgress();
+        }
+    }, [isAvailable, button]);
+
+    const enable = useCallback(() => {
+        if (isAvailable) {
+            button!.enable();
+        }
+    }, [isAvailable, button]);
+
+    const disable = useCallback(() => {
+        if (isAvailable) {
+            button!.disable();
+        }
+    }, [isAvailable, button]);
+
+    return {
+        isAvailable,
         show,
         hide,
         enable,
         disable,
         setParams,
-        subscribeClick,
-        unsubscribeClick,
+        setClickListener,
         showProgress,
         hideProgress,
     };
-
-    return [isAvailable, actions];
 }

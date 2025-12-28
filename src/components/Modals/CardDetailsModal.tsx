@@ -76,7 +76,7 @@ export function CardDetailsModal() {
                 </AnimatePresence>
 
                 <Button
-                    view='secondary'
+                    view='transparent'
                     className={styles.button}
                     onClick={onClose}
                 >

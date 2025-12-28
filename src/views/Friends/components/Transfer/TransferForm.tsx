@@ -1,4 +1,4 @@
-import { TelegramMainButton } from '@/components/common/TelegramMainButton';
+import { TelegramButtons } from '@/components/Telegram';
 import { useFriendsBonusesStore } from '@/states/friends/store';
 import { Input, Text } from '@/uikit';
 import { formatCurrency } from '@/utils';
@@ -188,7 +188,7 @@ export function TransferForm({ minAmount, availableAmount }: TransferFormProps) 
                 )}
             </div>
 
-            <TelegramMainButton
+            <TelegramButtons.MainButton
                 text={transferButtonText}
                 loading={loading}
                 visible={!selectOpened}

@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import styles from './CardDesign.module.scss';
 
 type CardDesignProps = {
-    typeId: number
+    cardTypeId: number
     preview?: boolean
     className?: string
     backgroundClassName?: string
@@ -37,10 +37,11 @@ export const cardDesign = {
     }
 } as const;
 
-export function CardDesign({ typeId, preview, style, className, backgroundClassName, children, onClick }: PropsWithChildren<CardDesignProps>) {
-    const data = cardDesign[typeId as keyof typeof cardDesign];
+export function CardDesign({ cardTypeId, preview, style, className, backgroundClassName, children, onClick }: PropsWithChildren<CardDesignProps>) {
+    const data = cardDesign[cardTypeId as keyof typeof cardDesign];
+
     if (!data) {
-        console.warn(`[cardDesign] typeId ${typeId} unknown`);
+        console.error(`[cardDesign] typeId ${cardTypeId} unknown`);
         return null;
     }
 

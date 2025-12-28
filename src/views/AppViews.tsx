@@ -1,111 +1,95 @@
-import { AppLoader } from './AppLoader';
+import AppLoader from '../AppLoader';
+import UserFlow from '../components/UserFlow';
+import { Routes as ROUTES } from '../routes';
+import { EmailCodeView } from './Auth/EmailCode/EmailCodeView';
+import { AuthLoginView } from './Auth/Login/AuthLoginView';
 import { BonusTransferResultView } from './Friends/BonusTransferResultView';
 import { BonusTransferView } from './Friends/BonusTransferView';
 import { BonusView } from './Friends/BonusView';
+import { CardController } from './Home/CardController';
 import { HomeView } from './Home/HomeView';
-import { IntroView } from './Intro/IntroView';
 import { NewProductView } from './NewProduct/NewProductView';
+import { OnboardingView } from './Onboarding/OnboardingView';
+import { CardPurchaseView } from './Payment/CardPurchase/CardPurchaseView';
+import { CardPurchaseWaitingView } from './Payment/CardPurchaseWaiting/CardPurchaseWaitingView';
 import { PaymentController } from './Payment/PaymentController';
 import { PaymentRestore } from './Payment/PaymentRestore';
-import { PayNewCardResultView } from './Payment/PayNewCard/PayNewCardResultView';
-import { PayNewCardView } from './Payment/PayNewCard/PayNewCardView';
-import { PayNewCardWaitingView } from './Payment/PayNewCard/PayNewCardWaitingView';
-import { TopupResultView } from './Payment/Topup/TopupResultView';
 import { TopupView } from './Payment/Topup/TopupView';
-import { TopupWaitingView } from './Payment/Topup/TopupWaitingView';
+import { TopupResultView } from './Payment/TopupResult/TopupResultView';
+import { TopupWaitingView } from './Payment/TopupWaiting/TopupWaitingView';
 import { ProfileView } from './Profile/ProfileView';
-import { VerificationErrorView } from './Verification/VerificarionErrorView';
-import { VerificationView } from './Verification/VerificationView';
+import { SumsubView } from './Sumsub/SumsubView';
+import { PageLayout } from '@/components/common/PageLayout';
 import { TelegramBackButton } from '@/components/common/TelegramBackButton';
 import { DialogController } from '@/components/DialogController';
 import { ToastsRoot } from '@/components/Toast/ToastsRoot';
-import { useLoaderStore } from '@/states/loader';
-import { CardController } from '@/views/Home/CardController';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
-export function AppViews() {
-    const rootInitiated = useLoaderStore(state => state.rootInitiated);
+/* eslint-disable react/jsx-max-props-per-line */
+const AppViews: React.FC = () => {
     return (
         <>
-            <AppLoader />
             <ToastsRoot />
 
-            {rootInitiated && <Router>
+            <Router>
                 <TelegramBackButton />
                 <DialogController />
-                <PaymentRestore>
-                    <CardController>
-                        <Routes>
-                            <Route
-                                path='/'
-                                element={<HomeView />}
-                            />
-                            <Route
-                                path='/intro'
-                                element={<IntroView />}
-                            />
-                            <Route
-                                path='/new-product'
-                                element={<NewProductView />}
-                            />
 
-                            <Route
-                                path='/user/profile'
-                                element={<ProfileView />}
-                            />
 
-                            <Route element={<PaymentController />}>
-                                <Route
-                                    path='/payments/pay-new-card'
-                                    element={<PayNewCardView />}
-                                />
-                                <Route
-                                    path='/payments/pay-new-card/waiting'
-                                    element={<PayNewCardWaitingView />}
-                                />
-                                <Route
-                                    path='/payments/pay-new-card/result'
-                                    element={<PayNewCardResultView />}
-                                />
-                                <Route
-                                    path='/payments/topup'
-                                    element={<TopupView />}
-                                />
-                                <Route
-                                    path='/payments/topup/waiting'
-                                    element={<TopupWaitingView />}
-                                />
-                                <Route
-                                    path='/payments/topup/result'
-                                    element={<TopupResultView />}
-                                />
-                            </Route>
+                <AppLoader>
+                    <UserFlow>
+                        <PaymentRestore>
+                            <CardController>
+                                <Routes>
+                                    <Route path={ROUTES.ONBOARDING} element={<OnboardingView />} />
 
-                            <Route
-                                path='/verification/user'
-                                element={<VerificationView />}
-                            />
-                            <Route
-                                path='/verification/user/error'
-                                element={<VerificationErrorView />}
-                            />
+                                    <Route element={<PageLayout />}>
+                                        <Route path={ROUTES.HOME} element={<HomeView />} />
 
-                            <Route
-                                path='/friends/bonus'
-                                element={<BonusView />}
-                            />
-                            <Route
-                                path='/friends/bonus/transfer'
-                                element={<BonusTransferView />}
-                            />
-                            <Route
-                                path='/friends/bonus/transfer/result'
-                                element={<BonusTransferResultView />}
-                            />
-                        </Routes>
-                    </CardController>
-                </PaymentRestore>
-            </Router>}
+                                        {/* Вход и подтверждение почты */}
+                                        <Route path={ROUTES.AUTH_LOGIN} element={<AuthLoginView />} />
+                                        <Route path={ROUTES.EMAIL_CONFIRMATION} element={<EmailCodeView />} />
+
+                                        {/* SumSub KYC */}
+                                        <Route path={ROUTES.SUMSUB_START} element={<SumsubView />} />
+
+                                        {/* Витрина */}
+                                        <Route path={ROUTES.NEW_PRODUCT} element={<NewProductView />} />
+
+                                        <Route element={<PaymentController />}>
+                                            {/* Покупка карты */}
+                                            <Route path={ROUTES.CARD_PURCHASE} element={<CardPurchaseView />} />
+                                            <Route path={ROUTES.CARD_PURCHASE_WAITING} element={<CardPurchaseWaitingView />} />
+
+                                            {/* Пополнение */}
+                                            <Route path={ROUTES.TOPUP} element={<TopupView />} />
+                                            <Route path={ROUTES.TOPUP_WAITING} element={<TopupWaitingView />} />
+                                            <Route path={ROUTES.TOPUP_RESULT} element={<TopupResultView />} />
+                                        </Route>
+
+                                        <Route path={ROUTES.USER_PROFILE} element={<ProfileView />} />
+
+                                        <Route
+                                            path='/friends/bonus'
+                                            element={<BonusView />}
+                                        />
+                                        <Route
+                                            path='/friends/bonus/transfer'
+                                            element={<BonusTransferView />}
+                                        />
+                                        <Route
+                                            path='/friends/bonus/transfer/result'
+                                            element={<BonusTransferResultView />}
+                                        />
+                                    </Route>
+                                </Routes>
+                            </CardController>
+                        </PaymentRestore>
+                    </UserFlow>
+                </AppLoader>
+            </Router>
         </>
     );
-}
+};
+
+export default AppViews;
