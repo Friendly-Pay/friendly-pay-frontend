@@ -62,18 +62,27 @@ const CurrencyModal = memo(function CurrencyModal() {
     const modalState = usePaymentStore(state => state.currencyModal.modalState);
     const supportSbp = useGlobalStore(state => state.supportSbp);
     const userCountry = useUserStore(state => state.user?.country);
+
     const userPhoneNumber = useUserStore(state => state.user?.phoneNumber!);
     const closeCurrencyModal = usePaymentStore(state => state.closeCurrencyModal);
 
-    let sbpAvailable = false;
-    if (userCountry && userPhoneNumber) {
-        sbpAvailable = supportSbp && userCountry === 'RUS' && isRussianPhoneNumber(userPhoneNumber);
+    let sbpAvailable = true;
+    if (!supportSbp) {
+        sbpAvailable = false;
+    } else if (userCountry && userPhoneNumber) {
+        sbpAvailable = userCountry === 'RUS' && isRussianPhoneNumber(userPhoneNumber);
     }
 
     const navigate = useNavigate();
 
     // @TODO вынести в класс BankCardActions (логика с картой будет в одном месте)
     const handleCurrencySelect = useCallback((currencyId: string, currencyType: CurrencyType) => {
+        if (isSumsubNotCompleted() && currencyType === 'RUB') {
+            closeCurrencyModal();
+            navigate(Routes.SUMSUB_START);
+            return;
+        }
+
         const { setTopupCurrency, setCardPurchaseCurrency } = usePaymentStore.getState();
 
         closeCurrencyModal();
@@ -101,7 +110,7 @@ const CurrencyModal = memo(function CurrencyModal() {
         if (redirectUrl && redirectUrl !== location.pathname) {
             navigate(redirectUrl);
         }
-    }, [modalState, navigate, closeCurrencyModal]);
+    }, [modalState, sbpAvailable, navigate, closeCurrencyModal]);
 
     return (
         <CurrencyModalUI
