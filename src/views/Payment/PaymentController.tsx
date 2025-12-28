@@ -1,151 +1,182 @@
-import { connectSocket, disconnectSocket } from '@/socket';
-import { useSocketStore } from '@/socket/store';
+import { PaymentButtonsProvider } from './buttonsContext';
+import { Routes } from '@/routes';
 import { OrderStorage } from '@/states/payment/storage';
-import { PaymentStatus, PurchaseOrder, TopupOrder, usePaymentStore } from '@/states/payment/store';
-import { HubConnectionState } from '@microsoft/signalr';
-import { useEffect, useRef } from 'react';
-import { Navigate, Outlet, useLocation } from 'react-router-dom';
+import { PaymentStatus, usePaymentStore } from '@/states/payment/store';
+import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
 OrderStorage.cleanupExpired();
 
-const useSocketConnection = (status: PaymentStatus | null) => {
-    const socketState = useSocketStore(state => state.socketState);
+/**
+ * API Polling статуса транзакции пополнения или покупки карты
+ */
+export const useTransactionStatusPooling = (status: PaymentStatus | null) => {
+    const [t] = useTranslation();
+    const poolingTransactionStatus = usePaymentStore(state => state.poolingTransactionStatus);
+    const startPoolingTransactionStatus = usePaymentStore(state => state.startPoolingTransactionStatus);
+    const stopPoolingTransactionStatus = usePaymentStore(state => state.stopPoolingTransactionStatus);
 
     useEffect(() => {
-        return () => {
-            disconnectSocket();
-        };
-    }, []);
-
-    useEffect(() => {
-        const connectStatuses = [PaymentStatus.Creating, PaymentStatus.Waiting];
-        const disconnectStatuses = [PaymentStatus.Idle, PaymentStatus.Processing, PaymentStatus.Success, PaymentStatus.Failed];
-
-        if (status && connectStatuses.includes(status)) {
-            if (
-                socketState !== HubConnectionState.Connected &&
-                socketState !== HubConnectionState.Connecting &&
-                socketState !== HubConnectionState.Reconnecting
-            ) {
-                connectSocket()
-                    .then(success => {
-                        if (!success) {
-                            usePaymentStore.getState().startPoolingTransactionStatus();
-                        } else {
-                            usePaymentStore.getState().stopPoolingTransactionStatus();
-                        }
-                    });
-            }
-        } else if (status === null || disconnectStatuses.includes(status)) {
-            if (
-                socketState !== HubConnectionState.Disconnected &&
-                socketState !== HubConnectionState.Disconnecting
-            ) {
-                disconnectSocket();
-            }
+        if (status === PaymentStatus.ReadyForPayment || status === PaymentStatus.Waiting) {
+            startPoolingTransactionStatus();
+            return () => {
+                stopPoolingTransactionStatus();
+            };
         }
     }, [status]);
-};
 
-export const useTransactionStatusPooling = (
-    type: PaymentType | null,
-    order: TopupOrder | PurchaseOrder | null,
-) => {
-    const poolingTransactionStatus = usePaymentStore(state => state.poolingTransactionStatus);
-
-    const timeout = useRef<any>();
-    const refetchInterval = 10_000;
     useEffect(() => {
+        let timerId = 0;
+
+        const clearTimer = () => {
+            if (timerId) {
+                clearTimeout(timerId);
+                timerId = 0;
+            }
+        };
+
         const poolingTransaction = async () => {
-            if (timeout.current) {
-                clearTimeout(timeout.current);
-            }
-            const transactionId = order?.transactionId;
-            if (!transactionId) {
-                return;
-            }
+            clearTimer();
+
+            const poolingStatuses = [PaymentStatus.ReadyForPayment, PaymentStatus.Waiting];
+            const {
+                purchaseStatus,
+                topupStatus,
+                purchaseOrder,
+                topupOrder,
+                checkTopupTransactionStatus,
+                checkPurchaseTransactionStatus,
+                stopPoolingTransactionStatus
+            } = usePaymentStore.getState();
+
+            const refetchInterval = topupStatus === PaymentStatus.Waiting || purchaseStatus === PaymentStatus.Waiting
+                ? 5_000
+                : 10_000;
+
             try {
-                const { checkTopupTransactionStatus, checkPurchaseTransactionStatus } = usePaymentStore.getState();
-                if (type === 'pay-new-card') {
-                    await checkPurchaseTransactionStatus(transactionId);
-                } else if (type === 'topup') {
-                    await checkTopupTransactionStatus(transactionId);
+                if (poolingStatuses.includes(topupStatus) && topupOrder) {
+                    // Пополнение
+                    await checkTopupTransactionStatus(topupOrder.transactionId);
+                } else if (poolingStatuses.includes(purchaseStatus) && purchaseOrder) {
+                    // Покупка карты
+                    await checkPurchaseTransactionStatus(purchaseOrder.transactionId);
+                } else {
+                    stopPoolingTransactionStatus();
                 }
             } catch (error) {
-                // @TODO устанавливать payment status failed
                 console.error(error);
-                toast.error('Failed to get tx status');
+                toast.error(t('Failed to get payment status, please contact support if the error persists'));
+            } finally {
+                if (usePaymentStore.getState().poolingTransactionStatus) {
+                    timerId = setTimeout(() => poolingTransaction(), refetchInterval);
+                }
             }
-
-            timeout.current = setTimeout(() => poolingTransaction(), refetchInterval);
         };
 
         if (poolingTransactionStatus) {
-            poolingTransaction();
+            timerId = setTimeout(() => poolingTransaction(), 5_000);
         }
 
         return () => {
-            if (timeout.current) {
-                clearTimeout(timeout.current);
-            }
+            clearTimer();
         };
-    }, [poolingTransactionStatus, order?.transactionId]);
+    }, [poolingTransactionStatus]);
 };
 
-export type PaymentType = 'topup' | 'pay-new-card'
+export type PaymentType = 'TOPUP' | 'CARD_PURCHASE'
 
+const paymentRedirects: Record<PaymentType, Partial<Record<PaymentStatus, string>>> = {
+    TOPUP: {
+        [PaymentStatus.Waiting]: Routes.TOPUP_WAITING,
+        [PaymentStatus.Processing]: Routes.TOPUP_RESULT,
+        [PaymentStatus.Success]: Routes.TOPUP_RESULT,
+        [PaymentStatus.Failed]: Routes.TOPUP_RESULT
+    },
+    CARD_PURCHASE: {
+        [PaymentStatus.Waiting]: Routes.CARD_PURCHASE_WAITING,
+        [PaymentStatus.Processing]: Routes.HOME,
+        [PaymentStatus.Success]: Routes.HOME,
+        [PaymentStatus.Failed]: Routes.HOME,
+    }
+};
+
+// @TODO добавить expireAt учет для активного платежа
 export function PaymentController() {
-    const topupOrder = usePaymentStore(state => state.topupOrder);
     const topupStatus = usePaymentStore(state => state.topupStatus);
-    const purchaseOrder = usePaymentStore(state => state.purchaseOrder);
     const purchaseStatus = usePaymentStore(state => state.purchaseStatus);
 
-    let order: TopupOrder | PurchaseOrder | null = null;
+    const navigate = useNavigate();
+
     let status: PaymentStatus | null = null;
     let paymentType: PaymentType | null = null;
     if (topupStatus !== PaymentStatus.Idle) {
-        order = topupOrder;
         status = topupStatus;
-        paymentType = 'topup';
+        paymentType = 'TOPUP';
     } else if (purchaseStatus !== PaymentStatus.Idle) {
-        order = purchaseOrder;
         status = purchaseStatus;
-        paymentType = 'pay-new-card';
+        paymentType = 'CARD_PURCHASE';
     }
 
-    useSocketConnection(status);
-    useTransactionStatusPooling(paymentType, order);
+    useTransactionStatusPooling(status);
 
-    const location = useLocation();
-
-    if (status === PaymentStatus.UserCompleteWaiting) {
-        if (location.pathname === `/payments/${paymentType}`) {
-            return <Navigate
-                to={`/payments/${paymentType}/waiting`}
-                replace
-            />;
+    // Редирект
+    useEffect(() => {
+        if (!paymentType || !status) {
+            return;
         }
-    }
-    if (status === PaymentStatus.Processing || status === PaymentStatus.Success || status === PaymentStatus.Failed) {
-        if (location.pathname === `/payments/${paymentType}` || location.pathname === `/payments/${paymentType}/waiting`) {
-            return <Navigate
-                to={`/payments/${paymentType}/result`}
-                replace
-            />;
-        }
-    }
-    if (
-        location.pathname === '/payments/topup/result'
-        || location.pathname === '/payments/pay-new-card/result'
-    ) {
-        if (!order) {
-            return <Navigate
-                to="/"
-                replace
-            />;
-        }
-    }
 
-    return (<Outlet />);
+        const redirectUrl = paymentRedirects[paymentType][status];
+        if (!redirectUrl || redirectUrl === location.pathname) {
+            return;
+        }
+
+        navigate(redirectUrl);
+    }, [paymentType, status]);
+
+    return (
+        <PaymentButtonsProvider>
+            <Outlet />
+        </PaymentButtonsProvider>
+    );
 }
+
+// const useSocketConnection = (status: PaymentStatus | null) => {
+//     const socketState = useSocketStore(state => state.socketState);
+
+//     useEffect(() => {
+//         return () => {
+//             disconnectSocket();
+//         };
+//     }, []);
+
+//     useEffect(() => {
+//         const connectStatuses = [PaymentStatus.ReadyForPayment, PaymentStatus.Waiting];
+//         const disconnectStatuses = [PaymentStatus.Idle, PaymentStatus.Processing, PaymentStatus.Success, PaymentStatus.Failed];
+
+//         if (status && connectStatuses.includes(status)) {
+//             if (
+//                 socketState !== HubConnectionState.Connected &&
+//                 socketState !== HubConnectionState.Connecting &&
+//                 socketState !== HubConnectionState.Reconnecting
+//             ) {
+//                 connectSocket()
+//                     .then(success => {
+//                         if (!success) {
+//                             usePaymentStore.getState().startPoolingTransactionStatus();
+//                         } else {
+//                             usePaymentStore.getState().stopPoolingTransactionStatus();
+//                         }
+//                     });
+//             }
+//         } else if (status === null || disconnectStatuses.includes(status)) {
+//             if (
+//                 socketState !== HubConnectionState.Disconnected &&
+//                 socketState !== HubConnectionState.Disconnecting
+//             ) {
+//                 disconnectSocket();
+//             }
+//         }
+//     }, [status]);
+// };

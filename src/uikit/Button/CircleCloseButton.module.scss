@@ -1,0 +1,17 @@
+.cross {
+    min-width: 28px;
+    min-height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+
+    svg {
+        width: 28px;
+        height: 28px;
+        color: var(--color-typo-primary-20);
+    }
+}

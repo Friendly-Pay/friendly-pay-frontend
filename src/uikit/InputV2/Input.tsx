@@ -1,0 +1,482 @@
+
+import { FormControl } from '../FormControl/FormControl';
+import { hasStepperInRightAddon } from './helpers/has-stepper-in-right-addon';
+import { useFocus } from '@/hooks/useFocus.';
+import React, {
+    type AnimationEvent,
+    type ChangeEvent,
+    Fragment,
+    type HTMLAttributes,
+    type InputHTMLAttributes,
+    type KeyboardEvent,
+    type MouseEvent,
+    type ReactNode,
+    useCallback,
+    useLayoutEffect,
+    useRef,
+    useState,
+} from 'react';
+import { mergeRefs } from 'react-merge-refs';
+import cn from 'classnames';
+import styles from './Input.module.scss';
+
+export type InputProps = Omit<
+    InputHTMLAttributes<HTMLInputElement>,
+    | 'size'
+    | 'type'
+    | 'value'
+    | 'defaultValue'
+    | 'onChange'
+    | 'onClick'
+    | 'onMouseDown'
+    | 'enterKeyHint'
+> & {
+    /**
+     * Значение поля ввода
+     */
+    value?: string;
+
+    /**
+     * Начальное значение поля
+     */
+    defaultValue?: string;
+
+    /**
+     * Растягивает компонент на ширину контейнера
+     */
+    block?: boolean;
+
+    /**
+     * Крестик для очистки поля
+     */
+    clear?: boolean;
+
+    /**
+     * Отображение ошибки
+     */
+    error?: ReactNode | boolean;
+
+    /**
+     * Отображение иконки успеха
+     */
+    success?: boolean;
+
+    /**
+     * Текст подсказки
+     */
+    hint?: ReactNode;
+
+    /**
+     * Лейбл компонента
+     */
+    label?: React.ReactNode;
+
+    /**
+     * Вид лейбла внутри / снаружи
+     */
+    labelView?: 'inner' | 'outer';
+
+    /**
+     * Атрибут type
+     */
+    type?: 'number' | 'email' | 'money' | 'password' | 'tel' | 'text';
+
+    /**
+     * Ref для обертки input
+     */
+    wrapperRef?: React.Ref<HTMLDivElement> | null;
+
+    /**
+     * Слот слева
+     */
+    leftAddons?: React.ReactNode;
+
+    /**
+     * Слот справа
+     */
+    rightAddons?: React.ReactNode;
+
+    /**
+     * Свойства для обертки левых аддонов
+     */
+    leftAddonsProps?: HTMLAttributes<HTMLDivElement>;
+
+    /**
+     * Свойства для обертки правых аддонов
+     */
+    rightAddonsProps?: HTMLAttributes<HTMLDivElement>;
+
+    /**
+     * Слот под инпутом
+     */
+    bottomAddons?: React.ReactNode;
+
+    /**
+     * Дополнительный класс
+     */
+    className?: string;
+
+    /**
+     * Дополнительный класс для поля
+     */
+    fieldClassName?: string;
+
+    /**
+     * Дополнительный класс инпута
+     */
+    inputClassName?: string;
+
+    /**
+     * Дополнительный класс для лейбла
+     */
+    labelClassName?: string;
+
+    /**
+     * Дополнительный класс для аддонов
+     */
+    addonsClassName?: string;
+
+    /**
+     * Класс, который будет установлен при фокусе
+     */
+    focusedClassName?: string;
+
+    /**
+     * Класс, который будет установлен, если в поле есть значение
+     */
+    filledClassName?: string;
+
+    /**
+     * Обработчик поля ввода
+     */
+    onChange?: (event: ChangeEvent<HTMLInputElement>, payload: { value: string }) => void;
+
+    /**
+     * Обработчик нажатия на кнопку очистки
+     */
+    onClear?: (event: MouseEvent<HTMLButtonElement>) => void;
+
+    /**
+     * Обработчик клика по полю
+     */
+    onClick?: (event: MouseEvent<HTMLDivElement>) => void;
+
+    /**
+     * Обработчик MouseDown по полю
+     */
+    onMouseDown?: (event: MouseEvent<HTMLDivElement>) => void;
+
+    /**
+     * Обработчик MouseUp по полю
+     */
+    onMouseUp?: (event: MouseEvent<HTMLDivElement>) => void;
+
+    /**
+     * Компонент FormControl
+     */
+    // FormControlComponent?: ElementType<FormControlProps & RefAttributes<HTMLDivElement>>;
+
+    /**
+     * Идентификатор для систем автоматизированного тестирования.
+     * Для FormControl используется модификатор -form-control
+     */
+    dataTestId?: string;
+
+    /**
+     * Запрещает ввод с клавиатуры
+     */
+    disableUserInput?: boolean;
+};
+
+const inputTypesForSelectionRange = ['password', 'search', 'tel', 'text', 'url'];
+
+export const Input = React.forwardRef<HTMLInputElement, InputProps>(
+    (
+        {
+            type = 'text',
+            block = false,
+            bottomAddons,
+            dataTestId,
+            clear = false,
+            disabled,
+            error,
+            success,
+            hint,
+            className,
+            fieldClassName,
+            inputClassName,
+            labelClassName,
+            addonsClassName,
+            rightAddonsProps,
+            leftAddonsProps,
+            focusedClassName,
+            filledClassName,
+            label,
+            labelView = 'inner',
+            leftAddons,
+            onFocus,
+            onBlur,
+            onChange,
+            // onClear,
+            onClick,
+            onMouseDown,
+            onMouseUp,
+            onAnimationStart,
+            rightAddons,
+            value,
+            defaultValue,
+            wrapperRef,
+            readOnly: readOnlyProp,
+            // FormControlComponent,
+            disableUserInput,
+            ...restProps
+        },
+        ref,
+    ) => {
+        const { onKeyDown } = restProps;
+        const uncontrolled = value === undefined;
+        const readOnly = readOnlyProp || disableUserInput;
+
+        const inputRef = useRef<HTMLInputElement>(null);
+
+        const [focusVisible] = useFocus(inputRef, 'keyboard');
+
+        const [focused, setFocused] = useState(restProps.autoFocus);
+        const [stateValue, setStateValue] = useState(defaultValue || '');
+
+        const filled = Boolean(uncontrolled ? stateValue : value);
+        const [autofilled, setAutofilled] = useState(false);
+
+        // отображаем крестик только для заполненного и активного инпута
+        const clearButtonVisible = clear && filled && !disabled && !readOnlyProp;
+        const hasInnerLabel = label && labelView === 'inner';
+
+        useLayoutEffect(() => {
+            const input = inputRef.current;
+
+            if (
+                !restProps.autoFocus ||
+                !input ||
+                // https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/setSelectionRange
+                !inputTypesForSelectionRange.includes(input.type)
+            ) {
+                return;
+            }
+
+            // https://github.com/facebook/react/issues/14125
+            input.setSelectionRange(input.value.length, input.value.length);
+        }, []);
+
+        const handleInputFocus = useCallback(
+            (event: React.FocusEvent<HTMLInputElement>) => {
+                if (onFocus) {
+                    onFocus(event);
+                }
+
+                if (readOnlyProp) {
+                    return;
+                }
+
+                if (disableUserInput && hasStepperInRightAddon(rightAddons)) {
+                    return;
+                }
+
+                setFocused(true);
+            },
+            [onFocus, readOnlyProp, disableUserInput],
+        );
+
+        const handleInputBlur = useCallback(
+            (event: React.FocusEvent<HTMLInputElement>) => {
+                setFocused(false);
+
+                if (onBlur) {
+                    onBlur(event);
+                }
+            },
+            [onBlur],
+        );
+
+        const handleInputChange = useCallback(
+            (event: React.ChangeEvent<HTMLInputElement>) => {
+                let inputValue = event.target.value;
+                const target = event.target as HTMLInputElement;
+                const isInputTypeNumber = target.getAttribute('type') === 'number';
+                const pattern = /[eE]/g;
+
+                if (isInputTypeNumber && pattern.test(inputValue)) {
+                    inputValue = inputValue.replace(pattern, '');
+                }
+
+                if (onChange) {
+                    onChange(event, { value: inputValue });
+                }
+
+                if (uncontrolled) {
+                    setStateValue(inputValue);
+                }
+            },
+            [onChange, uncontrolled],
+        );
+
+        const handleKeyDown = useCallback(
+            (event: KeyboardEvent<HTMLInputElement>) => {
+                /**
+                 * По умолчанию в input[type=number] можно вводить числа типа 2e5 (200 000)
+                 * Это ломает некоторое поведение, поэтому запрещаем ввод символов [eE]
+                 * @see DS-6808
+                 */
+                const { key, target } = event;
+                const eventTarget = target as HTMLInputElement;
+                const isInputTypeNumber = eventTarget.getAttribute('type') === 'number';
+
+                if (isInputTypeNumber && (key === 'e' || key === 'E')) {
+                    event.preventDefault();
+
+                    return;
+                }
+
+                if (onKeyDown) {
+                    onKeyDown(event);
+                }
+            },
+            [onKeyDown],
+        );
+
+        // const handleClear = useCallback(
+        //     (event: MouseEvent<HTMLButtonElement>) => {
+        //         if (!clearButtonVisible) return;
+
+        //         if (uncontrolled) {
+        //             setStateValue('');
+        //         }
+
+        //         if (onClear) {
+        //             onClear(event);
+        //         }
+
+        //         if (inputRef.current && !focused) {
+        //             inputRef.current.focus();
+        //         }
+        //     },
+        //     [clearButtonVisible, focused, onClear, uncontrolled],
+        // );
+
+        const handleAnimationStart = useCallback(
+            (event: AnimationEvent<HTMLInputElement>) => {
+                if (onAnimationStart) {
+                    onAnimationStart(event);
+                }
+
+                setAutofilled(event.animationName.includes('start'));
+            },
+            [onAnimationStart],
+        );
+
+        const renderRightAddons = () => {
+            const addonsVisible = clearButtonVisible || rightAddons || error || success;
+            // const shouldShowSuccessIcon = success && !error;
+            // const statusBadgeSize = size === 40 ? 16 : 20;
+
+            return (
+                /**
+                 * Right addon priority [4] <= [3] <= [2] <= [1]
+                 * [4] - Clear
+                 * [3] - Status (error, success)
+                 * [2] - Common (info, e.g.)
+                 * [1] - Indicators (eye, calendar, chevron, stepper e.g.)
+                 */
+                addonsVisible && (
+                    <Fragment>
+                        {/* {clearButtonVisible && (
+                            <ClearButton
+                                onClick={handleClear}
+                                disabled={disabled}
+                                colors={colors}
+                                dataTestId={getDataTestId(dataTestId, 'clear-icon')}
+                                size={size}
+                            />
+                        )}
+                        {error && (
+                            <div
+                                className={cn(styles.errorIcon)}
+                                data-addon='error-icon'
+                            >
+                                <StatusBadge
+                                    view='negative-alert'
+                                    size={statusBadgeSize}
+                                    dataTestId={getDataTestId(dataTestId, 'error-icon')}
+                                />
+                            </div>
+                        )}
+                        {shouldShowSuccessIcon && (
+                            <div className={cn(styles.successIcon)}>
+                                <StatusBadge
+                                    view='positive-checkmark'
+                                    size={statusBadgeSize}
+                                    dataTestId={getDataTestId(dataTestId, 'success-icon')}
+                                />
+                            </div>
+                        )}
+                        {rightAddons} */}
+                    </Fragment>
+                )
+            );
+        };
+
+        return (
+            <FormControl
+                ref={wrapperRef}
+                className={cn(className, focused && focusedClassName, filled && filledClassName)}
+                fieldClassName={cn(fieldClassName, {
+                    [styles.focusVisible]: focusVisible,
+                })}
+                labelClassName={labelClassName}
+                addonsClassName={addonsClassName}
+                block={block}
+                disabled={disabled}
+                readOnly={readOnlyProp}
+                filled={filled || autofilled || focused}
+                focused={focused}
+                error={error}
+                label={label}
+                labelView={labelView}
+                hint={hint}
+                leftAddons={leftAddons}
+                rightAddons={renderRightAddons()}
+                bottomAddons={bottomAddons}
+                onClick={onClick}
+                onMouseDown={onMouseDown}
+                onMouseUp={onMouseUp}
+                // dataTestId={getDataTestId(dataTestId, 'form-control')}
+                rightAddonsProps={rightAddonsProps}
+                leftAddonsProps={leftAddonsProps}
+            >
+                <input
+                    {...restProps}
+                    className={cn(
+                        styles.input,
+                        {
+                            [styles.disableUserInput]: disableUserInput,
+                            [styles.error]: error,
+                            [styles.hasInnerLabel]: hasInnerLabel
+                        },
+                        inputClassName,
+                    )}
+                    disabled={disabled}
+                    onBlur={handleInputBlur}
+                    onFocus={handleInputFocus}
+                    onChange={handleInputChange}
+                    onKeyDown={handleKeyDown}
+                    onAnimationStart={handleAnimationStart}
+                    ref={mergeRefs([ref, inputRef])}
+                    type={type}
+                    value={uncontrolled ? stateValue : value}
+                    readOnly={readOnly}
+                    data-test-id={dataTestId}
+                    aria-label={typeof label === 'string' ? label : undefined}
+                />
+            </FormControl>
+        );
+    },
+);

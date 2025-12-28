@@ -2,7 +2,8 @@ import { BonusBalance } from './components/BonusBalance';
 import { BonusLink } from './components/BonusLink';
 import { CardBonus } from './components/CardBonus';
 import { MainLayout } from '@/components/common/MainLayout';
-import { TelegramMainButton } from '@/components/common/TelegramMainButton';
+import { TelegramButtons } from '@/components/Telegram';
+import { Routes } from '@/routes';
 import { useCardsStore } from '@/states/cards/store';
 import { useFriendsBonusesStore } from '@/states/friends/store';
 import { Button, Text } from '@/uikit';
@@ -55,7 +56,7 @@ export function BonusView() {
         const cardId = useCardsStore.getState().myCardsIds?.[0];
         if (cardId) {
             useFriendsBonusesStore.getState().setTransferCardId(cardId);
-            navigate('/friends/bonus/transfer');
+            navigate(Routes.TRANSFER_FROM_FRIENDS_BONUS);
         }
     };
 
@@ -107,6 +108,7 @@ export function BonusView() {
 
                         <Button
                             view='primary'
+                            size='40'
                             className={styles.buttonTransfer}
                             onClick={handleTransfer}
                         >
@@ -172,7 +174,7 @@ export function BonusView() {
                 </div>
             </div>
 
-            <TelegramMainButton
+            <TelegramButtons.MainButton
                 text={t('Copy link')}
                 onClick={handleCopyLink}
             />

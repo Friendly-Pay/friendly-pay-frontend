@@ -6,6 +6,14 @@ import { CloudStorage, isCloudStorageAvailable } from '@/utils/storage';
 import i18next from 'i18next';
 import { create } from 'zustand';
 
+export enum VerificationStatus {
+    Idle = 'Idle',
+    Pending = 'InProgress',
+    Success = 'Success',
+    NeedAction = 'NeedAction',
+    Failed = 'Failed'
+}
+
 interface User {
     id: string;
     email: string | null;
@@ -13,14 +21,10 @@ interface User {
     firstName: string | null;
     lastName: string | null;
     username: string | null;
-    avatar: string | null;
-    birthday: string | null;
     country: string | null;
-    town: string | null;
-    address: string | null;
-    postCode: string | null;
+    avatar: string | null;
     status: 'Active' | 'Blocked';
-    verificationLevel: 'None' | 'Base';
+    verificationStatus: VerificationStatus;
 }
 
 interface State {
@@ -31,6 +35,13 @@ interface State {
     userFetchStatus: FetchStatus;
     initialTopupOrder: InitialTopupOrder | null;
     initialPurchaseOrder: InitialPurchaseOrder | null;
+    /**
+     * Карта, на которую проходил KYC. null после покупки карты
+     * 
+     *  @TODO позже проверять, доступна ли пользователю. Если нет - выводить специальный стейт
+     * 
+     * */
+    initialPurchaseCardTypeId: number | null;
 }
 
 interface Actions {
@@ -38,10 +49,13 @@ interface Actions {
     setSkipIntro: (skip: boolean) => void;
     setBlurBalance: (blur: boolean) => void;
     setUserFetchStatus: (status: FetchStatus) => void;
-    setInitialsPaymentOrders: (topup: InitialTopupOrder | null, purchase: InitialPurchaseOrder | null) => void;
-    resetInitialsPaymentOrders: () => void;
+    setInitialPaymentOrders: (topup: InitialTopupOrder | null, purchase: InitialPurchaseOrder | null) => void;
+    resetInitialPaymentOrders: () => void;
+    setInitialPurchaseCardTypeId: (cardTypeId: number | null) => void;
+    resetInitualPurchaseCardTypeId: () => void;
     setLanguageCode: (lang: string) => void;
-    loadUser: () => Promise<UserRes | boolean>;
+    loadUser: (params?: { includePaymentInitials: boolean }) => Promise<UserRes | void>;
+    refetchUser: () => Promise<UserRes | void>;
 }
 
 const initIntro = () => {
@@ -72,8 +86,10 @@ export const useUserStore = create<State & Actions>((set, get) => ({
     userFetchStatus: FetchStatus.Idle,
     initialTopupOrder: null,
     initialPurchaseOrder: null,
+    initialPurchaseCardTypeId: null,
 
     setUser: (user) => set({ user }),
+
     setSkipIntro: (skip) => {
         const storageValue = String(skip);
         if (isCloudStorageAvailable()) {
@@ -83,6 +99,9 @@ export const useUserStore = create<State & Actions>((set, get) => ({
         }
         set({ skipIntro: skip });
     },
+
+    setUserFetchStatus: (userFetchStatus) => set({ userFetchStatus }),
+
     setBlurBalance: (blur) => {
         const storageValue = String(blur);
         if (isCloudStorageAvailable()) {
@@ -92,18 +111,23 @@ export const useUserStore = create<State & Actions>((set, get) => ({
         }
         set({ blurBalance: blur });
     },
+
     setLanguageCode: (languageCode) => {
         const safe = safeLanguageCode(languageCode);
         set({ languageCode: safe });
         i18next.changeLanguage(safe);
     },
-    setUserFetchStatus: (userFetchStatus) => set({ userFetchStatus }),
 
-    setInitialsPaymentOrders: (topup, purchase) => set({ initialTopupOrder: topup, initialPurchaseOrder: purchase }),
-    resetInitialsPaymentOrders: () => set({ initialTopupOrder: null, initialPurchaseOrder: null }),
+    // Payment orders initials
+    setInitialPaymentOrders: (topup, purchase) => set({ initialTopupOrder: topup, initialPurchaseOrder: purchase }),
+    resetInitialPaymentOrders: () => set({ initialTopupOrder: null, initialPurchaseOrder: null }),
 
-    loadUser: async () => {
-        const { setUserFetchStatus, setUser, setInitialsPaymentOrders } = get();
+    // Purchase CardTypeId initial
+    setInitialPurchaseCardTypeId: (cardTypeId) => set({ initialPurchaseCardTypeId: cardTypeId }),
+    resetInitualPurchaseCardTypeId: () => set({ initialPurchaseCardTypeId: null }),
+
+    loadUser: async ({ includePaymentInitials } = { includePaymentInitials: true }) => {
+        const { setUserFetchStatus, setUser, setInitialPaymentOrders, setInitialPurchaseCardTypeId } = get();
         setUserFetchStatus(FetchStatus.Pending);
         try {
             const userData = await fetchUser();
@@ -115,23 +139,28 @@ export const useUserStore = create<State & Actions>((set, get) => ({
                 lastName: userData.lastName,
                 username: userData.username,
                 avatar: userData.avatar,
-                birthday: userData.birthday,
                 country: userData.country,
-                town: userData.town,
-                address: userData.address,
-                postCode: userData.postCode,
                 status: userData.status,
-                verificationLevel: userData.verificationLevel,
+                verificationStatus: userData.verificationStatus as VerificationStatus,
             });
+
             setUserFetchStatus(FetchStatus.Fulfilled);
-            setInitialsPaymentOrders(userData.depositTransaction || null, userData.purchaseTransaction || null);
+            if (includePaymentInitials) {
+                setInitialPaymentOrders(userData.depositTransaction || null, userData.purchaseTransaction || null);
+                setInitialPurchaseCardTypeId(userData.selectedCardTypeId);
+            }
             return userData;
         } catch (error) {
             console.error('[error] ошибка получения данных пользователя', error);
             setUserFetchStatus(FetchStatus.Rejected);
-            return false;
+            return;
         }
     },
+
+    refetchUser: async () => {
+        const load = get().loadUser;
+        return load({ includePaymentInitials: false }); // Чтобы не вызвать срабатывание PaymentRestore
+    }
 }));
 
 export const useHasPaymentRestoreInitials = () => {

@@ -1,46 +1,105 @@
 import { Spinner } from '../Spinner';
-import { PropsWithChildren } from 'react';
+import React, { PropsWithChildren, useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
 import styles from './Button.module.scss';
 
 type ButtonProps = {
-    view?: 'primary' | 'secondary' | 'secondaryColored' | 'white' | 'green';
+    /* Вид кнопки */
+    view?: 'primary' | 'secondary' | 'secondaryColored' | 'white' | 'transparent' | 'green';
+
+    /**
+     * Размер кнопки
+     */
+    size?: '40' | '56' | '58'
+
     loading?: boolean;
     disabled?: boolean;
-    smallSize?: boolean;
+
     className?: string;
-    onClick?: (event: any) => void;
+    onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 
-export function Button({ view = 'primary', smallSize, loading, disabled, className, children, onClick }: PropsWithChildren<ButtonProps>) {
-    const isLoading = !disabled && loading;
-    const handleClick = (event: any) => {
-        if (isLoading || disabled) {
-            event.preventDefault();
-            return;
-        }
-        onClick?.(event);
-    };
+const sizeClassnamesMap: { [size: string]: string } = {
+    '40': styles.small,
+    '56': styles.normal,
+    '58': styles.big
+};
 
-    return (
-        <button
-            className={classNames(
-                styles.button,
-                styles[view],
-                loading && styles.loading,
-                disabled && styles.disabled,
-                smallSize && styles.smallSize,
-                className
-            )}
-            onClick={handleClick}
-        >
-            {loading ? (
-                <div className={styles.loader}>
-                    {<Spinner />}
-                </div>
-            ) : (
-                children
-            )}
-        </button>
-    );
-}
+export const LOADER_MIN_DISPLAY_INTERVAL = 600;
+
+export const Button = React.forwardRef<
+    HTMLButtonElement,
+    PropsWithChildren<ButtonProps>
+>(
+    (
+        {
+            view = 'primary',
+            size = '56',
+            loading,
+            disabled,
+            className,
+            children,
+            onClick
+        },
+        ref,
+    ) => {
+        const [loaderTimePassed, setLoaderTimePassed] = useState(true);
+
+        const timerId = useRef(0);
+        const showLoader = loading && !disabled || !loaderTimePassed;
+
+        const buttonClassnames = classNames(
+            styles.button,
+            styles[view],
+            sizeClassnamesMap[size],
+            loading && styles.loading,
+            disabled && styles.disabled,
+            className
+        );
+
+        useEffect(() => {
+            if (loading) {
+                setLoaderTimePassed(false);
+
+                timerId.current = window.setTimeout(() => {
+                    setLoaderTimePassed(true);
+                }, LOADER_MIN_DISPLAY_INTERVAL);
+            }
+        }, [loading]);
+
+        useEffect(
+            () => () => {
+                window.clearTimeout(timerId.current);
+            },
+            [],
+        );
+
+        const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+            if (disabled || showLoader) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                return;
+            }
+            onClick?.(e);
+        };
+
+        return (
+            <button
+                ref={ref}
+                type='button'
+                className={buttonClassnames}
+                disabled={disabled || showLoader}
+                onClick={handleClick}
+            >
+                {loading ? (
+                    <div className={styles.loader}>
+                        {<Spinner />}
+                    </div>
+                ) : (
+                    children
+                )}
+            </button>
+        );
+    }
+);

@@ -2,11 +2,11 @@
     width: auto;
     position: relative;
 
-    &.topup {
+    &.positive {
         color: var(--color-green);
     }
 
-    &.failed {
+    &.negative {
         color: var(--color-red);
     }
 }

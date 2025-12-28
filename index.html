@@ -6,7 +6,7 @@
     <meta name="viewport"
         content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,shrink-to-fit=no,viewport-fit=cover">
     <meta name="theme-color" content="#175AEA">
-    <title>Friendly Pay</title>
+    <title>Arbi Wallet</title>
     <link rel="preconnect" href="<%= VITE_CDN_URL %>" />
     <link crossorigin="anonymous" rel="preconnect" href="<%= VITE_CDN_URL %>">
 
@@ -40,6 +40,7 @@
                     console.error(error);
                 }
             }
+            window.Telegram.WebApp.ready();
         }
     </script>
 

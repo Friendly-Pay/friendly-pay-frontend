@@ -42,7 +42,14 @@ export function useAuthData() {
         }
     };
 
+    const getReferralId = () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const referralId = urlParams.get('referral_id');
+        return referralId;
+    };
+
     const setAuthData = useAuthStore(state => state.setAuthData);
+    const setReferralId = useAuthStore(state => state.setReferralId);
     const setLanguageCode = useUserStore(state => state.setLanguageCode);
     useEffect(() => {
         const authData = getAuthData();
@@ -51,6 +58,10 @@ export function useAuthData() {
             if (!preferredLanguage) {
                 const language = getUserLanguage(authData);
                 setLanguageCode(language);
+            }
+            const referralId = getReferralId();
+            if (referralId) {
+                setReferralId(referralId);
             }
             setAuthData(authData);
         }

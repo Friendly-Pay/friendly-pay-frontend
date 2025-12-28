@@ -11,55 +11,48 @@ import { CardsSlider } from '@/components/Bank/CardsSlider';
 import { MainLayout } from '@/components/common/MainLayout';
 import { CardDetails } from '@/components/Icons/CardDetailts';
 import { Topup } from '@/components/Icons/Topup';
+import { ConfettiAfterPurchase } from '@/components/Payment/ConfettiAfterPurchase';
 import { UserHead } from '@/components/User/UserHead';
+import { isCardActivationInProgress, isCardDisabled } from '@/states/cards/helpers';
 import { CardStatus, useCardsStore } from '@/states/cards/store';
-import { PaymentActions } from '@/states/payment/actions';
-import { useUserStore } from '@/states/user/store';
+import { usePaymentStore } from '@/states/payment/store';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import classNames from 'classnames';
 import styles from './HomeView.module.scss';
-
-const balanceAppearance = {
-    initial: { opacity: 0 },
-    animate: { opacity: 1 },
-    exit: { opacity: 0 },
-    transition: { duration: 0.15 }
-};
 
 const contentAppearance = {
     initial: { opacity: 0 },
     animate: { opacity: 1 },
-    exit: { opacity: 0, transition: { duration: 0.2 } },
-    transition: { duration: 0.25 }
+    exit: { opacity: 0 },
+    transition: { duration: 0.2 }
 };
 
 export function HomeView() {
     const [t] = useTranslation();
     const myCards = useCardsStore(state => state.myCards);
+    const myCardsCount = useCardsStore(state => state.myCardsCount);
     const currentCardId = useCardsStore(state => state.selectedCardId);
     const currentBankCard = myCards && currentCardId ? myCards[currentCardId] : null;
     const openCardDetails = useCardsStore(state => state.openCardDetails);
 
-    const isActivation = currentBankCard && (currentBankCard.status === CardStatus.ActivationProcessing || currentBankCard.status === CardStatus.VerificationProcessing);
-    const isNeedActivation = currentBankCard && currentBankCard.status === CardStatus.NeedActivation;
-    const isActivationFailed = currentBankCard && (currentBankCard.status === CardStatus.ActivationFailed || currentBankCard.status === CardStatus.VerificationFailed);
+    let cardDisabled = false;
+    let cardNeedActivation = false;
+    let cardActivationPending = false;
+    if (currentBankCard) {
+        cardDisabled = isCardDisabled(currentBankCard.status);
+        cardNeedActivation = currentBankCard.status === CardStatus.NeedActivation;
+        cardActivationPending = isCardActivationInProgress(currentBankCard.status);
+    }
 
-    const skipIntro = useUserStore(state => state.skipIntro);
-    const myCardsCount = useCardsStore(state => state.myCardsCount);
-
-    const navigate = useNavigate();
-    const openTopup = () => {
-        PaymentActions.topupCard(currentCardId!, navigate);
+    const handleTopupOpen = () => {
+        if (currentCardId) {
+            usePaymentStore.getState().openCurrencyModal('TOPUP');
+            usePaymentStore.getState().startTopup(currentCardId);
+        }
     };
 
-    if (!skipIntro) {
-        return <Navigate
-            to='/intro'
-            replace
-        />;
-    }
     if (!myCardsCount) {
         return <Navigate
             to='/new-product'
@@ -70,6 +63,7 @@ export function HomeView() {
     return (
         <MainLayout fullSpace>
             <RefetchLoader />
+            <ConfettiAfterPurchase />
 
             <UserHead>
                 <AnimatePresence
@@ -78,7 +72,7 @@ export function HomeView() {
                 >
                     {currentBankCard && <motion.div
                         key={`${currentCardId}balanceFixed`}
-                        {...balanceAppearance}
+                        {...contentAppearance}
                     >
                         <CardBalanceFixed
                             value={currentBankCard.balance}
@@ -95,7 +89,7 @@ export function HomeView() {
                 >
                     <motion.div
                         key={`${currentCardId}balance`}
-                        {...balanceAppearance}
+                        {...contentAppearance}
                     >
                         <CardBalance
                             value={currentBankCard.balance}
@@ -120,12 +114,12 @@ export function HomeView() {
                         {...contentAppearance}
                         className={classNames(
                             styles.content,
-                            isActivation && styles.activation,
-                            isNeedActivation && styles.needActivation,
-                            isActivationFailed && styles.activationFailed
+                            cardActivationPending && styles.activation,
+                            cardNeedActivation && styles.needActivation,
+                            cardDisabled && styles.activationFailed
                         )}
                     >
-                        {(isActivation || isNeedActivation || isActivationFailed) && <CardActivation
+                        {(cardActivationPending || cardNeedActivation || cardDisabled) && <CardActivation
                             cardId={currentBankCard.id}
                             status={currentBankCard.status}
                         />}
@@ -133,8 +127,8 @@ export function HomeView() {
                         <div className={styles.main}>
                             <MainButton
                                 icon={<Topup />}
-                                disabled={!currentBankCard.canDeposit && !(isActivation || isNeedActivation || isActivationFailed)}
-                                onClick={openTopup}
+                                disabled={!currentBankCard.canDeposit && !(cardActivationPending || cardNeedActivation || cardDisabled)}
+                                onClick={handleTopupOpen}
                             >
                                 {t('Top up')}
                             </MainButton>

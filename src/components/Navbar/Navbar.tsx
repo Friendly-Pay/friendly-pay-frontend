@@ -1,3 +1,4 @@
+import { Routes } from '@/routes';
 import { Text } from '@/uikit';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
@@ -60,7 +61,7 @@ export function Navbar() {
                 </NavLink>
 
                 <NavLink
-                    to='/friends/bonus'
+                    to={Routes.FRIENDS_BONUS}
                     className={({ isActive }) =>
                         [styles.item, isActive && styles.active]
                             .filter(Boolean)

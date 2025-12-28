@@ -1,0 +1,32 @@
+.root {
+    width: 100%;
+    max-width: 388px;
+    display: flex;
+    flex-direction: column;
+}
+
+.email {
+    width: 100%;
+    margin-bottom: 24px;
+}
+
+.codeInput {
+    margin-bottom: 32px;
+}
+
+.linkWrap {
+    display: flex;
+}
+
+.link {
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--color-typo-primary);
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    letter-spacing: -0.015rem;
+    // padding: 12px 0;
+    border-bottom: 1px solid;
+    border-bottom-style: dashed;
+}

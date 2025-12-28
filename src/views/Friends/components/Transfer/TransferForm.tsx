@@ -1,4 +1,5 @@
-import { TelegramMainButton } from '@/components/common/TelegramMainButton';
+import { TelegramButtons } from '@/components/Telegram';
+import { Routes } from '@/routes';
 import { useFriendsBonusesStore } from '@/states/friends/store';
 import { Input, Text } from '@/uikit';
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
@@ -127,7 +128,7 @@ export function TransferForm({ minAmount, availableAmount }: TransferFormProps) 
                 amount: parsedAmount
             });
             setTransferAmount(parsedAmount);
-            navigate('/friends/bonus/transfer/result');
+            navigate(Routes.TRANSFER_FROM_FRIENDS_BONUS_RESULT);
         } catch (error) {
             console.error(error);
             const message = t('An error occurred. Please try again later or contact support');
@@ -186,7 +187,7 @@ export function TransferForm({ minAmount, availableAmount }: TransferFormProps) 
                 )}
             </div>
 
-            <TelegramMainButton
+            <TelegramButtons.MainButton
                 text={t('Transfer')}
                 loading={loading}
                 visible={!selectOpened}

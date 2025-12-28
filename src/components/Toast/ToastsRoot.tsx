@@ -29,6 +29,7 @@ const mobileOffset = {
     left: 'var(--safe-area-right)',
 };
 
+// @TODO перенести в @friendly-lab/toast
 export const ToastsRoot = () => {
     return (
         <Toaster

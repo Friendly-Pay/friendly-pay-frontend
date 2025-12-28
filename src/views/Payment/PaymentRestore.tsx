@@ -1,23 +1,30 @@
+import { Routes } from '@/routes';
 import { OrderStorage } from '@/states/payment/storage';
 import { PaymentStatus, usePaymentStore } from '@/states/payment/store';
-import { useUserStore } from '@/states/user/store';
+import { useUserStore, VerificationStatus } from '@/states/user/store';
 import { PropsWithChildren, useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 
 export function PaymentRestore({ children }: PropsWithChildren) {
+    const sumsubStatus = useUserStore((state) => state.user?.verificationStatus);
     const initialTopupOrder = useUserStore((state) => state.initialTopupOrder);
     const initialPurchaseOrder = useUserStore((state) => state.initialPurchaseOrder);
-    const resetInitialsPaymentOrders = useUserStore((state) => state.resetInitialsPaymentOrders);
+    const initialPurchaseCardTypeId = useUserStore((state) => state.initialPurchaseCardTypeId);
+    const resetInitialPaymentOrders = useUserStore((state) => state.resetInitialPaymentOrders);
+    const resetInitualPurchaseCardTypeId = useUserStore((state) => state.resetInitualPurchaseCardTypeId);
+
+    const startCardPurchase = usePaymentStore((state) => state.startCardPurchase);
 
     const restoreTopup = usePaymentStore((state) => state.restoreTopup);
     const restoreCardPurchase = usePaymentStore((state) => state.restoreCardPurchase);
 
     const [isMounted, setMounted] = useState(false);
     useEffect(() => {
+        setMounted(true);
+
         if (isMounted) {
-            resetInitialsPaymentOrders();
-        } else {
-            setMounted(true);
+            resetInitialPaymentOrders();
+            resetInitualPurchaseCardTypeId();
         }
     }, [isMounted]);
 
@@ -26,7 +33,7 @@ export function PaymentRestore({ children }: PropsWithChildren) {
         if (order?.status !== PaymentStatus.UserHiddenWaiting) {
             restoreCardPurchase(initialPurchaseOrder);
             return <Navigate
-                to="/payments/pay-new-card"
+                to={Routes.CARD_PURCHASE}
                 replace
             />;
         }
@@ -37,10 +44,19 @@ export function PaymentRestore({ children }: PropsWithChildren) {
         if (order?.status !== PaymentStatus.UserHiddenWaiting) {
             restoreTopup(initialTopupOrder);
             return <Navigate
-                to="/payments/topup"
+                to={Routes.TOPUP}
                 replace
             />;
         }
+    }
+
+    // Переход к покупке выбранной карты
+    if (initialPurchaseCardTypeId && sumsubStatus === VerificationStatus.Success) {
+        startCardPurchase(initialPurchaseCardTypeId);
+        return <Navigate
+            to={Routes.CARD_PURCHASE}
+            replace
+        />;
     }
 
     if (!isMounted) {

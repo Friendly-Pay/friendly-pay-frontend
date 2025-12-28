@@ -3,6 +3,7 @@ import { TransferForm } from './components/Transfer/TransferForm';
 import { MainLayout } from '@/components/common/MainLayout';
 import { PaymentHead } from '@/components/Payment/Head/PaymentHead';
 import { TransferBalance } from '@/components/Payment/Head/TransferBalance';
+import { Routes } from '@/routes';
 import { useFriendsBonusesStore } from '@/states/friends/store';
 import { Line, Text } from '@/uikit';
 import balanceImage from 'assets/bonus/balance.png?inline';
@@ -19,7 +20,7 @@ export function BonusTransferView() {
 
     if (!cardId || balance === null) {
         return <Navigate
-            to='/friends/bonus'
+            to={Routes.FRIENDS_BONUS}
             replace
         />;
     }

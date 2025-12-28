@@ -1,7 +1,7 @@
 import { BankCard } from './BankCard';
 import { SliderPagination } from './SliderPagination';
 import { MyCard, useCardsStore } from '@/states/cards/store';
-import { useLayoutEffect, useRef, useState } from 'react';
+import { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { Swiper, SwiperClass, SwiperRef, SwiperSlide } from 'swiper/react';
 import classNames from 'classnames';
 import styles from './CardsSlider.module.scss';
@@ -12,6 +12,8 @@ type CardsSliderProps = {
 }
 
 export function CardsSlider({ myCards, currentCardId }: CardsSliderProps) {
+    const componentRef = useRef<HTMLDivElement>(null);
+
     const cardsIds = useCardsStore(state => state.myCardsIds!);
     const myCardsCount = useCardsStore(state => state.myCardsCount);
     const openCardDetails = useCardsStore(state => state.openCardDetails);
@@ -22,61 +24,93 @@ export function CardsSlider({ myCards, currentCardId }: CardsSliderProps) {
     const [activeIndex, setActiveIndex] = useState(cardsIds.indexOf(currentCardId));
 
     const computeLayout = () => {
-        const slides = document.getElementsByClassName('swiper-slide');
+        if (!componentRef.current) {
+            return;
+        }
+
+        const slides = componentRef.current.getElementsByClassName('swiper-slide');
         if (!slides.length || !sliderRef.current) {
             return;
         }
 
         const cardRect = slides[0].getBoundingClientRect();
         const cardWidth = cardRect.width;
+        const screenWidth = window.innerWidth;
 
-        const availableSpace = window.innerWidth - cardWidth;
-        const nonActiveCardVisibleWidth = 50;
+        const availableSpace = screenWidth - cardWidth;
+        const nextVisibleCardWidth = 56;
 
-        let margin = availableSpace / 2 - nonActiveCardVisibleWidth;
-        if (margin < 16) {
+        let margin = availableSpace / 2 - nextVisibleCardWidth;
+        if (margin < 6) {
             margin = availableSpace / 2;
         }
 
-        const offset = window.innerWidth / 2 - cardWidth / 2;
+        const offset = screenWidth / 2 - cardWidth / 2;
 
         setMargin(margin);
         setOffsets({ offsetBefore: offset, offsetAfter: offset });
     };
 
     const showPagination = myCardsCount > 1;
-    useLayoutEffect(() => {
-        computeLayout();
-        if (sliderRef.current?.swiper) {
-            sliderRef.current.swiper.slideTo(activeIndex, 0);
+
+    const timerId = useRef(0);
+
+    const clearTimer = useCallback(() => {
+        if (timerId.current) {
+            clearTimeout(timerId.current);
         }
     }, []);
 
-    const setSelectedCardId = useCardsStore(state => state.setSelectedCardId);
+    useLayoutEffect(() => {
+        computeLayout();
+        const frameId = requestAnimationFrame(() => {
+            if (sliderRef.current?.swiper) {
+                sliderRef.current.swiper.slideTo(activeIndex, 0, false);
+            }
+        });
+        return () => {
+            cancelAnimationFrame(frameId);
+            clearTimer();
+        };
+    }, []);
+
+    const handleSlideTransitionStart = () => {
+        clearTimer();
+        timerId.current = setTimeout(() => {
+            window.Telegram.WebApp.HapticFeedback.selectionChanged();
+        }, 200);
+    };
+
     const handleSlideChange = (swiper: SwiperClass) => {
         setActiveIndex(swiper.activeIndex);
-        setSelectedCardId(cardsIds[swiper.activeIndex]);
-        window.Telegram.WebApp.HapticFeedback.impactOccurred('soft');
+        useCardsStore.getState().setSelectedCardId(cardsIds[swiper.activeIndex]);
     };
 
     const handleCardChange = (index: number) => {
-        if (sliderRef.current && sliderRef.current.swiper) {
-            sliderRef.current.swiper.slideTo(index);
+        const swiper = sliderRef.current?.swiper;
+        if (!swiper || swiper.activeIndex === index) {
+            return;
         }
+        swiper.slideTo(index);
     };
 
     return (
-        <div className={classNames(styles.root, showPagination && styles.hasPagination)}>
+        <div
+            ref={componentRef}
+            className={classNames(styles.root, showPagination && styles.hasPagination)}
+        >
             <Swiper
                 ref={sliderRef}
-                speed={500}
+                speed={370}
                 className={styles.swiper}
                 slidesPerView='auto'
                 spaceBetween={margin}
                 slidesOffsetBefore={offsets.offsetBefore}
                 slidesOffsetAfter={offsets.offsetAfter}
                 onSlideChange={handleSlideChange}
+                onSlideChangeTransitionStart={handleSlideTransitionStart}
                 onResize={computeLayout}
+                cssMode={false}
             >
                 {cardsIds.map((card, index) => {
                     const cardData = myCards[card];

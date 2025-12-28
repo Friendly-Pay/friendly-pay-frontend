@@ -1,0 +1,39 @@
+.root {
+    display: flex;
+    flex-direction: column;
+}
+
+.inputs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    .inputField {
+        &Left {
+            border-top-right-radius: 0px;
+            border-bottom-right-radius: 0px;
+        }
+
+        &Right {
+            border-top-left-radius: 0px;
+            border-bottom-left-radius: 0px;
+        }
+    }
+
+    .inputNativeRight {
+        padding-left: 0;
+
+        &+div {
+            padding-left: 0;
+        }
+    }
+}
+
+.caption {
+    color: var(--color-typo-primary-60);
+    margin-top: 10px;
+    padding-left: 4px;
+
+    span {
+        font-weight: 500;
+    }
+}

@@ -10,17 +10,38 @@ export type ModalProps = {
     padding?: boolean
     fullscreen?: boolean
     onClose?: () => void
+    onAnimationStart?: () => void
     onAnimationCompleted?: () => void
 }
 
 const backdropAnim = {
     initial: { opacity: 0 },
     animate: { opacity: 1 },
-    exit: { opacity: 0, transition: { delay: 0.1 } },
-    transition: { duration: 0.2 }
+    exit: { opacity: 0 },
+    transition: { duration: 0.3, ease: [0.4, 0, 0.2, 1] }
 };
 
-const boxAnim = {
+const boxAnimDefault = {
+    initial: {
+        transform: 'translateY(100%)',
+    },
+    animate: {
+        transform: 'translateY(0%)',
+        transition: {
+            type: 'spring',
+            damping: 28,
+            mass: 0.71,
+            stiffness: 400,
+            restDelta: 0.001
+        }
+    },
+    exit: {
+        transform: 'translateY(100%)',
+        transition: { duration: 0.18, ease: [0.4, 0.05, 0.75, 0.7] }
+    }
+};
+
+const boxAnimSlow = {
     initial: {
         transform: 'translateY(100%)',
     },
@@ -36,7 +57,7 @@ const boxAnim = {
     },
     exit: {
         transform: 'translateY(100%)',
-        transition: { duration: 0.35, ease: [0.4, 0, 0.2, 1] }
+        transition: { duration: 0.20, ease: [0.3, 0.05, 0.3, 0.2] }
     }
 };
 
@@ -44,7 +65,7 @@ const portalRoot = typeof window !== 'undefined'
     ? document.getElementById('modal-elements') || document.body
     : null;
 
-export function Modal({ isOpen, onClose, onAnimationCompleted, padding = true, fullscreen, children }: PropsWithChildren<ModalProps>) {
+export function Modal({ isOpen, onClose, onAnimationStart, onAnimationCompleted, padding = true, fullscreen, children }: PropsWithChildren<ModalProps>) {
     const scrollableBodyRef = useRef<HTMLDivElement>(null);
     const contextProvider: ModalState = useMemo(() => ({
         isOpen,
@@ -55,6 +76,10 @@ export function Modal({ isOpen, onClose, onAnimationCompleted, padding = true, f
     const handleOverlayClick = () => {
         onClose?.();
     };
+
+    const boxAnim = fullscreen
+        ? boxAnimSlow
+        : boxAnimDefault;
 
     if (!portalRoot) {
         return null;
@@ -76,6 +101,7 @@ export function Modal({ isOpen, onClose, onAnimationCompleted, padding = true, f
                     <motion.div
                         {...boxAnim}
                         className={classNames(styles.box, padding && styles.padding, fullscreen && styles.fullscreen)}
+                        onAnimationStart={onAnimationStart}
                         onAnimationComplete={onAnimationCompleted}
                     >
                         <ModalContext.Provider value={contextProvider}>

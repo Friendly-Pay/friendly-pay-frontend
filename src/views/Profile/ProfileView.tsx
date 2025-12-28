@@ -3,7 +3,7 @@ import { MainLayout } from '@/components/common/MainLayout';
 import { Phone } from '@/components/Icons/Phone';
 import { Plane } from '@/components/Icons/Plane';
 import { Avatar } from '@/components/User/Avatar';
-import { useUserStore } from '@/states/user/store';
+import { useUserStore, VerificationStatus } from '@/states/user/store';
 import { Text } from '@/uikit';
 import { formatPhoneNumber, formatUserFirstNameAndLastName, formatUsername, openWebviewLink } from '@/utils';
 import { useTranslation } from 'react-i18next';
@@ -18,7 +18,7 @@ const LEGAL_KYC_AML = import.meta.env.VITE_LEGAL_KYC_AML;
 export function ProfileView() {
     const [t] = useTranslation();
     const user = useUserStore(state => state.user!);
-    const hasCompletedKyc = Boolean(user.address || user.country || user.postCode || user.phoneNumber || user.birthday || user.email || user.firstName || user.lastName);
+    const hasCompletedKyc = Boolean(user.verificationStatus === VerificationStatus.Success);
 
     let name: string | null;
     if (hasCompletedKyc) {

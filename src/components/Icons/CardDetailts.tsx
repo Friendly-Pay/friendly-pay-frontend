@@ -21,5 +21,6 @@ export const CardDetails = (props: SVGProps<SVGSVGElement>) => {
                 fill="currentColor"
             />
         </svg>
+
     );
 };

@@ -1,0 +1,27 @@
+.title {
+    margin: 32px 0;
+}
+
+.agreement {
+    color: var(--color-typo-primary-60);
+    line-height: 20px;
+    letter-spacing: -0.28px;
+}
+
+.link {
+    color: var(--color-primary);
+    cursor: pointer;
+    text-decoration: underline;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.error {
+    color: var(--color-red);
+    margin-top: 8px;
+}
+
+.field {
+    display: flex;
+    flex-flow: column nowrap;
+    margin-bottom: 24px;
+}
