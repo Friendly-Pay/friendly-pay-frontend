@@ -23,7 +23,10 @@ export function AuthErrorFallback({ children }: PropsWithChildren) {
         // Если 401 на других запросах - значит токен истек
         if (authFetchStatus === FetchStatus.Rejected || userFetchStatus === FetchStatus.Rejected) {
             alertOpened.current = true;
-            window.Telegram.WebApp.showAlert(t('Problems logging into the app. Please try again later'), () => alertOpened.current = false);
+            window.Telegram.WebApp.showAlert(t('Problems logging into the app. Please try again later'), () => {
+                alertOpened.current = false;
+                window.Telegram.WebApp.close();
+            });
         }
     }, [shouldLogin, authFetchStatus, userFetchStatus]);
 
