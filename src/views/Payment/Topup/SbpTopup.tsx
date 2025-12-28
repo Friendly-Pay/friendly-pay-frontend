@@ -213,7 +213,6 @@ export function SbpTopup() {
                     currency={inputCurrency}
                     fieldClassName={classNames(styles.inputField, styles.inputFieldLeft)}
                     onChange={(_, payload) => handleInputChange(payload)}
-                    locale={locale}
                 />
                 <AmountInput
                     value={valuesMinor[Field.OUTPUT]}
@@ -221,7 +220,6 @@ export function SbpTopup() {
                     fieldClassName={classNames(styles.inputField, styles.inputFieldRight)}
                     inputClassName={styles.inputNativeRight}
                     onChange={(_, payload) => handleOutputChange(payload)}
-                    locale={locale}
                 />
             </div>
 
