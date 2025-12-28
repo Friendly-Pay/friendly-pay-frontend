@@ -1,15 +1,7 @@
-import { fetchIbanAccountStatus, fetchIbanTransactions } from './fetch';
+import { activateIbanAccount, fetchIbanAccountStatus, fetchIbanTransactions } from './fetch';
 import { FetchStatus } from '@/utils/api';
 import { toast } from 'sonner';
 import { create } from 'zustand';
-
-export enum IbanVerificationStatus {
-    Idle = 'Idle',
-    InProgress = 'InProgress',
-    NeedAction = 'NeedAction',
-    Success = 'Success',
-    Failed = 'Failed'
-}
 
 export enum IbanStatus {
     Idle = 'Idle',
@@ -20,7 +12,6 @@ export enum IbanStatus {
 
 interface IbanAccount {
     status: IbanStatus;
-    verificationStatus: IbanVerificationStatus;
     balance: number | null;
     currency: string | null;
     balanceOnHold: number | null;
@@ -30,6 +21,7 @@ interface IbanAccount {
     iban: string | null;
     swift: string | null;
     recipient: string | null;
+    available: boolean;
 }
 
 export enum IbanTransactionType {
@@ -83,13 +75,14 @@ interface State {
 interface Actions {
     loadAccount: () => Promise<IbanAccount | undefined>;
     loadTransactions: (params: { limit: number; offset: number }) => Promise<IbanTransaction[] | undefined>;
+    activateIbanAccount: () => Promise<void>;
     openIbanAccountDetails: () => void;
     closeIbanAccountDetails: () => void;
     openTransferModal: () => void;
     closeTransferModal: () => void;
 }
 
-export const useIbanStore = create<State & Actions>((set) => ({
+export const useIbanStore = create<State & Actions>((set, get) => ({
     account: null,
     accountFetchStatus: FetchStatus.Idle,
     transactions: [],
@@ -103,8 +96,7 @@ export const useIbanStore = create<State & Actions>((set) => ({
             const res = await fetchIbanAccountStatus();
             const account: IbanAccount = {
                 ...res,
-                status: res.status as IbanStatus,
-                verificationStatus: res.verificationStatus as IbanVerificationStatus,
+                status: res.status as IbanStatus
             };
             set({
                 account,
@@ -133,6 +125,16 @@ export const useIbanStore = create<State & Actions>((set) => ({
             console.error('[fetchIbanTransactions]', error);
             toast.error(error.message);
             set({ transactionsFetchStatus: FetchStatus.Rejected });
+        }
+    },
+
+    activateIbanAccount: async () => {
+        try {
+            await activateIbanAccount();
+            await get().loadAccount();
+        } catch (error) {
+            console.error('[fetchIbanTransactions]', error);
+            toast.error('Failed to open IBAN account');
         }
     },
 

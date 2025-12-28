@@ -13,8 +13,6 @@ type IbanBalanceProps = {
     currency: string
     balanceOnHold: number // Средства в обработке
     balanceFrozen: number // Например, санкции
-    balanceText?: string
-    isActivated: boolean
     className?: string
 }
 

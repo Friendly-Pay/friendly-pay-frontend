@@ -4,6 +4,7 @@ import { IbanController } from './IbanController';
 import { MainLayout } from '@/components/common/MainLayout';
 import { PaymentHead } from '@/components/Payment/Head/PaymentHead';
 import { TransferBalance } from '@/components/Payment/Head/TransferBalance';
+import { Routes } from '@/routes';
 import { useIbanStore } from '@/states/iban/store';
 import { useIbanTransferStore } from '@/states/iban/transfer';
 import { Line, Text } from '@/uikit';
@@ -19,7 +20,7 @@ export function IbanTransferView() {
 
     if (!ibanAccount || ibanAccount.balance === null || ibanAccount.currency === null) {
         return (<Navigate
-            to='/bank/account'
+            to={Routes.IBAN_ACCOUNT}
             replace
         />);
     }

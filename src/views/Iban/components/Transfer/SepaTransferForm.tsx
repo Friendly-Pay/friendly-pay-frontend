@@ -1,3 +1,4 @@
+import { Routes } from '@/routes';
 import { useIbanStore } from '@/states/iban/store';
 import { TransferRecipientType, useIbanTransferStore } from '@/states/iban/transfer';
 import { AmountInput, Button, Input, Text } from '@/uikit';
@@ -220,7 +221,7 @@ export function SepaTransferForm() {
                 amount: String(parsedAmount),
                 recipientType: transferRecipientType
             });
-            navigate('/bank/account');
+            navigate(Routes.IBAN_ACCOUNT);
         } catch (error) {
             console.error(error);
         } finally {
