@@ -21,14 +21,9 @@
 }
 
 .button {
-    color: var(--color-action-button-typo);
-    background-color: var(--color-action-button);
+    color: var(--color-primary);
+    background-color: var(--color-primary-10);
     border-radius: 18px;
-
-    &:active {
-        background-color: var(--color-action-button-active);
-        transition: background-color 0.07s linear;
-    }
 }
 
 .disabled {

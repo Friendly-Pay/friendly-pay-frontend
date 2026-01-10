@@ -31,7 +31,7 @@ export const useBankTransferPaymentStore = create<State & Actions>((set, get) =>
 
     startPayment: async (data) => {
         get().resetPayment();
-        set({ paymentStatus: PaymentStatus.Creating });
+        set({ paymentStatus: PaymentStatus.Loading });
         try {
             const res = await createBankTransferTransaction(data);
             set({
@@ -60,7 +60,7 @@ export const useBankTransferPaymentStore = create<State & Actions>((set, get) =>
             console.warn('[bank-transfer] userCompleteWaitingPayment: order undefined');
             return;
         }
-        const status = PaymentStatus.UserCompleteWaiting;
+        const status = PaymentStatus.Waiting;
         set({ paymentStatus: status });
     },
 

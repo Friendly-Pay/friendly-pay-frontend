@@ -101,7 +101,7 @@ export function BankTransferPaymentView() {
         return found?.emoji ?? '🌐';
     })();
 
-    if (status === PaymentStatus.UserCompleteWaiting) {
+    if (status === PaymentStatus.Waiting) {
         return <Navigate
             to={'/payments/bank-transfer/waiting'}
             replace
@@ -187,7 +187,7 @@ export function BankTransferPaymentView() {
                     }}
                 />
 
-                {!(status === PaymentStatus.Idle || status === PaymentStatus.Creating) && <BottomFixedContainer className={styles.buttons}>
+                {!(status === PaymentStatus.Idle || status === PaymentStatus.Loading) && <BottomFixedContainer className={styles.buttons}>
                     <Button
                         view='secondary'
                         className={styles.button}

@@ -396,6 +396,89 @@ export const it = {
         'Credited instantly': 'Accreditato istantaneamente',
         'Enter the deposit amount': 'Inserisci l\'importo del deposito',
         'Where to': 'Dove trasferire',
-        'How to pay': 'Con cosa pagare'
+        'How to pay': 'Con cosa pagare',
+
+        // V1
+        'Home': 'Home',
+        'Problems logging into the app. Please try again later': 'Problemi di accesso all’app. Riprova più tardi',
+
+        'Friend for your finances in Telegram': 'Un amico per le tue finanze su Telegram',
+        'Pay, transfer and save — manage your money in one app': 'Paga, trasferisci e risparmia — gestisci il tuo denaro in un’unica app',
+        'Open an account in euros in a few minutes': 'Apri un conto in euro in pochi minuti',
+        'Receive SEPA and SWIFT payments. Only for clients across Europe': 'Ricevi pagamenti SEPA e SWIFT. Solo per clienti in Europa',
+        'Issue a card after KYC': 'Emetti una carta dopo il KYC',
+        'Verify your identity and pay for the card. Activate it and start using it right away': 'Verifica la tua identità e paga la carta. Attivala e inizia subito a usarla',
+        'Pay by touch': 'Paga con un tocco',
+        'Simply hold your smartphone near the terminal. One touch is enough to make a purchase. Works everywhere contactless payments are accepted':
+            'Avvicina semplicemente lo smartphone al terminale. Basta un tocco per effettuare un acquisto. Funziona ovunque siano accettati i pagamenti contactless',
+        'Transfers to friends or partners': 'Trasferimenti a amici o partner',
+        'Send money worldwide. Fast and with minimal fees': 'Invia denaro in tutto il mondo. Veloce e con commissioni minime',
+
+        'Hi! Please tell us your email and log in 👌': 'Ciao! Inserisci la tua email e accedi 👌',
+        'By clicking “Continue”, I agree to the': 'Cliccando su “Continua”, accetto i',
+        'terms': 'termini',
+        'and give my consent to the processing of my personal data': 'e acconsento al trattamento dei miei dati personali',
+        'Failed to send the code': 'Impossibile inviare il codice',
+
+        'Sent to': 'Inviato a',
+        'Failed to send a new code': 'Impossibile inviare un nuovo codice',
+        'Thank you! We’ve sent the code,<br />catch it 👇': 'Grazie! Abbiamo inviato il codice,<br />eccolo 👇',
+        'Enter the code from the email': 'Inserisci il codice dall’email',
+        'The code is incorrect, please check it': 'Il codice non è corretto, controllalo',
+        'The code has expired, please request a new one': 'Il codice è scaduto, richiedine uno nuovo',
+        'A new code has been sent': 'È stato inviato un nuovo codice',
+        'Request code again': 'Richiedi di nuovo il codice',
+        'Didn’t receive the code?': 'Non hai ricevuto il codice?',
+        'You can request a new one in': 'Puoi richiederne uno nuovo tra',
+
+        'Verification required': 'Verifica richiesta',
+        'First, we need<br/>your phone number': 'Per prima cosa abbiamo bisogno<br/>del tuo numero di telefono',
+        'We use your phone number only for important notifications and security':
+            'Utilizziamo il tuo numero di telefono solo per notifiche importanti e sicurezza',
+        'Great, now continue': 'Perfetto, continua',
+        'We’ll ask you for documents, a selfie, and address confirmation':
+            'Ti chiederemo documenti, un selfie e la conferma dell’indirizzo',
+        'Checking documents': 'Verifica dei documenti',
+        'Once the verification is complete, we’ll send you a notification':
+            'Una volta completata la verifica, ti invieremo una notifica',
+        'Verification completed': 'Verifica completata',
+        'We’ve checked your documents.<br/>Everything is in order':
+            'Abbiamo verificato i tuoi documenti.<br/>Tutto è in ordine',
+        'Document error': 'Errore nei documenti',
+        'To complete verification, please review your documents':
+            'Per completare la verifica, controlla i tuoi documenti',
+        'View': 'Visualizza',
+        'Verification failed': 'Verifica non riuscita',
+        'We couldn’t verify your information. Please contact support':
+            'Non siamo riusciti a verificare le tue informazioni. Contatta l’assistenza',
+        'Support': 'Assistenza',
+        'We didn’t receive your phone number, please try again or contact support':
+            'Non abbiamo ricevuto il tuo numero di telefono, riprova o contatta l’assistenza',
+
+        'Bank': 'Banca',
+        'Cryptocurrency': 'Criptovaluta',
+        'SBP Rubles': 'Rubli SBP',
+        'Top-up <span>{{cardNumber}}</span>': 'Ricarica <span>{{cardNumber}}</span>',
+        'Minimum amount <span>{{minAmount}}</span>': 'Importo minimo <span>{{minAmount}}</span>',
+        'At T-Bank rate <span>{{rate}}</span>': 'Al tasso T-Bank <span>{{rate}}</span>',
+        'Select currency': 'Seleziona valuta',
+        'Pay for the card and it’s yours': 'Paga la carta ed è tua',
+        'Card issuance is instant': 'L’emissione della carta è immediata',
+        'Checking payment information.<br />This will take a few seconds':
+            'Verifica delle informazioni di pagamento.<br />Ci vorranno alcuni secondi',
+        'Transaction fee': 'Commissione di transazione',
+        'Go to payment': 'Vai al pagamento',
+        'At T-Bank rate {{rate}}. {{fee}}': 'Al tasso T-Bank {{rate}}. {{fee}}',
+        'No fee': 'Senza commissioni',
+        'Minimum amount\n {{minAmount}}': 'Importo minimo\n {{minAmount}}',
+        'Maximum amount\n {{maxAmount}}': 'Importo massimo\n {{maxAmount}}',
+        'Pay': 'Paga',
+        'Send only <span>{{purchaseCurrencyName}} {{purchaseCurrencyNetwork}}</span> to this address.<br/> Other assets will be lost':
+            'Invia solo <span>{{purchaseCurrencyName}} {{purchaseCurrencyNetwork}}</span> a questo indirizzo.<br/> Altri asset andranno persi',
+        'Failed to get payment status, please contact support if the error persists':
+            'Impossibile ottenere lo stato del pagamento, contatta l’assistenza se l’errore persiste',
+        'One moment...': 'Un attimo...',
+        'Failed to activate the card. Please try again later or contact support':
+            'Impossibile attivare la carta. Riprova più tardi o contatta l’assistenza'
     }
 } as const;

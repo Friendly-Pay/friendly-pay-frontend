@@ -2,7 +2,7 @@ import { CenteredContent } from './CenteredContent';
 import { PaymentIcon } from './PaymentIcon';
 import { CloseFill } from '@/components/Icons/Close';
 import { useCardsStore } from '@/states/cards/store';
-import { usePaymentStore } from '@/states/payment/store';
+// import { usePaymentStore } from '@/states/payment/store';
 import { Spinner, Text } from '@/uikit';
 import { PropsWithChildren, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -15,6 +15,9 @@ type TransactionWaitingProps = {
     className?: string
 }
 
+/**
+ * @deprecated
+ */
 export function TransactionWaiting({ type, children, className }: PropsWithChildren<TransactionWaitingProps>) {
     const [t] = useTranslation();
     const navigate = useNavigate();
@@ -26,12 +29,12 @@ export function TransactionWaiting({ type, children, className }: PropsWithChild
 
         if (type === 'topup') {
             navigate('/');
-            const { userHiddenWaitingTopup } = usePaymentStore.getState();
-            userHiddenWaitingTopup();
+            // const { userHiddenWaitingTopup } = usePaymentStore.getState();
+            // userHiddenWaitingTopup();
         } else if (type === 'purchase') {
             navigate('/');
-            const { userHiddenWaitingCardPurchase } = usePaymentStore.getState();
-            userHiddenWaitingCardPurchase();
+            // const { userHiddenWaitingCardPurchase } = usePaymentStore.getState();
+            // userHiddenWaitingCardPurchase();
         } else if (type === 'bank-transfer') {
             navigate('/bank-transfer');
         }

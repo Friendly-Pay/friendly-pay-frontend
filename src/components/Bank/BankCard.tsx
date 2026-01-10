@@ -1,5 +1,4 @@
 import { AxtSign } from '../Icons/AxtSign';
-import { Cloud } from '../Icons/Cloud';
 import { Eye } from '../Icons/Eye';
 // import { FriendlyPaySign } from '../Icons/FriendlyPay';
 import { CardDesign } from './CardDesign';

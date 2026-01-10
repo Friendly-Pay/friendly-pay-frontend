@@ -8,13 +8,13 @@ import { BankTransferView } from './BankTransfer/views/BankTransferView';
 import { CalculatorView } from './BankTransfer/views/CalculatorView';
 import { CountrySelectView } from './BankTransfer/views/CountrySelectView';
 import { DetailsView } from './BankTransfer/views/DetailsView';
+import { BonusTransferView } from './Friends/BonusTransferView';
 import { BonusView } from './Friends/BonusView';
 import { CardController } from './Home/CardController';
 import { HomeView } from './Home/HomeView';
 import { IbanTransferView } from './Iban/IbanTransferView';
 import { IbanView } from './Iban/IbanView';
 import { NewProductView } from './NewProduct/NewProductView';
-import { OnboardingView } from './Onboarding/OnboardingView';
 import { BankTransferPaymentView } from './Payment/BankTransfer/BankTransferPaymentView';
 import { BankTransferResultView } from './Payment/BankTransfer/BankTransferResultView';
 import { BankTransferWaitingView } from './Payment/BankTransfer/BankTransferWaitingView';
@@ -50,8 +50,6 @@ const AppViews: React.FC = () => {
                         <PaymentRestore>
                             <CardController>
                                 <Routes>
-                                    <Route path={ROUTES.ONBOARDING} element={<OnboardingView />} />
-
                                     <Route element={<PageLayoutWithNavbar />}>
                                         <Route path={ROUTES.HOME} element={<HomeView />} />
                                         <Route path={ROUTES.IBAN_ACCOUNT} element={<IbanView />} />
@@ -89,6 +87,11 @@ const AppViews: React.FC = () => {
                                             <Route path={ROUTES.TOPUP} element={<TopupView />} />
                                             <Route path={ROUTES.TOPUP_WAITING} element={<TopupWaitingView />} />
                                             <Route path={ROUTES.TOPUP_RESULT} element={<TopupResultView />} />
+
+                                            <Route
+                                                path='/friends/bonus/transfer'
+                                                element={<BonusTransferView />}
+                                            />
 
                                             {/* Global Transfer */}
                                             <Route
