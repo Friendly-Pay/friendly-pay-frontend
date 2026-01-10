@@ -3,22 +3,23 @@ import UserFlow from '../components/UserFlow';
 import { Routes as ROUTES } from '../routes';
 import { EmailCodeView } from './Auth/EmailCode/EmailCodeView';
 import { AuthLoginView } from './Auth/Login/AuthLoginView';
-import { CardController } from './Home/CardController';
 import { BankTransferController } from './BankTransfer/BankTransferController';
 import { BankTransferView } from './BankTransfer/views/BankTransferView';
 import { CalculatorView } from './BankTransfer/views/CalculatorView';
 import { CountrySelectView } from './BankTransfer/views/CountrySelectView';
 import { DetailsView } from './BankTransfer/views/DetailsView';
+import { BonusView } from './Friends/BonusView';
+import { CardController } from './Home/CardController';
 import { HomeView } from './Home/HomeView';
 import { IbanTransferView } from './Iban/IbanTransferView';
 import { IbanView } from './Iban/IbanView';
 import { NewProductView } from './NewProduct/NewProductView';
 import { OnboardingView } from './Onboarding/OnboardingView';
-import { CardPurchaseView } from './Payment/CardPurchase/CardPurchaseView';
-import { CardPurchaseWaitingView } from './Payment/CardPurchaseWaiting/CardPurchaseWaitingView';
 import { BankTransferPaymentView } from './Payment/BankTransfer/BankTransferPaymentView';
 import { BankTransferResultView } from './Payment/BankTransfer/BankTransferResultView';
 import { BankTransferWaitingView } from './Payment/BankTransfer/BankTransferWaitingView';
+import { CardPurchaseView } from './Payment/CardPurchase/CardPurchaseView';
+import { CardPurchaseWaitingView } from './Payment/CardPurchaseWaiting/CardPurchaseWaitingView';
 import { PaymentController } from './Payment/PaymentController';
 import { PaymentRestore } from './Payment/PaymentRestore';
 import { TopupView } from './Payment/Topup/TopupView';
@@ -59,6 +60,7 @@ const AppViews: React.FC = () => {
                                             path='/friends/bonus'
                                             element={<BonusView />}
                                         />
+
                                         <Route element={<BankTransferController />}>
                                             <Route
                                                 path='/bank-transfer'
@@ -107,20 +109,6 @@ const AppViews: React.FC = () => {
 
                                         {/* Перевод по IBAN */}
                                         <Route path={ROUTES.TRANSFER_FROM_IBAN_ACCOUNT} element={<IbanTransferView />} />
-
-                                        {/* 
-                                            <Route
-                                                path='/friends/bonus'
-                                                element={<BonusView />}
-                                            />
-                                            <Route
-                                                path='/friends/bonus/transfer'
-                                                element={<BonusTransferView />}
-                                            />
-                                            <Route
-                                                path='/friends/bonus/transfer/result'
-                                                element={<BonusTransferResultView />}
-                                            /> */}
                                     </Route>
 
                                     <Route element={<BankTransferController />}>

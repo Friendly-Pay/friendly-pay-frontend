@@ -6,9 +6,10 @@ import { CurrencyAmountParts } from '@/components/Payment/CurrencyAmountParts';
 import { PaymentAddress } from '@/components/Payment/PaymentAddress';
 import { Skeleton } from '@/components/Skeleton/Skeleton';
 import { languageCodeToLocale } from '@/localization/utils';
+import { TOKENS } from '@/states/currency/tokens';
 import { useDialogStore } from '@/states/dialog';
 import { useBankTransferPaymentStore } from '@/states/payment/bankTransfer';
-import { PaymentStatus, usePaymentStore } from '@/states/payment/store';
+import { PaymentStatus } from '@/states/payment/store';
 import { useUserStore } from '@/states/user/store';
 import { countries } from '@/states/verification/config';
 import { Button, Text } from '@/uikit';
@@ -26,7 +27,7 @@ export function BankTransferPaymentView() {
     const languageCode = useUserStore(state => state.languageCode);
     const navigate = useNavigate();
 
-    const inputCurrency = usePaymentStore(state => state.currencies['USDTTRC']);
+    const inputCurrency = TOKENS.USDTTRC;
     const outputCurrency = useBankTransferStore(state => state.selectedCurrency);
     const payoutAmount = useBankTransferStore(state => state.payoutAmount);
 

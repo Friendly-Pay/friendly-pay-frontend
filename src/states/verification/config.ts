@@ -1,0 +1,1170 @@
+export interface Country {
+    iso2: string;
+    alpha3: string;
+    emoji: string;
+    phoneCode: string;
+    searchKeys?: string[]
+}
+
+export interface CountryOption extends Country {
+    label: string
+}
+
+export const countries: Country[] = [{
+    iso2: 'AF',
+    alpha3: 'AFG',
+    emoji: '🇦🇫',
+    phoneCode: '93'
+}, {
+    iso2: 'AL',
+    alpha3: 'ALB',
+    emoji: '🇦🇱',
+    phoneCode: '355'
+}, {
+    iso2: 'DZ',
+    alpha3: 'DZA',
+    emoji: '🇩🇿',
+    phoneCode: '213'
+}, {
+    iso2: 'AS',
+    alpha3: 'ASM',
+    emoji: '🇦🇸',
+    phoneCode: '1684'
+}, {
+    iso2: 'AD',
+    alpha3: 'AND',
+    emoji: '🇦🇩',
+    phoneCode: '376'
+}, {
+    iso2: 'AO',
+    alpha3: 'AGO',
+    emoji: '🇦🇴',
+    phoneCode: '244'
+}, {
+    iso2: 'AI',
+    alpha3: 'AIA',
+    emoji: '🇦🇮',
+    phoneCode: '1264'
+}, {
+    iso2: 'AG',
+    alpha3: 'ATG',
+    emoji: '🇦🇬',
+    phoneCode: '1268'
+}, {
+    iso2: 'AR',
+    alpha3: 'ARG',
+    emoji: '🇦🇷',
+    phoneCode: '54'
+}, {
+    iso2: 'AM',
+    alpha3: 'ARM',
+    emoji: '🇦🇲',
+    phoneCode: '374'
+}, {
+    iso2: 'AW',
+    alpha3: 'ABW',
+    emoji: '🇦🇼',
+    phoneCode: '297'
+}, {
+    iso2: 'AU',
+    alpha3: 'AUS',
+    emoji: '🇦🇺',
+    phoneCode: '61'
+}, {
+    iso2: 'AT',
+    alpha3: 'AUT',
+    emoji: '🇦🇹',
+    phoneCode: '43'
+}, {
+    iso2: 'AZ',
+    alpha3: 'AZE',
+    emoji: '🇦🇿',
+    phoneCode: '994'
+}, {
+    iso2: 'BS',
+    alpha3: 'BHS',
+    emoji: '🇧🇸',
+    phoneCode: '1242'
+}, {
+    iso2: 'BH',
+    alpha3: 'BHR',
+    emoji: '🇧🇭',
+    phoneCode: '973'
+}, {
+    iso2: 'BD',
+    alpha3: 'BGD',
+    emoji: '🇧🇩',
+    phoneCode: '880'
+}, {
+    iso2: 'BB',
+    alpha3: 'BRB',
+    emoji: '🇧🇧',
+    phoneCode: '1246'
+}, {
+    iso2: 'BY',
+    alpha3: 'BLR',
+    emoji: '🇧🇾',
+    phoneCode: '375'
+}, {
+    iso2: 'BE',
+    alpha3: 'BEL',
+    emoji: '🇧🇪',
+    phoneCode: '32'
+}, {
+    iso2: 'BZ',
+    alpha3: 'BLZ',
+    emoji: '🇧🇿',
+    phoneCode: '501'
+}, {
+    iso2: 'BJ',
+    alpha3: 'BEN',
+    emoji: '🇧🇯',
+    phoneCode: '229'
+}, {
+    iso2: 'BM',
+    alpha3: 'BMU',
+    emoji: '🇧🇲',
+    phoneCode: '1441'
+}, {
+    iso2: 'BT',
+    alpha3: 'BTN',
+    emoji: '🇧🇹',
+    phoneCode: '975'
+}, {
+    iso2: 'BO',
+    alpha3: 'BOL',
+    emoji: '🇧🇴',
+    phoneCode: '591'
+}, {
+    iso2: 'BQ',
+    alpha3: 'BES',
+    emoji: '🇳🇱',
+    phoneCode: '599'
+}, {
+    iso2: 'BA',
+    alpha3: 'BIH',
+    emoji: '🇧🇦',
+    phoneCode: '387'
+}, {
+    iso2: 'BW',
+    alpha3: 'BWA',
+    emoji: '🇧🇼',
+    phoneCode: '267'
+}, {
+    iso2: 'BR',
+    alpha3: 'BRA',
+    emoji: '🇧🇷',
+    phoneCode: '55'
+}, {
+    iso2: 'VG',
+    alpha3: 'VGB',
+    emoji: '🇻🇬',
+    phoneCode: '1284'
+}, {
+    iso2: 'BN',
+    alpha3: 'BRN',
+    emoji: '🇧🇳',
+    phoneCode: '673'
+}, {
+    iso2: 'BG',
+    alpha3: 'BGR',
+    emoji: '🇧🇬',
+    phoneCode: '359'
+}, {
+    iso2: 'BF',
+    alpha3: 'BFA',
+    emoji: '🇧🇫',
+    phoneCode: '226'
+}, {
+    iso2: 'BI',
+    alpha3: 'BDI',
+    emoji: '🇧🇮',
+    phoneCode: '257'
+}, {
+    iso2: 'KH',
+    alpha3: 'KHM',
+    emoji: '🇰🇭',
+    phoneCode: '855'
+}, {
+    iso2: 'CM',
+    alpha3: 'CMR',
+    emoji: '🇨🇲',
+    phoneCode: '237'
+}, {
+    iso2: 'CA',
+    alpha3: 'CAN',
+    emoji: '🇨🇦',
+    phoneCode: '1'
+}, {
+    iso2: 'CV',
+    alpha3: 'CPV',
+    emoji: '🇨🇻',
+    phoneCode: '238'
+}, {
+    iso2: 'KY',
+    alpha3: 'CYM',
+    emoji: '🇰🇾',
+    phoneCode: '1345'
+}, {
+    iso2: 'CF',
+    alpha3: 'CAF',
+    emoji: '🇨🇫',
+    phoneCode: '236'
+}, {
+    iso2: 'TD',
+    alpha3: 'TCD',
+    emoji: '🇹🇩',
+    phoneCode: '235'
+}, {
+    iso2: 'CL',
+    alpha3: 'CHL',
+    emoji: '🇨🇱',
+    phoneCode: '56'
+}, {
+    iso2: 'CN',
+    alpha3: 'CHN',
+    emoji: '🇨🇳',
+    phoneCode: '86'
+}, {
+    iso2: 'CO',
+    alpha3: 'COL',
+    emoji: '🇨🇴',
+    phoneCode: '57'
+}, {
+    iso2: 'KM',
+    alpha3: 'COM',
+    emoji: '🇰🇲',
+    phoneCode: '269'
+}, {
+    iso2: 'CD',
+    alpha3: 'COD',
+    emoji: '🇨🇩',
+    phoneCode: '243'
+}, {
+    iso2: 'CG',
+    alpha3: 'COG',
+    emoji: '🇨🇬',
+    phoneCode: '242'
+}, {
+    iso2: 'CK',
+    alpha3: 'COK',
+    emoji: '🇨🇰',
+    phoneCode: '682'
+}, {
+    iso2: 'CR',
+    alpha3: 'CRI',
+    emoji: '🇨🇷',
+    phoneCode: '506'
+}, {
+    iso2: 'CI',
+    alpha3: 'CIV',
+    emoji: '🇨🇮',
+    phoneCode: '225'
+}, {
+    iso2: 'HR',
+    alpha3: 'HRV',
+    emoji: '🇭🇷',
+    phoneCode: '385'
+}, {
+    iso2: 'CU',
+    alpha3: 'CUB',
+    emoji: '🇨🇺',
+    phoneCode: '53'
+}, {
+    iso2: 'CW',
+    alpha3: 'CUW',
+    emoji: '🇨🇼',
+    phoneCode: '599'
+}, {
+    iso2: 'CY',
+    alpha3: 'CYP',
+    emoji: '🇨🇾',
+    phoneCode: '357'
+}, {
+    iso2: 'CZ',
+    alpha3: 'CZE',
+    emoji: '🇨🇿',
+    phoneCode: '420'
+}, {
+    iso2: 'DK',
+    alpha3: 'DNK',
+    emoji: '🇩🇰',
+    phoneCode: '45'
+}, {
+    iso2: 'IO',
+    alpha3: 'IOT',
+    emoji: '🇮🇴',
+    phoneCode: '246'
+}, {
+    iso2: 'DJ',
+    alpha3: 'DJI',
+    emoji: '🇩🇯',
+    phoneCode: '253'
+}, {
+    iso2: 'DM',
+    alpha3: 'DMA',
+    emoji: '🇩🇲',
+    phoneCode: '1767'
+}, {
+    iso2: 'DO',
+    alpha3: 'DOM',
+    emoji: '🇩🇴',
+    phoneCode: '1849'
+}, {
+    iso2: 'EC',
+    alpha3: 'ECU',
+    emoji: '🇪🇨',
+    phoneCode: '593'
+}, {
+    iso2: 'EG',
+    alpha3: 'EGY',
+    emoji: '🇪🇬',
+    phoneCode: '20'
+}, {
+    iso2: 'SV',
+    alpha3: 'SLV',
+    emoji: '🇸🇻',
+    phoneCode: '503'
+}, {
+    iso2: 'GQ',
+    alpha3: 'GNQ',
+    emoji: '🇬🇶',
+    phoneCode: '240'
+}, {
+    iso2: 'ER',
+    alpha3: 'ERI',
+    emoji: '🇪🇷',
+    phoneCode: '291'
+}, {
+    iso2: 'EE',
+    alpha3: 'EST',
+    emoji: '🇪🇪',
+    phoneCode: '372'
+}, {
+    iso2: 'SZ',
+    alpha3: 'SWZ',
+    emoji: '🇸🇿',
+    phoneCode: '268'
+}, {
+    iso2: 'ET',
+    alpha3: 'ETH',
+    emoji: '🇪🇹',
+    phoneCode: '251'
+}, {
+    iso2: 'FK',
+    alpha3: 'FLK',
+    emoji: '🇫🇰',
+    phoneCode: '500'
+}, {
+    iso2: 'FO',
+    alpha3: 'FRO',
+    emoji: '🇫🇴',
+    phoneCode: '298'
+}, {
+    iso2: 'FJ',
+    alpha3: 'FJI',
+    emoji: '🇫🇯',
+    phoneCode: '679'
+}, {
+    iso2: 'FI',
+    alpha3: 'FIN',
+    emoji: '🇫🇮',
+    phoneCode: '358'
+}, {
+    iso2: 'FR',
+    alpha3: 'FRA',
+    emoji: '🇫🇷',
+    phoneCode: '33'
+}, {
+    iso2: 'GF',
+    alpha3: 'GUF',
+    emoji: '🇬🇫',
+    phoneCode: '594'
+}, {
+    iso2: 'PF',
+    alpha3: 'PYF',
+    emoji: '🇵🇫',
+    phoneCode: '689'
+}, {
+    iso2: 'GA',
+    alpha3: 'GAB',
+    emoji: '🇬🇦',
+    phoneCode: '241'
+}, {
+    iso2: 'GM',
+    alpha3: 'GMB',
+    emoji: '🇬🇲',
+    phoneCode: '220'
+}, {
+    iso2: 'GE',
+    alpha3: 'GEO',
+    emoji: '🇬🇪',
+    phoneCode: '995'
+}, {
+    iso2: 'DE',
+    alpha3: 'DEU',
+    emoji: '🇩🇪',
+    phoneCode: '49'
+}, {
+    iso2: 'GH',
+    alpha3: 'GHA',
+    emoji: '🇬🇭',
+    phoneCode: '233'
+}, {
+    iso2: 'GI',
+    alpha3: 'GIB',
+    emoji: '🇬🇮',
+    phoneCode: '350'
+}, {
+    iso2: 'GR',
+    alpha3: 'GRC',
+    emoji: '🇬🇷',
+    phoneCode: '30'
+}, {
+    iso2: 'GL',
+    alpha3: 'GRL',
+    emoji: '🇬🇱',
+    phoneCode: '299'
+}, {
+    iso2: 'GD',
+    alpha3: 'GRD',
+    emoji: '🇬🇩',
+    phoneCode: '1473'
+}, {
+    iso2: 'GP',
+    alpha3: 'GLP',
+    emoji: '🇬🇵',
+    phoneCode: '590'
+}, {
+    iso2: 'GU',
+    alpha3: 'GUM',
+    emoji: '🇬🇺',
+    phoneCode: '1671'
+}, {
+    iso2: 'GT',
+    alpha3: 'GTM',
+    emoji: '🇬🇹',
+    phoneCode: '502'
+}, {
+    iso2: 'GN',
+    alpha3: 'GIN',
+    emoji: '🇬🇳',
+    phoneCode: '224'
+}, {
+    iso2: 'GW',
+    alpha3: 'GNB',
+    emoji: '🇬🇼',
+    phoneCode: '245'
+}, {
+    iso2: 'GY',
+    alpha3: 'GUY',
+    emoji: '🇬🇾',
+    phoneCode: '592'
+}, {
+    iso2: 'HT',
+    alpha3: 'HTI',
+    emoji: '🇭🇹',
+    phoneCode: '509'
+}, {
+    iso2: 'HN',
+    alpha3: 'HND',
+    emoji: '🇭🇳',
+    phoneCode: '504'
+}, {
+    iso2: 'HK',
+    alpha3: 'HKG',
+    emoji: '🇭🇰',
+    phoneCode: '852'
+}, {
+    iso2: 'HU',
+    alpha3: 'HUN',
+    emoji: '🇭🇺',
+    phoneCode: '36'
+}, {
+    iso2: 'IS',
+    alpha3: 'ISL',
+    emoji: '🇮🇸',
+    phoneCode: '354'
+}, {
+    iso2: 'IN',
+    alpha3: 'IND',
+    emoji: '🇮🇳',
+    phoneCode: '91'
+}, {
+    iso2: 'ID',
+    alpha3: 'IDN',
+    emoji: '🇮🇩',
+    phoneCode: '62'
+}, {
+    iso2: 'IR',
+    alpha3: 'IRN',
+    emoji: '🇮🇷',
+    phoneCode: '98'
+}, {
+    iso2: 'IQ',
+    alpha3: 'IRQ',
+    emoji: '🇮🇶',
+    phoneCode: '964'
+}, {
+    iso2: 'IE',
+    alpha3: 'IRL',
+    emoji: '🇮🇪',
+    phoneCode: '353'
+}, {
+    iso2: 'IL',
+    alpha3: 'ISR',
+    emoji: '🇮🇱',
+    phoneCode: '972'
+}, {
+    iso2: 'IT',
+    alpha3: 'ITA',
+    emoji: '🇮🇹',
+    phoneCode: '39'
+}, {
+    iso2: 'JM',
+    alpha3: 'JAM',
+    emoji: '🇯🇲',
+    phoneCode: '1876'
+}, {
+    iso2: 'JP',
+    alpha3: 'JPN',
+    emoji: '🇯🇵',
+    phoneCode: '81'
+}, {
+    iso2: 'JO',
+    alpha3: 'JOR',
+    emoji: '🇯🇴',
+    phoneCode: '962'
+}, {
+    iso2: 'KZ',
+    alpha3: 'KAZ',
+    emoji: '🇰🇿',
+    phoneCode: '7'
+}, {
+    iso2: 'KE',
+    alpha3: 'KEN',
+    emoji: '🇰🇪',
+    phoneCode: '254'
+}, {
+    iso2: 'KI',
+    alpha3: 'KIR',
+    emoji: '🇰🇮',
+    phoneCode: '686'
+}, {
+    iso2: 'KW',
+    alpha3: 'KWT',
+    emoji: '🇰🇼',
+    phoneCode: '965'
+}, {
+    iso2: 'KG',
+    alpha3: 'KGZ',
+    emoji: '🇰🇬',
+    phoneCode: '996'
+}, {
+    iso2: 'LA',
+    alpha3: 'LAO',
+    emoji: '🇱🇦',
+    phoneCode: '856'
+}, {
+    iso2: 'LV',
+    alpha3: 'LVA',
+    emoji: '🇱🇻',
+    phoneCode: '371'
+}, {
+    iso2: 'LB',
+    alpha3: 'LBN',
+    emoji: '🇱🇧',
+    phoneCode: '961'
+}, {
+    iso2: 'LS',
+    alpha3: 'LSO',
+    emoji: '🇱🇸',
+    phoneCode: '266'
+}, {
+    iso2: 'LR',
+    alpha3: 'LBR',
+    emoji: '🇱🇷',
+    phoneCode: '231'
+}, {
+    iso2: 'LY',
+    alpha3: 'LBY',
+    emoji: '🇱🇾',
+    phoneCode: '218'
+}, {
+    iso2: 'LI',
+    alpha3: 'LIE',
+    emoji: '🇱🇮',
+    phoneCode: '423'
+}, {
+    iso2: 'LT',
+    alpha3: 'LTU',
+    emoji: '🇱🇹',
+    phoneCode: '370'
+}, {
+    iso2: 'LU',
+    alpha3: 'LUX',
+    emoji: '🇱🇺',
+    phoneCode: '352'
+}, {
+    iso2: 'MO',
+    alpha3: 'MAC',
+    emoji: '🇲🇴',
+    phoneCode: '853'
+}, {
+    iso2: 'MG',
+    alpha3: 'MDG',
+    emoji: '🇲🇬',
+    phoneCode: '261'
+}, {
+    iso2: 'MW',
+    alpha3: 'MWI',
+    emoji: '🇲🇼',
+    phoneCode: '265'
+}, {
+    iso2: 'MY',
+    alpha3: 'MYS',
+    emoji: '🇲🇾',
+    phoneCode: '60'
+}, {
+    iso2: 'MV',
+    alpha3: 'MDV',
+    emoji: '🇲🇻',
+    phoneCode: '960'
+}, {
+    iso2: 'ML',
+    alpha3: 'MLI',
+    emoji: '🇲🇱',
+    phoneCode: '223'
+}, {
+    iso2: 'MT',
+    alpha3: 'MLT',
+    emoji: '🇲🇹',
+    phoneCode: '356'
+}, {
+    iso2: 'MH',
+    alpha3: 'MHL',
+    emoji: '🇲🇭',
+    phoneCode: '692'
+}, {
+    iso2: 'MQ',
+    alpha3: 'MTQ',
+    emoji: '🇲🇶',
+    phoneCode: '596'
+}, {
+    iso2: 'MR',
+    alpha3: 'MRT',
+    emoji: '🇲🇷',
+    phoneCode: '222'
+}, {
+    iso2: 'MU',
+    alpha3: 'MUS',
+    emoji: '🇲🇺',
+    phoneCode: '230'
+}, {
+    iso2: 'MX',
+    alpha3: 'MEX',
+    emoji: '🇲🇽',
+    phoneCode: '52'
+}, {
+    iso2: 'FM',
+    alpha3: 'FSM',
+    emoji: '🇫🇲',
+    phoneCode: '691'
+}, {
+    iso2: 'MD',
+    alpha3: 'MDA',
+    emoji: '🇲🇩',
+    phoneCode: '373'
+}, {
+    iso2: 'MC',
+    alpha3: 'MCO',
+    emoji: '🇲🇨',
+    phoneCode: '377'
+}, {
+    iso2: 'MN',
+    alpha3: 'MNG',
+    emoji: '🇲🇳',
+    phoneCode: '976'
+}, {
+    iso2: 'ME',
+    alpha3: 'MNE',
+    emoji: '🇲🇪',
+    phoneCode: '382'
+}, {
+    iso2: 'MS',
+    alpha3: 'MSR',
+    emoji: '🇲🇸',
+    phoneCode: '1664'
+}, {
+    iso2: 'MA',
+    alpha3: 'MAR',
+    emoji: '🇲🇦',
+    phoneCode: '212'
+}, {
+    iso2: 'MZ',
+    alpha3: 'MOZ',
+    emoji: '🇲🇿',
+    phoneCode: '258'
+}, {
+    iso2: 'MM',
+    alpha3: 'MMR',
+    emoji: '🇲🇲',
+    phoneCode: '95'
+}, {
+    iso2: 'NA',
+    alpha3: 'NAM',
+    emoji: '🇳🇦',
+    phoneCode: '264'
+}, {
+    iso2: 'NR',
+    alpha3: 'NRU',
+    emoji: '🇳🇷',
+    phoneCode: '674'
+}, {
+    iso2: 'NP',
+    alpha3: 'NPL',
+    emoji: '🇳🇵',
+    phoneCode: '977'
+}, {
+    iso2: 'NL',
+    alpha3: 'NLD',
+    emoji: '🇳🇱',
+    phoneCode: '31'
+}, {
+    iso2: 'NC',
+    alpha3: 'NCL',
+    emoji: '🇳🇨',
+    phoneCode: '687'
+}, {
+    iso2: 'NZ',
+    alpha3: 'NZL',
+    emoji: '🇳🇿',
+    phoneCode: '64'
+}, {
+    iso2: 'NI',
+    alpha3: 'NIC',
+    emoji: '🇳🇮',
+    phoneCode: '505'
+}, {
+    iso2: 'NE',
+    alpha3: 'NER',
+    emoji: '🇳🇪',
+    phoneCode: '227'
+}, {
+    iso2: 'NG',
+    alpha3: 'NGA',
+    emoji: '🇳🇬',
+    phoneCode: '234'
+}, {
+    iso2: 'NU',
+    alpha3: 'NIU',
+    emoji: '🇳🇺',
+    phoneCode: '683'
+}, {
+    iso2: 'NF',
+    alpha3: 'NFK',
+    emoji: '🇳🇫',
+    phoneCode: '672'
+}, {
+    iso2: 'KP',
+    alpha3: 'PRK',
+    emoji: '🇰🇵',
+    phoneCode: '850'
+}, {
+    iso2: 'MK',
+    alpha3: 'MKD',
+    emoji: '🇲🇰',
+    phoneCode: '389'
+}, {
+    iso2: 'MP',
+    alpha3: 'MNP',
+    emoji: '🇲🇵',
+    phoneCode: '1670'
+}, {
+    iso2: 'NO',
+    alpha3: 'NOR',
+    emoji: '🇳🇴',
+    phoneCode: '47'
+}, {
+    iso2: 'OM',
+    alpha3: 'OMN',
+    emoji: '🇴🇲',
+    phoneCode: '968'
+}, {
+    iso2: 'PK',
+    alpha3: 'PAK',
+    emoji: '🇵🇰',
+    phoneCode: '92'
+}, {
+    iso2: 'PW',
+    alpha3: 'PLW',
+    emoji: '🇵🇼',
+    phoneCode: '680'
+}, {
+    iso2: 'PS',
+    alpha3: 'PSE',
+    emoji: '🇵🇸',
+    phoneCode: '970'
+}, {
+    iso2: 'PA',
+    alpha3: 'PAN',
+    emoji: '🇵🇦',
+    phoneCode: '507'
+}, {
+    iso2: 'PG',
+    alpha3: 'PNG',
+    emoji: '🇵🇬',
+    phoneCode: '675'
+}, {
+    iso2: 'PY',
+    alpha3: 'PRY',
+    emoji: '🇵🇾',
+    phoneCode: '595'
+}, {
+    iso2: 'PE',
+    alpha3: 'PER',
+    emoji: '🇵🇪',
+    phoneCode: '51'
+}, {
+    iso2: 'PH',
+    alpha3: 'PHL',
+    emoji: '🇵🇭',
+    phoneCode: '63'
+}, {
+    iso2: 'PL',
+    alpha3: 'POL',
+    emoji: '🇵🇱',
+    phoneCode: '48'
+}, {
+    iso2: 'PT',
+    alpha3: 'PRT',
+    emoji: '🇵🇹',
+    phoneCode: '351'
+}, {
+    iso2: 'PR',
+    alpha3: 'PRI',
+    emoji: '🇵🇷',
+    phoneCode: '1939'
+}, {
+    iso2: 'QA',
+    alpha3: 'QAT',
+    emoji: '🇶🇦',
+    phoneCode: '974'
+}, {
+    iso2: 'RE',
+    alpha3: 'REU',
+    emoji: '🇷🇪',
+    phoneCode: '262'
+}, {
+    iso2: 'RO',
+    alpha3: 'ROU',
+    emoji: '🇷🇴',
+    phoneCode: '40'
+}, {
+    iso2: 'RU',
+    alpha3: 'RUS',
+    emoji: '🇷🇺',
+    phoneCode: '7'
+}, {
+    iso2: 'RW',
+    alpha3: 'RWA',
+    emoji: '🇷🇼',
+    phoneCode: '250'
+}, {
+    iso2: 'SH',
+    alpha3: 'SHN',
+    emoji: '🇸🇭',
+    phoneCode: '290'
+}, {
+    iso2: 'KN',
+    alpha3: 'KNA',
+    emoji: '🇰🇳',
+    phoneCode: '1869'
+}, {
+    iso2: 'LC',
+    alpha3: 'LCA',
+    emoji: '🇱🇨',
+    phoneCode: '1758'
+}, {
+    iso2: 'PM',
+    alpha3: 'SPM',
+    emoji: '🇵🇲',
+    phoneCode: '508'
+}, {
+    iso2: 'VC',
+    alpha3: 'VCT',
+    emoji: '🇻🇨',
+    phoneCode: '1784'
+}, {
+    iso2: 'WS',
+    alpha3: 'WSM',
+    emoji: '🇼🇸',
+    phoneCode: '685'
+}, {
+    iso2: 'SM',
+    alpha3: 'SMR',
+    emoji: '🇸🇲',
+    phoneCode: '378'
+}, {
+    iso2: 'ST',
+    alpha3: 'STP',
+    emoji: '🇸🇹',
+    phoneCode: '239'
+}, {
+    iso2: 'SA',
+    alpha3: 'SAU',
+    emoji: '🇸🇦',
+    phoneCode: '966'
+}, {
+    iso2: 'SN',
+    alpha3: 'SEN',
+    emoji: '🇸🇳',
+    phoneCode: '221'
+}, {
+    iso2: 'RS',
+    alpha3: 'SRB',
+    emoji: '🇷🇸',
+    phoneCode: '381'
+}, {
+    iso2: 'SC',
+    alpha3: 'SYC',
+    emoji: '🇸🇨',
+    phoneCode: '248'
+}, {
+    iso2: 'SL',
+    alpha3: 'SLE',
+    emoji: '🇸🇱',
+    phoneCode: '232'
+}, {
+    iso2: 'SG',
+    alpha3: 'SGP',
+    emoji: '🇸🇬',
+    phoneCode: '65'
+}, {
+    iso2: 'SX',
+    alpha3: 'SXM',
+    emoji: '🇸🇽',
+    phoneCode: '1721'
+}, {
+    iso2: 'SK',
+    alpha3: 'SVK',
+    emoji: '🇸🇰',
+    phoneCode: '421'
+}, {
+    iso2: 'SI',
+    alpha3: 'SVN',
+    emoji: '🇸🇮',
+    phoneCode: '386'
+}, {
+    iso2: 'SB',
+    alpha3: 'SLB',
+    emoji: '🇸🇧',
+    phoneCode: '677'
+}, {
+    iso2: 'SO',
+    alpha3: 'SOM',
+    emoji: '🇸🇴',
+    phoneCode: '252'
+}, {
+    iso2: 'ZA',
+    alpha3: 'ZAF',
+    emoji: '🇿🇦',
+    phoneCode: '27'
+}, {
+    iso2: 'KR',
+    alpha3: 'KOR',
+    emoji: '🇰🇷',
+    phoneCode: '82'
+}, {
+    iso2: 'SS',
+    alpha3: 'SSD',
+    emoji: '🇸🇸',
+    phoneCode: '211'
+}, {
+    iso2: 'ES',
+    alpha3: 'ESP',
+    emoji: '🇪🇸',
+    phoneCode: '34'
+}, {
+    iso2: 'LK',
+    alpha3: 'LKA',
+    emoji: '🇱🇰',
+    phoneCode: '94'
+}, {
+    iso2: 'SD',
+    alpha3: 'SDN',
+    emoji: '🇸🇩',
+    phoneCode: '249'
+}, {
+    iso2: 'SR',
+    alpha3: 'SUR',
+    emoji: '🇸🇷',
+    phoneCode: '597'
+}, {
+    iso2: 'SE',
+    alpha3: 'SWE',
+    emoji: '🇸🇪',
+    phoneCode: '46'
+}, {
+    iso2: 'CH',
+    alpha3: 'CHE',
+    emoji: '🇨🇭',
+    phoneCode: '41'
+}, {
+    iso2: 'SY',
+    alpha3: 'SYR',
+    emoji: '🇸🇾',
+    phoneCode: '963'
+}, {
+    iso2: 'TW',
+    alpha3: 'TWN',
+    emoji: '🇹🇼',
+    phoneCode: '886'
+}, {
+    iso2: 'TJ',
+    alpha3: 'TJK',
+    emoji: '🇹🇯',
+    phoneCode: '992'
+}, {
+    iso2: 'TZ',
+    alpha3: 'TZA',
+    emoji: '🇹🇿',
+    phoneCode: '255'
+}, {
+    iso2: 'TH',
+    alpha3: 'THA',
+    emoji: '🇹🇭',
+    phoneCode: '66'
+}, {
+    iso2: 'TL',
+    alpha3: 'TLS',
+    emoji: '🇹🇱',
+    phoneCode: '670'
+}, {
+    iso2: 'TG',
+    alpha3: 'TGO',
+    emoji: '🇹🇬',
+    phoneCode: '228'
+}, {
+    iso2: 'TK',
+    alpha3: 'TKL',
+    emoji: '🇹🇰',
+    phoneCode: '690'
+}, {
+    iso2: 'TO',
+    alpha3: 'TON',
+    emoji: '🇹🇴',
+    phoneCode: '676'
+}, {
+    iso2: 'TT',
+    alpha3: 'TTO',
+    emoji: '🇹🇹',
+    phoneCode: '1868'
+}, {
+    iso2: 'TN',
+    alpha3: 'TUN',
+    emoji: '🇹🇳',
+    phoneCode: '216'
+}, {
+    iso2: 'TR',
+    alpha3: 'TUR',
+    emoji: '🇹🇷',
+    phoneCode: '90'
+}, {
+    iso2: 'TM',
+    alpha3: 'TKM',
+    emoji: '🇹🇲',
+    phoneCode: '993'
+}, {
+    iso2: 'TC',
+    alpha3: 'TCA',
+    emoji: '🇹🇨',
+    phoneCode: '1649'
+}, {
+    iso2: 'TV',
+    alpha3: 'TUV',
+    emoji: '🇹🇻',
+    phoneCode: '688'
+}, {
+    iso2: 'UG',
+    alpha3: 'UGA',
+    emoji: '🇺🇬',
+    phoneCode: '256'
+}, {
+    iso2: 'UA',
+    alpha3: 'UKR',
+    emoji: '🇺🇦',
+    phoneCode: '380'
+}, {
+    iso2: 'AE',
+    alpha3: 'ARE',
+    emoji: '🇦🇪',
+    phoneCode: '971',
+    searchKeys: ['UAE']
+}, {
+    iso2: 'GB',
+    alpha3: 'GBR',
+    emoji: '🇬🇧',
+    phoneCode: '44',
+    searchKeys: ['UK']
+}, {
+    iso2: 'UY',
+    alpha3: 'URY',
+    emoji: '🇺🇾',
+    phoneCode: '598'
+}, {
+    iso2: 'VI',
+    alpha3: 'VIR',
+    emoji: '🇻🇮',
+    phoneCode: '1340'
+}, {
+    iso2: 'US',
+    alpha3: 'USA',
+    emoji: '🇺🇸',
+    phoneCode: '1'
+}, {
+    iso2: 'UZ',
+    alpha3: 'UZB',
+    emoji: '🇺🇿',
+    phoneCode: '998'
+}, {
+    iso2: 'VU',
+    alpha3: 'VUT',
+    emoji: '🇻🇺',
+    phoneCode: '678'
+}, {
+    iso2: 'VE',
+    alpha3: 'VEN',
+    emoji: '🇻🇪',
+    phoneCode: '58'
+}, {
+    iso2: 'VN',
+    alpha3: 'VNM',
+    emoji: '🇻🇳',
+    phoneCode: '84'
+}, {
+    iso2: 'WF',
+    alpha3: 'WLF',
+    emoji: '🇼🇫',
+    phoneCode: '681'
+}, {
+    iso2: 'YE',
+    alpha3: 'YEM',
+    emoji: '🇾🇪',
+    phoneCode: '967'
+}, {
+    iso2: 'ZM',
+    alpha3: 'ZMB',
+    emoji: '🇿🇲',
+    phoneCode: '260'
+}, {
+    iso2: 'ZW',
+    alpha3: 'ZWE',
+    emoji: '🇿🇼',
+    phoneCode: '263'
+}] as const;
+
+export interface CityOption {
+    code: string;
+    label: string;
+}

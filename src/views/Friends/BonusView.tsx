@@ -117,7 +117,7 @@ export function BonusView() {
                     />
                     <Button
                         view='primary'
-                        smallSize
+                        size='40'
                         className={styles.transfer}
                         onClick={handleTransfer}
                     >

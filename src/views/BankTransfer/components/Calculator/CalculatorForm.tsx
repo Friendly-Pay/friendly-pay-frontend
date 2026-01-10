@@ -6,8 +6,8 @@ import { CurrencySelect } from '../CurrencySelect/CurrencySelect';
 import { SelectedCurrency } from '../CurrencySelect/SelectedCurrency';
 import { CalcInput } from './CalcInput';
 import { CalcProperty } from './CalcProperty';
-import { TelegramMainButton } from '@/components/common/TelegramMainButton';
-import { usePaymentStore } from '@/states/payment/store';
+import { TelegramButtons } from '@/components/Telegram';
+import { TOKENS } from '@/states/currency/tokens';
 import { useUserStore } from '@/states/user/store';
 import { Text } from '@/uikit';
 import { formatCurrency } from '@/utils';
@@ -53,7 +53,7 @@ export function CalculatorForm({ className }: CalculatorFormProps) {
         if (typedValue && typedValue.trim() !== '') hasUserTypedRef.current = true;
     }, [typedValue]);
 
-    const inputCurrency = usePaymentStore(state => state.currencies['USDTTRC']);
+    const inputCurrency = TOKENS.USDTTRC;
     const outputCurrency = useBankTransferStore(state => state.selectedCurrency!);
 
     const calc = useMemo(() => {
@@ -274,7 +274,7 @@ export function CalculatorForm({ className }: CalculatorFormProps) {
                 )}
             </div>
 
-            <TelegramMainButton
+            <TelegramButtons.MainButton
                 text={t('Continue')}
                 visible
                 loading={isSubmitLoading}

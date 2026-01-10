@@ -7,7 +7,7 @@ import { BackendField, FieldUserType, uploadBankTransferFile } from '../state/fe
 import { useBankTransferRequiredFields } from '../state/fields';
 import { useBankTransferStore } from '../state/store';
 import { MainLayout } from '@/components/common/MainLayout';
-import { TelegramMainButton } from '@/components/common/TelegramMainButton';
+import { TelegramButtons } from '@/components/Telegram';
 import { useBankTransferPaymentStore } from '@/states/payment/bankTransfer';
 import { Spinner, Text } from '@/uikit';
 import { FetchStatus } from '@/utils/api';
@@ -318,7 +318,7 @@ export function DetailsView() {
                     })}
                 </div>
 
-                <TelegramMainButton
+                <TelegramButtons.MainButton
                     text={complianceAdditional ? t('Confirm') : t('Continue')}
                     visible
                     onClick={handleSubmit}
