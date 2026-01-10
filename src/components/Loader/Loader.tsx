@@ -1,4 +1,4 @@
-import { Logo } from './Logo';
+import { AxtSign } from '../Icons/AxtSign';
 import { useLoaderStore } from '@/states/loader';
 import { Spinner } from '@/uikit';
 import { PropsWithChildren } from 'react';
@@ -11,7 +11,7 @@ export function Loader({ children }: PropsWithChildren) {
     return (<>
         {visible && <div className={classNames(styles.loader)}>
             <div className={styles.logo}>
-                <Logo />
+                <AxtSign />
             </div>
             <div className={styles.spinner}>
                 <Spinner />
