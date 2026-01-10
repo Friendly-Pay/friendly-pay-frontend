@@ -1,5 +1,6 @@
 import eliteVirtual from 'assets/cards/elite_virtual.png?inline';
 import gamingVirtual from 'assets/cards/gaming_virtual.png?inline';
+import physical from 'assets/cards/physical.png?inline';
 import platinumVirtual from 'assets/cards/platinum_virtual.png?inline';
 import premiumVirtual from 'assets/cards/premium_virtual.png?inline';
 import seamlessVirtual from 'assets/cards/seamless_virtual.png?inline';
@@ -53,6 +54,9 @@ export const cardDesign = {
         border: '2px solid #175AEA',
         previewBorder: '1px solid #175AEA'
     },
+    [111048]: {
+        design: physical
+    }
 } as const;
 
 export function CardDesign({ cardTypeId, preview, style, className, backgroundClassName, children, onClick }: PropsWithChildren<CardDesignProps>) {
