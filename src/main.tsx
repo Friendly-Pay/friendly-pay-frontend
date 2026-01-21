@@ -9,15 +9,11 @@ const queryClient = new QueryClient();
 const AppRender = React.lazy(() => import('./AppRender.tsx'));
 
 const runApp = () => {
-    const app = import.meta.env.DEV ? (
-        <AppRender />
-    ) : (
-        <Loader>
-            <Suspense fallback={null}>
-                <AppRender />
-            </Suspense>
-        </Loader>
-    );
+    const app = <Loader>
+        <Suspense fallback={null}>
+            <AppRender />
+        </Suspense>
+    </Loader>;
 
     ReactDOM.createRoot(document.getElementById('root')!).render(
         <React.StrictMode>
