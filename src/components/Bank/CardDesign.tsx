@@ -1,4 +1,5 @@
 import axtCard from 'assets/cards/axt_card.png?inline';
+import axtPhysical from 'assets/cards/axt_physical.png?inline';
 import axtVirtual from 'assets/cards/axt_virtual.png?inline';
 import axtVirtual2 from 'assets/cards/axt_virtual_2.png?inline';
 import { CSSProperties, PropsWithChildren } from 'react';
@@ -42,6 +43,9 @@ export const cardDesign = {
     [111028]: {
         design: axtCard
     },
+    [111049]: {
+        design: axtPhysical
+    }
 } as const;
 
 export function CardDesign({ cardTypeId, preview, style, className, backgroundClassName, children, onClick }: PropsWithChildren<CardDesignProps>) {

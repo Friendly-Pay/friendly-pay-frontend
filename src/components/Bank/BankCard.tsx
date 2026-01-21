@@ -68,6 +68,8 @@ const componentStyles = {
 export function BankCard({ cardTypeId, lastFourDigits, hideLastFourDigits, paymentSystem, isPending, isDisabled, className, onClick }: BankCardProps) {
     const openCardDetails = useCardsStore(state => state.openCardDetails);
 
+    const showHead = cardTypeId !== 111049;
+
     const handleOpenCardDetails = () => {
         if (!lastFourDigits || hideLastFourDigits) {
             return;
@@ -83,30 +85,32 @@ export function BankCard({ cardTypeId, lastFourDigits, hideLastFourDigits, payme
             style={componentStyles}
             onClick={onClick}
         >
-            <div className={styles.top}>
-                <AnimatePresence
-                    mode='wait'
-                    initial={false}
-                >
-                    {isPending ? (
-                        <motion.div
-                            key='spinner'
-                            {...spinnerAppearance}
-                            className={styles.spinnerWrap}
-                        >
-                            <Spinner className={styles.spinner} />
-                        </motion.div>
-                    ) : (
-                        <motion.div
-                            key='logo'
-                            {...logoAppearance}
-                            className={styles.logo}
-                        >
-                            <AxtSign />
-                        </motion.div>
-                    )}
-                </AnimatePresence>
-            </div>
+            {showHead && (
+                <div className={styles.top}>
+                    <AnimatePresence
+                        mode='wait'
+                        initial={false}
+                    >
+                        {isPending ? (
+                            <motion.div
+                                key='spinner'
+                                {...spinnerAppearance}
+                                className={styles.spinnerWrap}
+                            >
+                                <Spinner className={styles.spinner} />
+                            </motion.div>
+                        ) : (
+                            <motion.div
+                                key='logo'
+                                {...logoAppearance}
+                                className={styles.logo}
+                            >
+                                <AxtSign />
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                </div>
+            )}
 
             <div className={classNames(styles.bottom, !hideLastFourDigits && styles.withDigits)}>
 
