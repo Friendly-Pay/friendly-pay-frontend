@@ -1,5 +1,7 @@
 import virtual1 from 'assets/cards/virtual_1.png?inline';
 import virtual2 from 'assets/cards/virtual_2.png?inline';
+import card111050 from 'assets/cards/111050.png?inline';
+import card111051 from 'assets/cards/111051.png?inline';
 import { CSSProperties, PropsWithChildren } from 'react';
 import classNames from 'classnames';
 import styles from './CardDesign.module.scss';
@@ -32,6 +34,16 @@ export const cardDesign = {
     },
     [111033]: {
         design: virtual1,
+        border: '1px solid #313133',
+        previewBorder: '1px solid #313133'
+    },
+    [111050]: {
+        design: card111051,
+        border: '1px solid #313133',
+        previewBorder: '1px solid #313133'
+    },
+    [111051]: {
+        design: card111050,
         border: '1px solid #313133',
         previewBorder: '1px solid #313133'
     }
